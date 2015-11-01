@@ -1,0 +1,34 @@
+version: 1
+formatters:
+    f_default:
+        format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        datefmt: '%Y/%m/%d %H:%M:%S'
+
+handlers:
+    h_console:
+        class: logging.StreamHandler
+        formatter: f_default
+        level: DEBUG
+        stream: ext://sys.stdout
+    h_rotfile:
+        class : logging.handlers.RotatingFileHandler
+        formatter: f_default
+        level: DEBUG
+        #Note this filename is only for the main process. Other dynamically created filenames will overwrites this one per camera stream
+        filename: logs/main.log
+        maxBytes: 1e6
+        backupCount: 10
+
+loggers:
+    l_default:
+        level: DEBUG
+        handlers:
+          - h_console
+          - h_rotfile
+        propagate: False
+
+root:
+    level: DEBUG
+    handlers:
+      - h_console
+      - h_rotfile
