@@ -53,11 +53,11 @@ def worker(name,rtsp_url,coordinates,stopworker):
             proc=start_subprocess(rtsp_url,coordinates)
             attempts = attempts + 1
             #Wait for omxplayer to crash, or not
-            time.sleep(5)
+            time.sleep(10)
             logger.info("Trying to restart" + name +" attempts:" + str(attempts))
         else:
             attempts=0
-        time.sleep(1)
+        time.sleep(5)
 
     #If we come to this point, we are instructed to kill this stream
     stop_subprocess(proc)

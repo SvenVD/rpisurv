@@ -221,7 +221,7 @@ if __name__ == '__main__':
         if cmp(connectable_camera_streams,previous_connectable_camera_streams) != 0 or len(previous_connectable_camera_streams) == 0:
             draw_screen(previous_connectable_camera_streams,connectable_camera_streams,resolution,nr_of_columns)
 
-        time.sleep(10)
+        time.sleep(25)
 
 
 
