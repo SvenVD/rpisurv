@@ -23,7 +23,7 @@ class CameraStream:
         self.parsed=urlparse(rtsp_url)
         self.port = self.parsed.port
         self.hostname = self.parsed.hostname
-        self.rtsp_options_cmd = "OPTIONS rtsp:// " + self.hostname + ":" + str(self.port) + " RTSP/1.0\r\nCSeq: 1\r\nUser-Agent: python\r\nAccept: application/sdp\r\n\r\n"
+        self.rtsp_options_cmd = "OPTIONS rtsp://" + self.hostname + ":" + str(self.port) + " RTSP/1.0\r\nCSeq: 1\r\nUser-Agent: python\r\nAccept: application/sdp\r\n\r\n"
 
     def is_connectable(self):
         try:
