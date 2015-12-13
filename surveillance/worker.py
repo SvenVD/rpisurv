@@ -13,7 +13,7 @@ def start_subprocess(rtsp_url,coordinates):
     if platform.system() == "Windows":
         proc=subprocess.Popen('echo this is a subprocess started with coordinates ' + str(coordinates) + '& ping 192.168.0.160 /t >NUL', shell=True)
     elif platform.system() == "Linux":
-        proc=subprocess.Popen(['/usr/bin/omxplayer', '-I', '-o', 'hdmi', rtsp_url,'--win', " ".join(map(str,coordinates))],preexec_fn=os.setsid)
+        proc=subprocess.Popen(['/usr/bin/omxplayer', '--live', '--timeout', '60', '-o', 'hdmi', rtsp_url,'--win', " ".join(map(str,coordinates))],preexec_fn=os.setsid)
     else:
         proc=subprocess.Popen('echo this is a subprocess started with coordinates ' + str(coordinates), shell=True)
     return proc
