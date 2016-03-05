@@ -30,7 +30,7 @@ class CameraStream:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.settimeout(2)
             s.connect((self.hostname, self.port))
-            #Use OPTIONS command to check if we are dealing with a real rtps server
+            #Use OPTIONS command to check if we are dealing with a real rtsp server
             s.send(self.rtsp_options_cmd)
             rtsp_response=s.recv(4096)
             s.close()
