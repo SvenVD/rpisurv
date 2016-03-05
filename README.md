@@ -15,7 +15,7 @@ You can think of rpisurv as a wrapper for omxplayer with following features. Rpi
 - Get a raspberry pi 2 dedicated for rpisurv, and install raspbian on it. Make sure your monitor is operating at the correct resolution
 - If you are going to have multiple streams, add gpu_mem=512 to your /boot/config.txt
 - git clone this repository: git clone git@github.com:SvenVD/rpisurv.git
-- run install.sh
+- run install.sh as the root user
 - Get the correct rtsp stream url for your ip camera(s), there are some examples in /etc/rpisurv
 - configure your rtsp streams in /etc/rpisurv.
 - configure your max number of columns in /etc/rpisurv

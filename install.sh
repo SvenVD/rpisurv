@@ -1,9 +1,30 @@
 #!/bin/bash
 
+if [ ! "$BASH_VERSION" ] ; then
+    echo "ERROR: Please use bash not sh or other shells to run this installer. You can also run this script directly like ./install.sh"
+    exit 1
+fi
+
+
+get_init_sys() {
+  if command -v systemctl > /dev/null && systemctl | grep -q '\-\.mount'; then
+    SYSTEMD=1
+  elif [ -f /etc/init.d/cron ] && [ ! -h /etc/init.d/cron ]; then
+    SYSTEMD=0
+  else
+    echo "Unrecognised init system"
+    return 1
+  fi
+}
+
+
 echo "Use this installer on your own risk. Make sure this host does not contain important data and is replacable"
+echo "This installer will disable graphical login on your pi, please revert with the raspi-config command if needed"
 echo "Do you want to continue press <Enter>, Ctrl-C to cancel"
 read
 
+
+get_init_sys
 BASEPATH="$(cd $(dirname "${BASH_SOURCE[0]}");pwd)"
 
 #Install needed packages
@@ -17,7 +38,11 @@ else
 fi
 
 #Prevent starting up in graphical mode, we do not need this -> save resources
-update-rc.d lightdm disable
+if [ $SYSTEMD -eq 1 ]; then
+	systemctl set-default multi-user.target
+else
+	[ -e /etc/init.d/lightdm ] && update-rc.d lightdm disable
+fi
 
 SOURCEDIR="$BASEPATH/surveillance"
 MAINSOURCE="surveillance.py"
