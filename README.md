@@ -1,5 +1,6 @@
-# rpisurv - Raspberry pi surveillance
+# rpisurv - Raspberry pi surveillance an RPI IP Camera Monitor
 Follow us on facebook https://www.facebook.com/rpisurv
+
 ## Goal
 Rpisurv is designed to be simple to use. The goal is to connect your raspberry pi 2 to a monitor, tell rpisurv which rtsp streams it should display and tell it the max number of "columns" of streams you want. It will then autocalculate the rest, like how many rows are needed etc ...
 
