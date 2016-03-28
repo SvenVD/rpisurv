@@ -12,6 +12,19 @@ essentials:
     #How many columns you want the program to use, it will autocalculate the amount of row needed based on the resolution of your screen
     nr_of_columns: "2"
 
+#!!!Normal users do not need to edit this section!!!
+advanced:
+    ##It's by design that this autocalculation uses 100% of the available pixels on the screen. 
+    ## This means camera streams can get stretched, some use cases do not like this and prefer blank space instead
+    
+    ##Enable this option if you want to have a fixed width of all your camera streams, 
+    ## by default rpisurv autocalculates this value, if this value exceeds the available height, rpisurv will fallback to autocalculation   
+    #fixed_width: 500
+    
+    ##Enable this option if you want to have a fixed height for all your camera streams, 
+    ##by default rpisurv autocalculates this value, if this value exceeds the available height, rpisurv will fallback to autocalculation  
+    #fixed_height: 500
+
 #These are fallbacks if autodection fails;
 #Normally you do not need to configure these
 fallbacks:
