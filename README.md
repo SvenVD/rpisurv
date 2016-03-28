@@ -1,4 +1,5 @@
 # rpisurv - Raspberry pi surveillance
+Follow us on facebook https://www.facebook.com/rpisurv
 ## Goal
 Rpisurv is designed to be simple to use. The goal is to connect your raspberry pi 2 to a monitor, tell rpisurv which rtsp streams it should display and tell it the max number of "columns" of streams you want. It will then autocalculate the rest, like how many rows are needed etc ...
 
@@ -14,8 +15,8 @@ You can think of rpisurv as a wrapper for omxplayer with following features. Rpi
 - Get a monitor or a TV
 - Get a raspberry pi 2 dedicated for rpisurv, and install raspbian on it. Make sure your monitor is operating at the correct resolution
 - If you are going to have multiple streams, add gpu_mem=512 to your /boot/config.txt
-- git clone this repository: git clone git@github.com:SvenVD/rpisurv.git
-- run install.sh as the root user
+- git clone this repository: `git clone git@github.com:SvenVD/rpisurv.git`
+- run `install.sh` as the root user
 - Get the correct rtsp stream url for your ip camera(s), there are some examples in /etc/rpisurv
 - configure your rtsp streams in /etc/rpisurv.
 - configure your max number of columns in /etc/rpisurv
@@ -31,4 +32,4 @@ I advise you to test your rtsp urls in vlc or omxplayer (command line) first. It
 
 If you used the install.sh script, logs are created at /usr/local/bin/rpisurv/logs/. You can use them for troubleshooting.
 
-To start the screen without rebooting, run cd /usr/local/bin/rpisurv; python surveillance.py
+To start the screen without rebooting, run `cd /usr/local/bin/rpisurv`; python surveillance.py

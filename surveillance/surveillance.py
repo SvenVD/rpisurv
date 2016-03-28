@@ -30,7 +30,7 @@ class CameraStream:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.settimeout(2)
             s.connect((self.hostname, self.port))
-            #Use OPTIONS command to check if we are dealing with a real rtps server
+            #Use OPTIONS command to check if we are dealing with a real rtsp server
             s.send(self.rtsp_options_cmd)
             rtsp_response=s.recv(4096)
             s.close()
@@ -78,7 +78,7 @@ class CameraStream:
 
 
 
-def draw_screen(cam_streams_to_stop,cam_streams_to_draw,resolution,nr_of_columns):
+def draw_screen(cam_streams_to_stop,cam_streams_to_draw,resolution,nr_of_columns,fixed_width,fixed_height):
 
     resolution_width=int(resolution[0])
     resolution_height=int(resolution[1])
@@ -103,8 +103,28 @@ def draw_screen(cam_streams_to_stop,cam_streams_to_draw,resolution,nr_of_columns
     #We calculate needed numbers of rows based on how many fields we have and how many columns per row we want
     nr_of_rows=math.ceil(float(fields)/nr_of_columns)
 
-    normal_fieldwidth=resolution_width/nr_of_columns
-    normal_fieldheight=int(resolution_height/nr_of_rows)
+    default_fieldwidth=resolution_width/nr_of_columns
+    default_fieldheight=int(resolution_height/nr_of_rows)
+
+    normal_fieldwidth=default_fieldwidth
+    normal_fieldheight=default_fieldheight
+
+    if fixed_width is not None:
+        total_actual_width=  nr_of_columns * fixed_width
+        if not total_actual_width > resolution_width:
+            normal_fieldwidth=fixed_width
+            logger.debug("Detected advanced fixed_width config option, setting normal_fieldwidth to " + str(normal_fieldwidth))
+        else:
+            logger.error("Total sum of advanced fixed_width (nr_columns * fixed_width) option (" + str(total_actual_width) + ") is more then available width (" + str(resolution_width) + "), falling back to autocalculated width: " + str(normal_fieldwidth))
+
+
+    if fixed_height is not None:
+       total_actual_height=  nr_of_columns * fixed_height
+       if not total_actual_height > resolution_height:
+           normal_fieldheight=fixed_height
+           logger.debug("Detected advanced fixed_height config option, setting normal_fieldheight to " + str(normal_fieldheight))
+       else:
+           logger.error("Total sum of advanced fixed_height (nr_columns * fixed_height) option (" + str(total_actual_height) + ") is more then available height (" + str(resolution_height) + "), falling back to autocalculated height: " + str(normal_fieldheight))
 
     currentrow=1
     currentwindow=1
@@ -138,7 +158,7 @@ def draw_screen(cam_streams_to_stop,cam_streams_to_draw,resolution,nr_of_columns
             x2=normal_fieldwidth
 
         #If this is the last field and we still have some screen space left, horizontally stretch it to use all space
-        if currentwindow == fields:
+        if currentwindow == fields and fixed_width is None and fixed_height is None:
             #Sometimes this will override to the same value if the window end was already at the end of the screen
             #Other times it will really override to the end of the screen
             x2= resolution_width
@@ -203,6 +223,12 @@ if __name__ == '__main__':
     rtsp_urls=cfg['essentials']['rtsp_urls']
     resolution=set_resolution()
     nr_of_columns=cfg['essentials']['nr_of_columns'] #Max amount of columns per row
+    if type(cfg["advanced"]) is dict:
+        fixed_width=cfg['advanced']['fixed_width'] if 'fixed_width' in cfg["advanced"] else None #Override of autocalculation width if set
+        fixed_height=cfg['advanced']['fixed_height'] if 'fixed_height' in cfg["advanced"] else None #Override of autocalculation height if set
+    else:
+        fixed_width=None
+        fixed_height=None
 
     #Setup logger
     logger.debug("nr_of_columns = " + nr_of_columns)
@@ -219,7 +245,7 @@ if __name__ == '__main__':
         #Other option to compare could be with to convert the list into a set: print set(connectable_camera_streams) == set(previous_connectable_camera_streams)
         #Only re-draw screen if something is changed or try redrawing if there is no camerastream that is connectable
         if cmp(connectable_camera_streams,previous_connectable_camera_streams) != 0 or len(previous_connectable_camera_streams) == 0:
-            draw_screen(previous_connectable_camera_streams,connectable_camera_streams,resolution,nr_of_columns)
+            draw_screen(previous_connectable_camera_streams,connectable_camera_streams,resolution,nr_of_columns,fixed_width,fixed_height)
 
         time.sleep(25)
 
