@@ -2,6 +2,7 @@ essentials:
     #These are the rtsp streams you want the program to display
     #The streams will be displayed in the order you present them here
     rtsp_urls:
+        #These are example lines, remove them or comment them out before using the software
         #Dlink dcs-5222l example
         - "rtsp://<user>:<password>@<ip or dnsname>:<port>/play1.sdp"  
         #foscam-fi9821w example
