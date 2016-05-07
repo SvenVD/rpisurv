@@ -38,4 +38,4 @@ If you used the install.sh script, logs are created at /usr/local/bin/rpisurv/lo
 
 To start the screen without rebooting, run `cd /usr/local/bin/rpisurv`; python surveillance.py
 
-On a raspberry pi 3 it seems the default overscan settings are not good. If full screen is not used, if you have an unused bar in the bottom. Try to set disable_overscan to 1 in /boot/config.txt
+On a raspberry pi 3 it seems the default overscan settings are not good. If full screen is not used, if you have an unused bar in the bottom -> try to set disable_overscan to 1 in /boot/config.txt
