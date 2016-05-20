@@ -223,6 +223,7 @@ if __name__ == '__main__':
     rtsp_urls=cfg['essentials']['rtsp_urls']
     resolution=set_resolution()
     nr_of_columns=cfg['essentials']['nr_of_columns'] #Max amount of columns per row
+    keep_first_screen_layout=cfg['essentials']['keep_first_screen_layout'] if 'keep_first_screen_layout' in cfg["essentials"] else False
     if type(cfg["advanced"]) is dict:
         fixed_width=cfg['advanced']['fixed_width'] if 'fixed_width' in cfg["advanced"] else None #Override of autocalculation width if set
         fixed_height=cfg['advanced']['fixed_height'] if 'fixed_height' in cfg["advanced"] else None #Override of autocalculation height if set
@@ -238,20 +239,34 @@ if __name__ == '__main__':
 
     #Start main
     previous_connectable_camera_streams=[]
-    while True:
-        #Detect when new cameras come online or others go offline
-        connectable_camera_streams=check_camera_streams(all_camera_streams)
 
-        #Other option to compare could be with to convert the list into a set: print set(connectable_camera_streams) == set(previous_connectable_camera_streams)
-        #Only re-draw screen if something is changed or try redrawing if there is no camerastream that is connectable
-        if cmp(connectable_camera_streams,previous_connectable_camera_streams) != 0 or len(previous_connectable_camera_streams) == 0:
-            draw_screen(previous_connectable_camera_streams,connectable_camera_streams,resolution,nr_of_columns,fixed_width,fixed_height)
+    #Only draw the screen once on startup when keep_first_screen_layout option is true
+    if keep_first_screen_layout:
+        logger.debug("keep_first_screen_layout option is True, not changing the layout when camerastreams go down or come up over time")
+        connectable_camera_streams=check_camera_streams(all_camera_streams)
+        draw_screen(previous_connectable_camera_streams,connectable_camera_streams,resolution,nr_of_columns,fixed_width,fixed_height)
+
+
+    while True:
+
+        #Only try to redraw the screen when keep_first_screen_layout option is false, but keep the loop
+        if not keep_first_screen_layout:
+            #Detect when new cameras come online or others go offline
+            connectable_camera_streams=check_camera_streams(all_camera_streams)
+
+            #Other option to compare could be with to convert the list into a set: print set(connectable_camera_streams) == set(previous_connectable_camera_streams)
+            #Only re-draw screen if something is changed or try redrawing if there is no camerastream that is connectable
+            if cmp(connectable_camera_streams,previous_connectable_camera_streams) != 0 or len(previous_connectable_camera_streams) == 0:
+                draw_screen(previous_connectable_camera_streams,connectable_camera_streams,resolution,nr_of_columns,fixed_width,fixed_height)
+
+            previous_connectable_camera_streams=connectable_camera_streams
+
 
         time.sleep(25)
 
 
 
-        previous_connectable_camera_streams=connectable_camera_streams
+
 
 
 

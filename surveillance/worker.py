@@ -48,7 +48,7 @@ def worker(name,rtsp_url,coordinates,stopworker):
     attempts=0
     proc=start_subprocess(rtsp_url,coordinates)
 
-    while attempts < 1000 and stopworker.value == False:
+    while attempts < 100000 and stopworker.value == False:
         if proc.poll() != None:
             proc=start_subprocess(rtsp_url,coordinates)
             attempts = attempts + 1
