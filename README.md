@@ -32,14 +32,15 @@ If you used the install.sh script, you can configure your streams in /etc/rpisur
 
 ## Troubleshooting
 
-I advise you to test your rtsp urls in vlc or omxplayer (command line) first. It should work in these applications before attempting to use them in rpisurv
+- I advise you to test your rtsp urls in vlc or omxplayer (command line) first. It should work in these applications before attempting to use them in rpisurv
 
-If you used the install.sh script, logs are created at /usr/local/bin/rpisurv/logs/. You can use them for troubleshooting.
+- If you used the install.sh script, logs are created at /usr/local/bin/rpisurv/logs/. You can use them for troubleshooting.
 
-To start the screen without rebooting, run `cd /usr/local/bin/rpisurv`; python surveillance.py
+- To start the screen without rebooting, run `cd /usr/local/bin/rpisurv`; python surveillance.py
 
-If you want to stream rtsp over tcp please add `rtsp_over_tcp: true` to the stream in /etc/rpisurv. See https://github.com/SvenVD/rpisurv/blob/master/surveillance/conf/surveillance.yml for an example
-If you have a "smearing" effect this option may resolve it
-Note that you need a version of omxplayer older then 14 March 2016 (https://github.com/popcornmix/omxplayer/pull/433) to do this
+- If you want to stream rtsp over tcp please add `rtsp_over_tcp: true` to the stream in /etc/rpisurv. 
+  See https://github.com/SvenVD/rpisurv/blob/master/surveillance/conf/surveillance.yml for an example.
+  If you have a "smearing" effect this option may resolve it.
+  Note that you need a version of omxplayer older then 14 March 2016 (https://github.com/popcornmix/omxplayer/pull/433) to do this.
 
-On a raspberry pi 3 it seems the default overscan settings are not good. If full screen is not used, if you have an unused bar in the bottom -> try to set `disable_overscan=1` in /boot/config.txt
+- On a raspberry pi 3 it seems the default overscan settings are not good. If full screen is not used, if you have an unused bar in the bottom -> try to set `disable_overscan=1` in /boot/config.txt
