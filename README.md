@@ -38,4 +38,8 @@ If you used the install.sh script, logs are created at /usr/local/bin/rpisurv/lo
 
 To start the screen without rebooting, run `cd /usr/local/bin/rpisurv`; python surveillance.py
 
+If you want to stream rtsp over tcp please add `rtsp_over_tcp: true` to the stream in /etc/rpisurv. See https://github.com/SvenVD/rpisurv/blob/master/surveillance/conf/surveillance.yml for an example
+If you have a "smearing" effect this option may resolve it
+Note that you need a version of omxplayer older then 14 March 2016 (https://github.com/popcornmix/omxplayer/pull/433) to do this
+
 On a raspberry pi 3 it seems the default overscan settings are not good. If full screen is not used, if you have an unused bar in the bottom -> try to set `disable_overscan=1` in /boot/config.txt

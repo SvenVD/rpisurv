@@ -15,10 +15,29 @@ from setuplogging import setup_logging
 
 class CameraStream:
     """This class defines makes a camera stream an object"""
-    def __init__(self, name, rtsp_url = "dummy" ):
+    def __init__(self, name, camera_stream ):
         self.name = name
-        self.rtsp_url = rtsp_url
-        self.parsed=urlparse(rtsp_url)
+        self.omxplayer_extra_options = ""
+        #Backwards compatible logic for rtsp_urls
+        #New option every camera_stream is a dictionary
+        if type(camera_stream) == dict:
+            #Handle the new options
+            self.rtsp_url = camera_stream["rtsp_url"]
+            #Check if rtsp_over_tcp option exist otherwise default to false
+            self.rtsp_over_tcp=camera_stream["rtsp_over_tcp"] if 'rtsp_over_tcp' in camera_stream else False
+            #If rtsp over tcp option is true add extra option to omxplayer
+            if self.rtsp_over_tcp:
+                self.omxplayer_extra_options = self.omxplayer_extra_options + "--avdict rtsp_transport:tcp"
+
+        #Old option every camera_stream is a string with one option the rtsp_url
+        elif type(camera_stream) == str:
+            self.rtsp_url = camera_stream
+            self.omxplayer_extra_options = ""
+        else:
+            logger.error("Rtsp_urls config option should be a list or camera_streams config option should be a list of dictionaries")
+
+
+        self.parsed=urlparse(self.rtsp_url)
         self.port = self.parsed.port
         self.hostname = self.parsed.hostname
         self.rtsp_options_cmd = "OPTIONS rtsp://" + self.hostname + ":" + str(self.port) + " RTSP/1.0\r\nCSeq: 1\r\nUser-Agent: python\r\nAccept: application/sdp\r\n\r\n"
@@ -56,7 +75,7 @@ class CameraStream:
         self.stopworker= multiprocessing.Value('b', False)
 
         #Start worker process
-        self.worker = multiprocessing.Process(target=worker.worker, args=(self.name,self.rtsp_url,self.coordinates,self.stopworker))
+        self.worker = multiprocessing.Process(target=worker.worker, args=(self.name,self.rtsp_url,self.omxplayer_extra_options,self.coordinates,self.stopworker))
         self.worker.daemon = True
         self.worker.start()
 
@@ -173,16 +192,17 @@ def draw_screen(cam_streams_to_stop,cam_streams_to_draw,resolution,nr_of_columns
         currentwindow = currentwindow + 1
 
 
-def setup_camera_streams(rtsp_urls):
+def setup_camera_streams(camera_streams):
     '''Instantiate camera instances and put them in a list'''
     cam_streams=[]
     counter=0
-    for rtsp_url in rtsp_urls:
+    for camera_stream in camera_streams:
+        #camera_stream is a string in the old deprecated behaviour and is a dictionary in the new behaviour
+        #CameraStream instantiation handles both
         counter = counter +1
         cam_stream_name = "cam_stream" + str(counter)
-        cam_stream=CameraStream(cam_stream_name,rtsp_url)
+        cam_stream=CameraStream(cam_stream_name,camera_stream)
         cam_streams.append(cam_stream)
-
     return cam_streams
 
 def get_free_gpumem():
@@ -247,7 +267,6 @@ if __name__ == '__main__':
     logger = setup_logging()
 
     #Read in config
-    rtsp_urls=cfg['essentials']['rtsp_urls']
     resolution=set_resolution()
     nr_of_columns=cfg['essentials']['nr_of_columns'] #Max amount of columns per row
     keep_first_screen_layout=cfg['essentials']['keep_first_screen_layout'] if 'keep_first_screen_layout' in cfg["essentials"] else False
@@ -261,8 +280,18 @@ if __name__ == '__main__':
     #Setup logger
     logger.debug("nr_of_columns = " + nr_of_columns)
 
-    #Setup all camerastream instances
-    all_camera_streams=setup_camera_streams(rtsp_urls)
+    #rtsp_urls option is obsolete but for backwards compatibility still used if the new option camera_streams is not set
+    if 'camera_streams' in cfg["essentials"]:
+        logger.debug("camera_streams config option exist, using this one")
+        camera_streams=cfg['essentials']['camera_streams']
+    else:
+        logger.error("rtsp_urls config option is deprecated, please use the new camera_streams option")
+        camera_streams=cfg['essentials']['rtsp_urls']
+
+
+
+    #Setup all camerastream instances, pass an array of dictionaries in case of the new option, in the old option pass a list of rtsp_urls
+    all_camera_streams=setup_camera_streams(camera_streams)
 
     #Start main
     previous_connectable_camera_streams=[]
