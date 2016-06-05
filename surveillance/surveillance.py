@@ -3,10 +3,8 @@ import math
 import worker
 import socket
 import time
-import re
 import subprocess
-import os
-import base64
+import re
 from urlparse import urlparse
 import multiprocessing
 from config import cfg
@@ -187,6 +185,35 @@ def setup_camera_streams(rtsp_urls):
 
     return cam_streams
 
+def get_free_gpumem():
+    '''Returns free gpu memory'''
+    try:
+        gpumemresult=subprocess.check_output(['/usr/bin/vcdbg','reloc'])
+    except OSError as e:
+        logger.error("Can not find or run the vcdbg binary to get free gpu mem")
+        free_gpumem=None
+    else:
+        regex_result=re.search("(\d+)M free memory .*",gpumemresult)
+        free_gpumem=str(regex_result.group(1))
+        logger.debug("Free gpu memory value is " + str(free_gpumem))
+
+    return free_gpumem
+
+
+def check_free_gpumem():
+    '''Returns 0 if enough mem is available, returns 1 if not enough mem is available'''
+    threshold = 80
+    free_gpumem = get_free_gpumem()
+    if free_gpumem is not None:
+            if int(free_gpumem) < int(threshold):
+                logger.error("Free gpu mem is " + str(free_gpumem) + "M which is less than "  +  str(threshold) + "M. Streams might fail to start. Consider assigning more memory to gpu in /boot/config.txt with the gpu_mem option")
+                return 1
+            else:
+                return 0
+    else:
+        logger.error("Could not determine free gpu memory, you need to check for yourself")
+        return None
+
 
 def check_camera_streams(cam_streams):
     '''Filters a list of camerastream instances into a new list of connectable camera_streams'''
@@ -248,7 +275,8 @@ if __name__ == '__main__':
 
 
     while True:
-
+        #Check free mem and log warning
+        check_free_gpumem()
         #Only try to redraw the screen when keep_first_screen_layout option is false, but keep the loop
         if not keep_first_screen_layout:
             #Detect when new cameras come online or others go offline
