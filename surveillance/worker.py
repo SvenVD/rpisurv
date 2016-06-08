@@ -15,7 +15,7 @@ def worker(name,rtsp_url,omxplayer_extra_options,coordinates,stopworker):
         if platform.system() == "Windows":
             proc=subprocess.Popen('echo this is a subprocess started with coordinates ' + str(coordinates) + '& ping 192.168.0.160 /t >NUL', shell=True)
         elif platform.system() == "Linux":
-            proc=subprocess.Popen(command_line_shlex,preexec_fn=os.setsid)
+            proc=subprocess.Popen(command_line_shlex,preexec_fn=os.setsid,stdin=subprocess.PIPE)
         else:
             proc=subprocess.Popen('echo this is a subprocess started with coordinates ' + str(coordinates), shell=True)
         return proc
@@ -49,6 +49,7 @@ def worker(name,rtsp_url,omxplayer_extra_options,coordinates,stopworker):
     proc=start_subprocess(rtsp_url,coordinates)
     while attempts < 100000 and stopworker.value == False:
         if proc.poll() != None:
+            proc.communicate(input="\n")
             proc=start_subprocess(rtsp_url,coordinates)
             attempts = attempts + 1
             #Wait for omxplayer to crash, or not
