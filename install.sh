@@ -28,11 +28,11 @@ get_init_sys
 BASEPATH="$(cd $(dirname "${BASH_SOURCE[0]}");pwd)"
 
 #Install needed packages
-apt-get install python-yaml python libraspberrypi-bin
+apt-get install python-yaml python libraspberrypi-bin -y
 
 #Only install omxplayer if it isn't already installed (from source or package)
 if [ ! -e /usr/bin/omxplayer ];then
- apt-get install omxplayer
+ apt-get install omxplayer -y
 else
  echo "Omxplayer install detected, not reinstalling"
 fi
