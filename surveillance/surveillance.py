@@ -136,12 +136,12 @@ def draw_screen(cam_streams_to_stop,cam_streams_to_draw,resolution,nr_of_columns
 
 
     if fixed_height is not None:
-       total_actual_height=  nr_of_columns * fixed_height
+       total_actual_height=  nr_of_rows * fixed_height
        if not total_actual_height > resolution_height:
            normal_fieldheight=fixed_height
            logger.debug("Detected advanced fixed_height config option, setting normal_fieldheight to " + str(normal_fieldheight))
        else:
-           logger.error("Total sum of advanced fixed_height (nr_columns * fixed_height) option (" + str(total_actual_height) + ") is more then available height (" + str(resolution_height) + "), falling back to autocalculated height: " + str(normal_fieldheight))
+           logger.error("Total sum of advanced fixed_height (nr rows * fixed_height) option (" + str(total_actual_height) + ") is more then available height (" + str(resolution_height) + "), falling back to autocalculated height: " + str(normal_fieldheight))
 
     currentrow=1
     currentwindow=1
