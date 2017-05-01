@@ -2,35 +2,43 @@ essentials:
     #These are the rtsp streams you want the program to display
     #The streams will be displayed in the order you present them here
     camera_streams:
-        #Dlink dcs-5222l example     
+        #Dlink dcs-5222l example
         - rtsp_url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/play1.sdp"
           #Enable this option if you want the rtsp stream to stream over tcp instead of udp, this may solve a "smearing" effect on some setups. Defaults to false
           #Note that you need a version of omxplayer older then 14 March 2016 for this option to work
           rtsp_over_tcp: true
-        #Foscam-fi9821w example  
+        #Foscam-fi9821w example
         - rtsp_url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
         #Dahua IPC-HDW4200S example or IPC-HDW4300S
-        - rtsp_url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1" 
+        - rtsp_url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1"
 
     #How many columns you want the program to use, it will autocalculate the amount of row needed based on the resolution of your screen
     nr_of_columns: "2"
 
-    #rpisurv detects the connectable streams on startup, 
+    #rpisurv detects the connectable streams on startup,
     #if this option is enabled it will keep the first calculated layout for the lifetime of the rpisurv running even if some cameras go down and come up, instead of redrawing the screen
     #When this option is set to True, rpisurv ignores all cameras configured that were not connectable when rpisurv was started
     keep_first_screen_layout: False
 
 #!!!Normal users do not need to edit this section!!!
 advanced:
-    ##Enable this option if you want to have a fixed width of all your camera streams, 
-    ##By default rpisurv autocalculates this value, this can cause streams to get "stretched", 
-    ##if this value exceeds the available height, rpisurv will fallback to autocalculation   
-    #fixed_width: 500
-    
-    ##Enable this option if you want to have a fixed height for all your camera streams, 
+    ##Enable this option if you want to have a fixed width of all your camera streams,
     ##By default rpisurv autocalculates this value, this can cause streams to get "stretched",
-    ##if this value exceeds the available height, rpisurv will fallback to autocalculation  
+    ##if this value exceeds the available height, rpisurv will fallback to autocalculation
+    #fixed_width: 500
+
+    ##Enable this option if you want to have a fixed height for all your camera streams,
+    ##By default rpisurv autocalculates this value, this can cause streams to get "stretched",
+    ##if this value exceeds the available height, rpisurv will fallback to autocalculation
     #fixed_height: 500
+
+    #Rpisurv sends usage stats to it's statistics server to give the rpisurv community an idea how widespread this software is being used
+    #No performance impact is measured when using this option, no sensitive data is being sent. All data is anonymised.
+    #By default this is true
+    #update_stats: True
+
+    #By default rpisurv checks every 25 seconds if it needs to redraw the screen
+    #interval_check_status: 25
 
 #These are fallbacks if autodection fails;
 #Normally you do not need to configure these

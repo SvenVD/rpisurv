@@ -9,6 +9,7 @@ from urlparse import urlparse
 import multiprocessing
 from config import cfg
 from setuplogging import setup_logging
+import stats
 
 #We do not need exact floating point numbers, use builtin "float" instead
 #from decimal import getcontext, Decimals
@@ -262,8 +263,17 @@ def set_resolution():
         resolution=autodetect_resolution
     return resolution
 
+def handle_stats( stats_counter ):
+    stats_counter_thresh=40
+    # Updating stats for rpisurv community every 40 loops
+    if stats_counter % stats_counter_thresh == 0:
+        stats.update_stats(uniqid, str(stats.get_runtime(start_time)), update_stats_enabled)
+    else:
+        logger.debug("stats_counter is " + str(stats_counter) + ". Only sending every " + str(stats_counter_thresh))
+
 if __name__ == '__main__':
 
+    #Setup logger
     logger = setup_logging()
 
     #Read in config
@@ -273,13 +283,16 @@ if __name__ == '__main__':
     if type(cfg["advanced"]) is dict:
         fixed_width=cfg['advanced']['fixed_width'] if 'fixed_width' in cfg["advanced"] else None #Override of autocalculation width if set
         fixed_height=cfg['advanced']['fixed_height'] if 'fixed_height' in cfg["advanced"] else None #Override of autocalculation height if set
+        update_stats_enabled=cfg['advanced']['update_stats'] if 'update_stats' in cfg["advanced"] else True #Override of update_stats if set
+        interval_check_status=cfg['advanced']['interval_check_status'] if 'interval_check_status' in cfg["advanced"] else 25 #Override of interval_check_status if set
     else:
         fixed_width=None
         fixed_height=None
+        update_stats_enabled=True
+        interval_check_status=25
 
-    #Setup logger
     logger.debug("nr_of_columns = " + nr_of_columns)
-
+    logger.debug("interval_check_status = " + str(interval_check_status))
     #rtsp_urls option is obsolete but for backwards compatibility still used if the new option camera_streams is not set
     if 'camera_streams' in cfg["essentials"]:
         logger.debug("camera_streams config option exist, using this one")
@@ -287,8 +300,6 @@ if __name__ == '__main__':
     else:
         logger.error("rtsp_urls config option is deprecated, please use the new camera_streams option")
         camera_streams=cfg['essentials']['rtsp_urls']
-
-
 
     #Setup all camerastream instances, pass an array of dictionaries in case of the new option, in the old option pass a list of rtsp_urls
     all_camera_streams=setup_camera_streams(camera_streams)
@@ -303,7 +314,17 @@ if __name__ == '__main__':
         draw_screen(previous_connectable_camera_streams,connectable_camera_streams,resolution,nr_of_columns,fixed_width,fixed_height)
 
 
+    #Timers for statistics
+    uniqid = stats.generate_uniqid()
+    start_time = stats.start_timer()
+    stats_counter=0
+
+
     while True:
+        #Handle stats
+        handle_stats(stats_counter)
+        stats_counter += 1
+
         #Check free mem and log warning
         check_free_gpumem()
         #Only try to redraw the screen when keep_first_screen_layout option is false, but keep the loop
@@ -319,7 +340,8 @@ if __name__ == '__main__':
             previous_connectable_camera_streams=connectable_camera_streams
 
 
-        time.sleep(25)
+        time.sleep(interval_check_status)
+
 
 
 

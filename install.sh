@@ -40,8 +40,17 @@ fi
 #Prevent starting up in graphical mode, we do not need this -> save resources
 if [ $SYSTEMD -eq 1 ]; then
 	systemctl set-default multi-user.target
+	#enable systemd-timesyncd
+	timedatectl set-ntp true
+
 else
 	[ -e /etc/init.d/lightdm ] && update-rc.d lightdm disable
+	#Enable timesync
+	TIMESYNCCMD="/usr/sbin/service ntp stop 2>/dev/null 1>&2; /usr/sbin/ntpdate 0.debian.pool.ntp.org 2>/dev/null 1>&2; /usr/sbin/service ntp start 2>/dev/null 1>&2"
+	if ! grep -q "^$TIMESYNCCMD" /etc/rc.local ;then
+        	echo "$TIMESYNCCMD" >> /etc/rc.local
+
+	fi
 fi
 
 SOURCEDIR="$BASEPATH/surveillance"
