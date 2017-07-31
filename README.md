@@ -36,7 +36,7 @@ If you used the install.sh script, you can configure your streams in /etc/rpisur
 
 - If you used the install.sh script, logs are created at /usr/local/bin/rpisurv/logs/. You can use them for troubleshooting.
 
-- To start the screen without rebooting, run `cd /usr/local/bin/rpisurv`; python surveillance.py
+- To start the screen without rebooting, run `cd /usr/local/bin/rpisurv; python surveillance.py`
 
 - If you want to stream rtsp over tcp please add `rtsp_over_tcp: true` to the stream in /etc/rpisurv. 
   See https://github.com/SvenVD/rpisurv/blob/master/surveillance/conf/surveillance.yml for an example.
