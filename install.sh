@@ -33,27 +33,27 @@ get_init_sys
 BASEPATH="$(cd $(dirname "${BASH_SOURCE[0]}");pwd)"
 
 #Install needed packages
-apt-get install python-yaml python libraspberrypi-bin -y
+sudo apt-get install python-yaml python libraspberrypi-bin -y
 
 #Only install omxplayer if it isn't already installed (from source or package)
 if [ ! -e /usr/bin/omxplayer ];then
- apt-get install omxplayer -y
+ sudo apt-get install omxplayer -y
 else
  echo "Omxplayer install detected, not reinstalling"
 fi
 
 #Prevent starting up in graphical mode, we do not need this -> save resources
 if [ $SYSTEMD -eq 1 ]; then
-	systemctl set-default multi-user.target
+	sudo systemctl set-default multi-user.target
 	#enable systemd-timesyncd
-	timedatectl set-ntp true
+	sudo timedatectl set-ntp true
 
 else
 	[ -e /etc/init.d/lightdm ] && update-rc.d lightdm disable
 	#Enable timesync
 	TIMESYNCCMD="/usr/sbin/service ntp stop 2>/dev/null 1>&2; /usr/sbin/ntpdate 0.debian.pool.ntp.org 2>/dev/null 1>&2; /usr/sbin/service ntp start 2>/dev/null 1>&2"
 	if ! grep -q "^$TIMESYNCCMD" /etc/rc.local ;then
-        	echo "$TIMESYNCCMD" >> /etc/rc.local
+        	sudo echo "$TIMESYNCCMD" >> /etc/rc.local
 
 	fi
 fi
@@ -64,21 +64,21 @@ CONFFILE="conf/surveillance.yml"
 
 
 DESTPATH="/usr/local/bin/rpisurv"
-mkdir -p "$DESTPATH"
+sudo mkdir -p "$DESTPATH"
 
-rsync -av "$SOURCEDIR/" "$DESTPATH/"
+sudo rsync -av "$SOURCEDIR/" "$DESTPATH/"
 
 #Filter out exit 0 command if present
 sed -i '/exit 0$/d' /etc/rc.local
 
 STARTUPCMD="cd $DESTPATH; python "$MAINSOURCE" &"
 if ! grep -q "^$STARTUPCMD" /etc/rc.local ;then
-	echo "$STARTUPCMD" >> /etc/rc.local
+	sudo echo "$STARTUPCMD" >> /etc/rc.local
 
 fi
 
 #Link config file into /etc as convenient way to edit
-ln -fs $DESTPATH/"$CONFFILE" /etc/rpisurv
+sudo ln -fs $DESTPATH/"$CONFFILE" /etc/rpisurv
 
 #Add exit 0 as last line for good practise
 echo  "exit 0" >> /etc/rc.local
