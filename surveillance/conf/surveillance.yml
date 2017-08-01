@@ -20,6 +20,9 @@ essentials:
     #When this option is set to True, rpisurv ignores all cameras configured that were not connectable when rpisurv was started
     keep_first_screen_layout: False
 
+    #custom background image
+    #background_image: "Splash2.png"
+
 #!!!Normal users do not need to edit this section!!!
 advanced:
     ##Enable this option if you want to have a fixed width of all your camera streams,

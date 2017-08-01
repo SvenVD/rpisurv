@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import pygame
 import math
 import worker
 import socket
@@ -37,7 +38,6 @@ class CameraStream:
         else:
             logger.error("Rtsp_urls config option should be a list or camera_streams config option should be a list of dictionaries")
 
-
         self.parsed=urlparse(self.rtsp_url)
         self.port = self.parsed.port
         self.hostname = self.parsed.hostname
@@ -68,7 +68,6 @@ class CameraStream:
             logger.error(self.hostname + " : " + str(self.port) +" Not Connectable (failed rtsp validation, is this an rtsp stream?)")
             return False
 
-
     def start_stream(self, coordinates):
         self.coordinates=coordinates
         logger.debug("start stream " + self.name)
@@ -94,7 +93,67 @@ class CameraStream:
         logger.debug("MAIN Value of stopworker for " + self.name + " is " + str(self.stopworker.value))
         self.worker.join()
 
+def draw_background_img(cam_streams_to_draw,resolution,nr_of_columns,fixed_width,fixed_height):
+    pygame.init()
+    pygame.mouse.set_visible(False)
+    screen = pygame.display.set_mode((int(resolution[0]),int(resolution[1])))
+    background_image=cfg['essentials']['background_image'] if 'background_image' in cfg["essentials"] else "image.png"
+    img=pygame.image.load("conf/"+background_image)
+    resolution_width=int(resolution[0])
+    resolution_height=int(resolution[1])
+    nr_of_columns=int(nr_of_columns)
+    fields=len(cam_streams_to_draw)
+    if fields == 0:
+        logger.error("No streams detected")
+        return
+    if fields <= nr_of_columns:
+        nr_of_columns=fields
+    nr_of_rows=math.ceil(float(fields)/nr_of_columns)
+    default_fieldwidth=resolution_width/nr_of_columns
+    default_fieldheight=int(resolution_height/nr_of_rows)
+    normal_fieldwidth=default_fieldwidth
+    normal_fieldheight=default_fieldheight
+    if fixed_width is not None:
+        total_actual_width=  nr_of_columns * fixed_width
+        if not total_actual_width > resolution_width:
+            normal_fieldwidth=fixed_width
+            logger.debug("Detected advanced fixed_width config option, setting normal_fieldwidth to " + str(normal_fieldwidth))
+        else:
+            logger.error("Total sum of advanced fixed_width (nr_columns * fixed_width) option (" + str(total_actual_width) + ") is more then available width (" + str(resolution_width) + "), falling back to autocalculated width: " + str(normal_fieldwidth))
 
+    if fixed_height is not None:
+       total_actual_height=  nr_of_rows * fixed_height
+       if not total_actual_height > resolution_height:
+           normal_fieldheight=fixed_height
+           logger.debug("Detected advanced fixed_height config option, setting normal_fieldheight to " + str(normal_fieldheight))
+       else:
+           logger.error("Total sum of advanced fixed_height (nr rows * fixed_height) option (" + str(total_actual_height) + ") is more then available height (" + str(resolution_height) + "), falling back to autocalculated height: " + str(normal_fieldheight))
+    currentrow=1
+    currentwindow=1
+    currentrowlength=nr_of_columns
+    x1=0
+    y1=0
+    while currentwindow <= (nr_of_columns*nr_of_rows):
+        logger.debug(currentwindow)
+        logger.debug(currentrowlength)
+        if currentwindow > currentrowlength:
+            #This is a new row event
+            x1=0
+            y1=y1 + normal_fieldheight
+            currentrow = currentrow + 1
+            #Next row ends when we are at following currentwindow index number
+            currentrowlength = currentrowlength + nr_of_columns
+        else:
+            #This is a window in the same row
+            x1=x1 + normal_fieldwidth
+            #If this is the first field/window override some settings
+        if currentwindow == 1:
+            x1=0
+        img = pygame.transform.scale(img, (normal_fieldwidth, normal_fieldheight))
+        screen.blit(img,(x1,y1))
+        pygame.display.flip() # update the display
+        currentwindow = currentwindow + 1
+    logger.debug("done i think?")
 
 def draw_screen(cam_streams_to_stop,cam_streams_to_draw,resolution,nr_of_columns,fixed_width,fixed_height):
 
@@ -134,7 +193,6 @@ def draw_screen(cam_streams_to_stop,cam_streams_to_draw,resolution,nr_of_columns
             logger.debug("Detected advanced fixed_width config option, setting normal_fieldwidth to " + str(normal_fieldwidth))
         else:
             logger.error("Total sum of advanced fixed_width (nr_columns * fixed_width) option (" + str(total_actual_width) + ") is more then available width (" + str(resolution_width) + "), falling back to autocalculated width: " + str(normal_fieldwidth))
-
 
     if fixed_height is not None:
        total_actual_height=  nr_of_rows * fixed_height
@@ -176,10 +234,10 @@ def draw_screen(cam_streams_to_stop,cam_streams_to_draw,resolution,nr_of_columns
             x2=normal_fieldwidth
 
         #If this is the last field and we still have some screen space left, horizontally stretch it to use all space
-        if currentwindow == fields and fixed_width is None and fixed_height is None:
+        #if currentwindow == fields and fixed_width is None and fixed_height is None:
             #Sometimes this will override to the same value if the window end was already at the end of the screen
             #Other times it will really override to the end of the screen
-            x2= resolution_width
+            #x2= resolution_width
 
         logger.debug("cam stream name =" + cam_stream.name)
         cam_stream_name = "cam_stream" + str(currentwindow)
@@ -191,7 +249,6 @@ def draw_screen(cam_streams_to_stop,cam_streams_to_draw,resolution,nr_of_columns
         cam_stream.printcoordinates()
 
         currentwindow = currentwindow + 1
-
 
 def setup_camera_streams(camera_streams):
     '''Instantiate camera instances and put them in a list'''
@@ -217,9 +274,7 @@ def get_free_gpumem():
         regex_result=re.search("(\d+)M free memory .*",gpumemresult)
         free_gpumem=str(regex_result.group(1))
         logger.debug("Free gpu memory value is " + str(free_gpumem))
-
     return free_gpumem
-
 
 def check_free_gpumem():
     '''Returns 0 if enough mem is available, returns 1 if not enough mem is available'''
@@ -234,7 +289,6 @@ def check_free_gpumem():
     else:
         logger.error("Could not determine free gpu memory, you need to check for yourself")
         return None
-
 
 def check_camera_streams(cam_streams):
     '''Filters a list of camerastream instances into a new list of connectable camera_streams'''
@@ -301,6 +355,9 @@ if __name__ == '__main__':
         logger.error("rtsp_urls config option is deprecated, please use the new camera_streams option")
         camera_streams=cfg['essentials']['rtsp_urls']
 
+    #draw background image
+    draw_background_img(camera_streams,resolution,nr_of_columns,fixed_width,fixed_height)
+
     #Setup all camerastream instances, pass an array of dictionaries in case of the new option, in the old option pass a list of rtsp_urls
     all_camera_streams=setup_camera_streams(camera_streams)
 
@@ -313,12 +370,10 @@ if __name__ == '__main__':
         connectable_camera_streams=check_camera_streams(all_camera_streams)
         draw_screen(previous_connectable_camera_streams,connectable_camera_streams,resolution,nr_of_columns,fixed_width,fixed_height)
 
-
     #Timers for statistics
     uniqid = stats.generate_uniqid()
     start_time = stats.start_timer()
     stats_counter=0
-
 
     while True:
         #Handle stats
@@ -339,13 +394,4 @@ if __name__ == '__main__':
 
             previous_connectable_camera_streams=connectable_camera_streams
 
-
         time.sleep(interval_check_status)
-
-
-
-
-
-
-
-
