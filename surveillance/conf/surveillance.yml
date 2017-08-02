@@ -24,7 +24,7 @@ essentials:
 advanced:
     ##Enable this option if you want to have a fixed width of all your camera streams,
     ##By default rpisurv autocalculates this value, this can cause streams to get "stretched",
-    ##if this value exceeds the available height, rpisurv will fallback to autocalculation
+    ##if this value exceeds the available width, rpisurv will fallback to autocalculation
     #fixed_width: 500
 
     ##Enable this option if you want to have a fixed height for all your camera streams,
