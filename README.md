@@ -11,7 +11,7 @@ Rpisurv is designed to be simple to use. The goal is to connect your raspberry p
 You can think of rpisurv as a wrapper for omxplayer with following features. Rpisurv uses omxplayer to fully make use of the GPU of the raspberry pi.
 
 - Rpisurv implements a watchdog for every stream displayed, if the process gets killed somehow. It will try to restart the stream/process. This gives you a very robust surveillance screen.
-- Autocalculcate coordinates for every stream displayed. The last stream defined will be stretched to make use of the complete screen but only if some pixels are unused.
+- Autocalculcate coordinates for every stream displayed. The last stream defined will be stretched to make use of the complete screen but only if some pixels are unused (if autostretch option is True).
 - RTSP stream up/down detection and autorearrange of the screen layout. So for example if you stop a camera (or just stop the rtsp server on the camera), rpisurv will detects this and will recalculate/redraw the screen with the still available cameras. The same is true if a previous unconnectable rtsp stream becomes connectable. All without any user interaction.
 
 ## How to get started
@@ -26,6 +26,10 @@ You can think of rpisurv as a wrapper for omxplayer with following features. Rpi
 - configure your max number of columns in /etc/rpisurv
 - reboot
 
+## How to update
+- `cd rpisurv ; git pull`
+- run `install.sh` as the root user
+
 ## Rpisurv in operation
 
 If you used the install.sh script, you can configure your streams in /etc/rpisurv. Do not forget to reboot afterwards.
@@ -36,7 +40,13 @@ If you used the install.sh script, you can configure your streams in /etc/rpisur
 
 - If you used the install.sh script, logs are created at /usr/local/bin/rpisurv/logs/. You can use them for troubleshooting.
 
-- To start the screen without rebooting, run `cd /usr/local/bin/rpisurv; python surveillance.py`
+- If you are connected via keyboard, you can stop rpisurv by pressing q for about 25 seconds.
+
+- To manage the screen without rebooting use systemctl
+  - `systemctl stop rpisurv` to stop the screen
+  - `systemctl start rpisurv` to start the screen
+  - `systemctl status rpisurv` to see last log and status of service
+- DEPRECATED: To start the screen without rebooting on non systemd enabled raspbian, run `cd /usr/local/bin/rpisurv; python surveillance.py`
 
 - If you want to stream rtsp over tcp please add `rtsp_over_tcp: true` to the stream in /etc/rpisurv. 
   See https://github.com/SvenVD/rpisurv/blob/master/surveillance/conf/surveillance.yml for an example.

@@ -33,7 +33,7 @@ get_init_sys
 BASEPATH="$(cd $(dirname "${BASH_SOURCE[0]}");pwd)"
 
 #Install needed packages
-sudo apt-get install python-yaml python libraspberrypi-bin -y
+sudo apt-get install python-pygame python-yaml python libraspberrypi-bin -y
 
 #Only install omxplayer if it isn't already installed (from source or package)
 if [ ! -e /usr/bin/omxplayer ];then
@@ -44,18 +44,18 @@ fi
 
 #Prevent starting up in graphical mode, we do not need this -> save resources
 if [ $SYSTEMD -eq 1 ]; then
-	sudo systemctl set-default multi-user.target
-	#enable systemd-timesyncd
-	sudo timedatectl set-ntp true
+  sudo systemctl set-default multi-user.target
+  #enable systemd-timesyncd
+  sudo timedatectl set-ntp true
 
 else
-	[ -e /etc/init.d/lightdm ] && update-rc.d lightdm disable
-	#Enable timesync
-	TIMESYNCCMD="/usr/sbin/service ntp stop 2>/dev/null 1>&2; /usr/sbin/ntpdate 0.debian.pool.ntp.org 2>/dev/null 1>&2; /usr/sbin/service ntp start 2>/dev/null 1>&2"
-	if ! grep -q "^$TIMESYNCCMD" /etc/rc.local ;then
-        	sudo echo "$TIMESYNCCMD" >> /etc/rc.local
+  [ -e /etc/init.d/lightdm ] && update-rc.d lightdm disable
+  #Enable timesync
+  TIMESYNCCMD="/usr/sbin/service ntp stop 2>/dev/null 1>&2; /usr/sbin/ntpdate 0.debian.pool.ntp.org 2>/dev/null 1>&2; /usr/sbin/service ntp start 2>/dev/null 1>&2"
+  if ! grep -q "^$TIMESYNCCMD" /etc/rc.local ;then
+          sudo echo "$TIMESYNCCMD" >> /etc/rc.local
 
-	fi
+  fi
 fi
 
 SOURCEDIR="$BASEPATH/surveillance"
@@ -68,17 +68,30 @@ sudo mkdir -p "$DESTPATH"
 
 sudo rsync -av "$SOURCEDIR/" "$DESTPATH/"
 
-#Filter out exit 0 command if present
-sed -i '/exit 0$/d' /etc/rc.local
+
 
 STARTUPCMD="cd $DESTPATH; python "$MAINSOURCE" &"
-if ! grep -q "^$STARTUPCMD" /etc/rc.local ;then
-	sudo echo "$STARTUPCMD" >> /etc/rc.local
 
+if [ $SYSTEMD -eq 1 ]; then
+    #Remove old way of starting rpisurv
+    sudo sed -i /$MAINSOURCE/d /etc/rc.local
+    sudo cp -v rpisurv /usr/bin/
+    sudo chmod 700 /usr/bin/rpisurv
+    sudo cp -v rpisurv.service /etc/systemd/system/
+    sudo chmod 700 /etc/systemd/system/rpisurv.service
+    sudo systemctl daemon-reload
+    sudo systemctl enable rpisurv
+else
+    #No systemd detected use old method to start
+    if ! grep -q "^$STARTUPCMD" /etc/rc.local ;then
+        #Filter out exit 0 command if present
+        sudo sed -i '/exit 0$/d' /etc/rc.local
+        sudo echo "$STARTUPCMD" >> /etc/rc.local
+        #Add exit 0 as last line for good practise
+        sudo echo  "exit 0" >> /etc/rc.local
+    fi
 fi
-
 #Link config file into /etc as convenient way to edit
 sudo ln -fs $DESTPATH/"$CONFFILE" /etc/rpisurv
 
-#Add exit 0 as last line for good practise
-echo  "exit 0" >> /etc/rc.local
+

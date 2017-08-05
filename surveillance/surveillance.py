@@ -10,6 +10,9 @@ import multiprocessing
 from config import cfg
 from setuplogging import setup_logging
 import stats
+import draw
+import sys
+import signal
 
 #We do not need exact floating point numbers, use builtin "float" instead
 #from decimal import getcontext, Decimals
@@ -69,9 +72,16 @@ class CameraStream:
             return False
 
 
-    def start_stream(self, coordinates):
+    def show_status(self):
+        self.normal_fieldwidth=self.coordinates[2] - self.coordinates[0]
+        self.normal_fieldheight=self.coordinates[3] - self.coordinates[1]
+        draw.placeholder(self.coordinates[0], self.coordinates[1], self.normal_fieldwidth, self.normal_fieldheight, "images/starting.png", self.pygamescreen)
+
+    def start_stream(self, coordinates,pygamescreen):
         self.coordinates=coordinates
+        self.pygamescreen=pygamescreen
         logger.debug("start stream " + self.name)
+        self.show_status()
 
         self.stopworker= multiprocessing.Value('b', False)
 
@@ -96,11 +106,14 @@ class CameraStream:
 
 
 
-def draw_screen(cam_streams_to_stop,cam_streams_to_draw,resolution,nr_of_columns,fixed_width,fixed_height):
+def draw_screen(cam_streams_to_stop,cam_streams_to_draw,resolution,nr_of_columns,fixed_width,fixed_height,autostretch):
 
     resolution_width=int(resolution[0])
     resolution_height=int(resolution[1])
     nr_of_columns=int(nr_of_columns)
+
+    draw.destroy()
+    pygamescreen = draw.init(resolution)
 
     #First stop all running streams
     for cam_stream_to_stop in cam_streams_to_stop:
@@ -176,10 +189,24 @@ def draw_screen(cam_streams_to_stop,cam_streams_to_draw,resolution,nr_of_columns
             x2=normal_fieldwidth
 
         #If this is the last field and we still have some screen space left, horizontally stretch it to use all space
-        if currentwindow == fields and fixed_width is None and fixed_height is None:
-            #Sometimes this will override to the same value if the window end was already at the end of the screen
-            #Other times it will really override to the end of the screen
-            x2= resolution_width
+        if currentwindow == fields:
+            if fixed_width is None and autostretch is True:
+                #Sometimes this will override to the same value if the window end was already at the end of the screen
+                #Other times it will really override to the end of the screen
+                x2= resolution_width
+            else:
+                #Start calculation to display placeholders
+                free_horizontal_pixels = resolution_width - x2
+                if free_horizontal_pixels > 0:
+                    logger.debug("We have some unused screen and autostretch is disabled. Start drawing placeholders")
+                    nr_of_placeholders=free_horizontal_pixels/normal_fieldwidth
+                    count_placeholders = 0
+                    placeholder_x = x1 + normal_fieldwidth
+                    placeholder_y = y1
+                    while count_placeholders < nr_of_placeholders:
+                        draw.placeholder(placeholder_x, placeholder_y, normal_fieldwidth, normal_fieldheight, "images/placeholder.png", pygamescreen)
+                        count_placeholders = count_placeholders + 1
+                        placeholder_x = placeholder_x + normal_fieldwidth
 
         logger.debug("cam stream name =" + cam_stream.name)
         cam_stream_name = "cam_stream" + str(currentwindow)
@@ -187,7 +214,7 @@ def draw_screen(cam_streams_to_stop,cam_streams_to_draw,resolution,nr_of_columns
         # y1 #y coordinate upper left corner
         # x2 #x coordinate absolute where window should end, count from left to right
         # y2 #y coordinate from where window should end, count from top to bottom of screen
-        cam_stream.start_stream([x1,y1,x2,y2])
+        cam_stream.start_stream([x1,y1,x2,y2],pygamescreen)
         cam_stream.printcoordinates()
 
         currentwindow = currentwindow + 1
@@ -271,7 +298,21 @@ def handle_stats( stats_counter ):
     else:
         logger.debug("stats_counter is " + str(stats_counter) + ". Only sending every " + str(stats_counter_thresh))
 
+def quit_on_keyboard(cam_streams_to_stop):
+    if draw.check_keypress_end():
+        draw.destroy()
+        for cam_stream_to_stop in cam_streams_to_stop:
+            cam_stream_to_stop.stop_stream()
+        sys.exit(0)
+
+
+def sigterm_handler(_signo, _stack_frame):
+    draw.destroy()
+    sys.exit(0)
+
 if __name__ == '__main__':
+
+    signal.signal(signal.SIGTERM, sigterm_handler)
 
     #Setup logger
     logger = setup_logging()
@@ -280,6 +321,8 @@ if __name__ == '__main__':
     resolution=set_resolution()
     nr_of_columns=cfg['essentials']['nr_of_columns'] #Max amount of columns per row
     keep_first_screen_layout=cfg['essentials']['keep_first_screen_layout'] if 'keep_first_screen_layout' in cfg["essentials"] else False
+    autostretch=cfg['essentials']['autostretch'] if 'autostretch' in cfg["essentials"] else False
+
     if type(cfg["advanced"]) is dict:
         fixed_width=cfg['advanced']['fixed_width'] if 'fixed_width' in cfg["advanced"] else None #Override of autocalculation width if set
         fixed_height=cfg['advanced']['fixed_height'] if 'fixed_height' in cfg["advanced"] else None #Override of autocalculation height if set
@@ -311,7 +354,7 @@ if __name__ == '__main__':
     if keep_first_screen_layout:
         logger.debug("keep_first_screen_layout option is True, not changing the layout when camerastreams go down or come up over time")
         connectable_camera_streams=check_camera_streams(all_camera_streams)
-        draw_screen(previous_connectable_camera_streams,connectable_camera_streams,resolution,nr_of_columns,fixed_width,fixed_height)
+        draw_screen(previous_connectable_camera_streams,connectable_camera_streams,resolution,nr_of_columns,fixed_width,fixed_height,autostretch)
 
 
     #Timers for statistics
@@ -335,12 +378,17 @@ if __name__ == '__main__':
             #Other option to compare could be with to convert the list into a set: print set(connectable_camera_streams) == set(previous_connectable_camera_streams)
             #Only re-draw screen if something is changed or try redrawing if there is no camerastream that is connectable
             if cmp(connectable_camera_streams,previous_connectable_camera_streams) != 0 or len(previous_connectable_camera_streams) == 0:
-                draw_screen(previous_connectable_camera_streams,connectable_camera_streams,resolution,nr_of_columns,fixed_width,fixed_height)
+                draw_screen(previous_connectable_camera_streams,connectable_camera_streams,resolution,nr_of_columns,fixed_width,fixed_height,autostretch)
 
             previous_connectable_camera_streams=connectable_camera_streams
 
+        quit_on_keyboard(previous_connectable_camera_streams)
+
+        #Draw placeholders
+        draw.refresh()
 
         time.sleep(interval_check_status)
+
 
 
 
