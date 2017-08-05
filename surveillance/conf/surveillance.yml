@@ -15,6 +15,10 @@ essentials:
     #How many columns you want the program to use, it will autocalculate the amount of row needed based on the resolution of your screen
     nr_of_columns: "2"
 
+    #Autostretching makes sures all of your pixels will be uses to display streams, so you have a maximum surveillance area.
+    #But this will probably destroy the aspect ratio of your last stream.
+    #autostretch: False
+
     #rpisurv detects the connectable streams on startup,
     #if this option is enabled it will keep the first calculated layout for the lifetime of the rpisurv running even if some cameras go down and come up, instead of redrawing the screen
     #When this option is set to True, rpisurv ignores all cameras configured that were not connectable when rpisurv was started
