@@ -1,0 +1,12 @@
+[Unit]
+Description=Rpisurv Raspberry Pi Surveillance
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/rpisurv
+KillMode=control-group
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
