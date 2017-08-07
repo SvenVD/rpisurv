@@ -75,7 +75,7 @@ class CameraStream:
     def show_status(self):
         self.normal_fieldwidth=self.coordinates[2] - self.coordinates[0]
         self.normal_fieldheight=self.coordinates[3] - self.coordinates[1]
-        draw.placeholder(self.coordinates[0], self.coordinates[1], self.normal_fieldwidth, self.normal_fieldheight, "images/starting.png", self.pygamescreen)
+        draw.placeholder(self.coordinates[0], self.coordinates[1], self.normal_fieldwidth, self.normal_fieldheight, "images/connecting.png", self.pygamescreen)
 
     def start_stream(self, coordinates,pygamescreen):
         self.coordinates=coordinates
@@ -112,18 +112,33 @@ def draw_screen(cam_streams_to_stop,cam_streams_to_draw,resolution,nr_of_columns
     resolution_height=int(resolution[1])
     nr_of_columns=int(nr_of_columns)
 
-    draw.destroy()
-    pygamescreen = draw.init(resolution)
 
     #First stop all running streams
     for cam_stream_to_stop in cam_streams_to_stop:
         cam_stream_to_stop.stop_stream()
 
+    #Setup global pygame_noconnectable_surface
+    global pygame_noconnectable_surface
+
     #Start algorithm to start new streams
     fields=len(cam_streams_to_draw)
     if fields == 0:
         logger.error("No connectable streams detected")
+        #Check if pygame_noconnectable_surface already exists before redrawing
+        try:
+            pygame_noconnectable_surface.get_parent()
+        except:
+            logger.debug("pygame_noconnectable_surface does not exist, draw it")
+            draw.destroy()
+            pygamescreen = draw.init(resolution)
+            pygame_noconnectable_surface = draw.placeholder(0, 0, resolution_width, resolution_height, "images/noconnectable.png", pygamescreen)
         return
+    else:
+        draw.destroy()
+        #Reset pygame_noconnectable_surface
+        pygame_noconnectable_surface=0
+        pygamescreen = draw.init(resolution)
+
 
     logger.debug( "number of fields= " + str(fields))
 

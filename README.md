@@ -30,6 +30,12 @@ You can think of rpisurv as a wrapper for omxplayer with following features. Rpi
 - `cd rpisurv ; git pull`
 - run `install.sh` as the root user
 
+## Placeholder images
+You may change the placeholder images to something you like.
+- images/connecting.png is shown when a camera stream is starting up
+- images/placeholder.png is shown on empty squares
+- images/noconnectable.png is shown full screen when no connectable streams are detected
+
 ## Rpisurv in operation
 
 If you used the install.sh script, you can configure your streams in /etc/rpisurv. Do not forget to reboot afterwards.

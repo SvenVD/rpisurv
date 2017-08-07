@@ -15,10 +15,11 @@ def init(resolution):
 
 def placeholder(absposx,absposy,width,height,background_img_path,surface):
     """This function creates a new placeholder"""
-    logger.debug("Drawing placeholder with coordinates:" + str(absposx) + "," + str( absposy) + "and width" + str(width) +  "height" + str(height) )
+    logger.debug("Drawing placeholder with coordinates: " + str(absposx) + ", " + str( absposy) + " and width: " + str(width) +  " height: " + str(height) )
     background_img = pygame.image.load(background_img_path)
     background_img = pygame.transform.scale(background_img, (width, height))
     surface.blit(background_img, (absposx, absposy))
+    return background_img
 
 def check_keypress_end():
     for event in pygame.event.get():
