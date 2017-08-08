@@ -45,7 +45,7 @@ advanced:
     #interval_check_status: 25
     
     #By default rpisurv will check memory usage, set to False to skip memory usage check
-    #memorycheck: True
+    #memory_usage_check: True
 
 #These are fallbacks if autodection fails;
 #Normally you do not need to configure these
