@@ -343,11 +343,13 @@ if __name__ == '__main__':
         fixed_height=cfg['advanced']['fixed_height'] if 'fixed_height' in cfg["advanced"] else None #Override of autocalculation height if set
         update_stats_enabled=cfg['advanced']['update_stats'] if 'update_stats' in cfg["advanced"] else True #Override of update_stats if set
         interval_check_status=cfg['advanced']['interval_check_status'] if 'interval_check_status' in cfg["advanced"] else 25 #Override of interval_check_status if set
+        memory_usage_check=cfg['advanced']['memory_usage_check'] if 'memory_usage_check' in cfg["advanced"] else True #Override of memory_usage_check if set
     else:
         fixed_width=None
         fixed_height=None
         update_stats_enabled=True
         interval_check_status=25
+        memory_usage_check=True
 
     logger.debug("nr_of_columns = " + nr_of_columns)
     logger.debug("interval_check_status = " + str(interval_check_status))
@@ -384,7 +386,9 @@ if __name__ == '__main__':
         stats_counter += 1
 
         #Check free mem and log warning
-        check_free_gpumem()
+        if memory_usage_check: 
+            check_free_gpumem()
+            
         #Only try to redraw the screen when keep_first_screen_layout option is false, but keep the loop
         if not keep_first_screen_layout:
             #Detect when new cameras come online or others go offline
