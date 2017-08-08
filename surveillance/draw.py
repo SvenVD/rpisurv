@@ -19,6 +19,7 @@ def placeholder(absposx,absposy,width,height,background_img_path,surface):
     background_img = pygame.image.load(background_img_path)
     background_img = pygame.transform.scale(background_img, (width, height))
     surface.blit(background_img, (absposx, absposy))
+    refresh()
     return background_img
 
 def check_keypress_end():
