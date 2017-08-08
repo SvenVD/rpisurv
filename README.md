@@ -20,15 +20,16 @@ You can think of rpisurv as a wrapper for omxplayer with following features. Rpi
 - Get a raspberry pi dedicated for rpisurv, and install raspbian on it. Make sure your monitor is operating at the correct resolution
 - If you are going to have multiple streams, add gpu_mem=512 to your /boot/config.txt
 - git clone this repository: `git clone https://github.com/SvenVD/rpisurv`
-- run `install.sh` as the root user
+- move into folder `cd rpisurv`
+- run `sudo install.sh`
 - Get the correct rtsp stream url for your ip camera(s), there are some examples in /etc/rpisurv
 - configure your rtsp streams in /etc/rpisurv.
 - configure your max number of columns in /etc/rpisurv
 - reboot
 
 ## How to update
-- `cd rpisurv ; git pull`
-- run `install.sh` as the root user
+- `cd rpisurv; git pull`
+- run `sudo install.sh`
 
 ## Placeholder images
 You may change the placeholder images to something you like.
@@ -49,10 +50,10 @@ If you used the install.sh script, you can configure your streams in /etc/rpisur
 - If you are connected via keyboard, you can stop rpisurv by pressing q for about 25 seconds.
 
 - To manage the screen without rebooting use systemctl
-  - `systemctl stop rpisurv` to stop the screen
-  - `systemctl start rpisurv` to start the screen
-  - `systemctl status rpisurv` to see last log and status of service
-- DEPRECATED: To start the screen without rebooting on non systemd enabled raspbian, run `cd /usr/local/bin/rpisurv; python surveillance.py`
+  - `sudo systemctl stop rpisurv` to stop the screen
+  - `sudo systemctl start rpisurv` to start the screen
+  - `sudo systemctl status rpisurv` to see last log and status of service
+- DEPRECATED: To start the screen without rebooting on non systemd enabled raspbian, run `cd /usr/local/bin/rpisurv; sudo python surveillance.py`
 
 - If you want to stream rtsp over tcp please add `rtsp_over_tcp: true` to the stream in /etc/rpisurv. 
   See https://github.com/SvenVD/rpisurv/blob/master/surveillance/conf/surveillance.yml for an example.
