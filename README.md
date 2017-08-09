@@ -21,7 +21,7 @@ You can think of rpisurv as a wrapper for omxplayer with following features. Rpi
 - If you are going to have multiple streams, add gpu_mem=512 to your /boot/config.txt
 - git clone this repository: `git clone https://github.com/SvenVD/rpisurv`
 - move into folder `cd rpisurv`
-- run `sudo install.sh`
+- run `sudo ./install.sh`
 - Get the correct rtsp stream url for your ip camera(s), there are some examples in /etc/rpisurv
 - configure your rtsp streams in /etc/rpisurv.
 - configure your max number of columns in /etc/rpisurv
@@ -29,7 +29,7 @@ You can think of rpisurv as a wrapper for omxplayer with following features. Rpi
 
 ## How to update
 - `cd rpisurv; git pull`
-- run `sudo install.sh`
+- run `sudo ./install.sh`
 
 ## Placeholder images
 You may change the placeholder images to something you like.
