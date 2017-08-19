@@ -28,8 +28,13 @@ You can think of rpisurv as a wrapper for omxplayer with following features. Rpi
 - reboot
 
 ## How to update
+- save your config:
+  `cp -v /usr/local/bin/rpisurv/conf/surveillance.yml /usr/local/bin/rpisurv/conf/surveillance.yml.back_update`
 - `cd rpisurv; git pull`
 - run `sudo ./install.sh`
+- restore your config:
+  `cp -v /usr/local/bin/rpisurv/conf/surveillance.yml.back_update /usr/local/bin/rpisurv/conf/surveillance.yml`
+- `systemctl restart rpisurv`
 
 ## Placeholder images
 You may change the placeholder images to something you like.
