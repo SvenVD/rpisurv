@@ -37,10 +37,11 @@ You can think of rpisurv as a wrapper for omxplayer with following features. Rpi
 - `systemctl restart rpisurv`
 
 ## Placeholder images
-You may change the placeholder images to something you like.
-- images/connecting.png is shown when a camera stream is starting up
-- images/placeholder.png is shown on empty squares
-- images/noconnectable.png is shown full screen when no connectable streams are detected
+After installation you may change the placeholder images to something you like.
+- /usr/local/bin/rpisurv/images/connecting.png is shown when a camera stream is starting up
+- /usr/local/bin/rpisurv/images/placeholder.png is shown on empty squares
+- /usr/local/bin/rpisurv/images/noconnectable.png is shown full screen when no connectable streams are detected
+- `systemctl restart rpisurv`
 
 ## Rpisurv in operation
 
