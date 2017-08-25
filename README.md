@@ -34,14 +34,14 @@ You can think of rpisurv as a wrapper for omxplayer with following features. Rpi
 - run `sudo ./install.sh`
 - restore your config:
   `cp -v /usr/local/bin/rpisurv/conf/surveillance.yml.back_update /usr/local/bin/rpisurv/conf/surveillance.yml`
-- `systemctl restart rpisurv`
+- `sudo systemctl restart rpisurv`
 
 ## Placeholder images
 After installation you may change the placeholder images to something you like.
 - /usr/local/bin/rpisurv/images/connecting.png is shown when a camera stream is starting up
 - /usr/local/bin/rpisurv/images/placeholder.png is shown on empty squares
 - /usr/local/bin/rpisurv/images/noconnectable.png is shown full screen when no connectable streams are detected
-- `systemctl restart rpisurv`
+- `sudo systemctl restart rpisurv`
 
 ## Rpisurv in operation
 
