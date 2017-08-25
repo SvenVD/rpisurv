@@ -61,7 +61,7 @@ If you used the install.sh script, you can configure your streams in /etc/rpisur
   - `sudo systemctl status rpisurv` to see last log and status of service
 - DEPRECATED: To start the screen without rebooting on non systemd enabled raspbian, run `cd /usr/local/bin/rpisurv; sudo python surveillance.py`
 
-- If you want to stream rtsp over tcp please add `rtsp_over_tcp: true` to the stream in /etc/rpisurv. 
+- If you want to stream rtsp over tcp please add `rtsp_over_tcp: true` to the stream in /etc/rpisurv.
   See https://github.com/SvenVD/rpisurv/blob/master/surveillance/conf/surveillance.yml for an example.
   If you have a "smearing" effect this option may resolve it.
   Note that you need a version of omxplayer older then 14 March 2016 (https://github.com/popcornmix/omxplayer/pull/433) to do this.

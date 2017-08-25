@@ -19,7 +19,7 @@ import signal
 
 class CameraStream:
     """This class defines makes a camera stream an object"""
-    def __init__(self, name, camera_stream ):
+    def __init__(self, name, camera_stream):
         self.name = name
         self.omxplayer_extra_options = ""
         #Backwards compatible logic for rtsp_urls
@@ -250,29 +250,36 @@ def setup_camera_streams(camera_streams):
 
 def get_free_gpumem():
     '''Returns free gpu memory'''
+    free_gpumem=None
     try:
         gpumemresult=subprocess.check_output(['/usr/bin/vcdbg','reloc'])
     except OSError as e:
         logger.error("Can not find or run the vcdbg binary to get free gpu mem")
-        free_gpumem=None
     else:
-        regex_result=re.search("(\d+)M free memory .*",gpumemresult)
-        free_gpumem=str(regex_result.group(1))
-        logger.debug("Free gpu memory value is " + str(free_gpumem))
+        try:
+            regex_result=re.search("(\d+[a-zA-Z]?) free memory .*",gpumemresult)
+            free_gpumem=str(regex_result.group(1))
+        except AttributeError as parseerror:
+            logger.debug("Got " + str(parseerror) + " error when parsing free memory")
+        else:
+            logger.debug("Free gpu memory value is " + str(free_gpumem))
 
     return free_gpumem
 
 
 def check_free_gpumem():
     '''Returns 0 if enough mem is available, returns 1 if not enough mem is available'''
-    threshold = 80
+    threshold_bytes = 80000000
     free_gpumem = get_free_gpumem()
     if free_gpumem is not None:
-            if int(free_gpumem) < int(threshold):
-                logger.error("Free gpu mem is " + str(free_gpumem) + "M which is less than "  +  str(threshold) + "M. Streams might fail to start. Consider assigning more memory to gpu in /boot/config.txt with the gpu_mem option")
-                return 1
-            else:
-                return 0
+        conversions = {'B': 1024, 'M': 1024 ** 2, 'G': 1024 ** 3, 'T': 1024 ** 4}
+        free_gpumem_bytes = float(re.sub('[A-Za-z]+','', free_gpumem))*conversions.get(re.sub('\d+','', free_gpumem),1)
+        logger.debug("Free memory in bytes: " + str(free_gpumem_bytes))
+        if int(free_gpumem_bytes) < int(threshold_bytes):
+            logger.error("Free gpu mem is " + str(free_gpumem_bytes) + " bytes which is less than " + str(threshold_bytes) + " bytes. Streams might fail to start. Consider assigning more memory to gpu in /boot/config.txt with the gpu_mem option")
+            return 1
+        else:
+            return 0
     else:
         logger.error("Could not determine free gpu memory, you need to check for yourself")
         return None
@@ -386,9 +393,9 @@ if __name__ == '__main__':
         stats_counter += 1
 
         #Check free mem and log warning
-        if memory_usage_check: 
+        if memory_usage_check:
             check_free_gpumem()
-            
+
         #Only try to redraw the screen when keep_first_screen_layout option is false, but keep the loop
         if not keep_first_screen_layout:
             #Detect when new cameras come online or others go offline

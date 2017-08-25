@@ -78,7 +78,7 @@ if [ $SYSTEMD -eq 1 ]; then
     sudo cp -v rpisurv /usr/bin/
     sudo chmod 700 /usr/bin/rpisurv
     sudo cp -v rpisurv.service /etc/systemd/system/
-    sudo chmod 700 /etc/systemd/system/rpisurv.service
+    sudo chmod 644 /etc/systemd/system/rpisurv.service
     sudo systemctl daemon-reload
     sudo systemctl enable rpisurv
 else

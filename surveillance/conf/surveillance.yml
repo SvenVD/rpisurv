@@ -43,7 +43,7 @@ advanced:
 
     #By default rpisurv checks every 25 seconds if it needs to redraw the screen
     #interval_check_status: 25
-    
+
     #By default rpisurv will check memory usage, set to False to skip memory usage check
     #memory_usage_check: True
 
