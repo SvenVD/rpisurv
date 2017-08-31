@@ -272,7 +272,7 @@ def check_free_gpumem():
     threshold_bytes = 80000000
     free_gpumem = get_free_gpumem()
     if free_gpumem is not None:
-        conversions = {'B': 1024, 'M': 1024 ** 2, 'G': 1024 ** 3, 'T': 1024 ** 4}
+        conversions = {'K': 1024, 'M': 1024 ** 2, 'G': 1024 ** 3, 'T': 1024 ** 4}
         free_gpumem_bytes = float(re.sub('[A-Za-z]+','', free_gpumem))*conversions.get(re.sub('\d+','', free_gpumem),1)
         logger.debug("Free memory in bytes: " + str(free_gpumem_bytes))
         if int(free_gpumem_bytes) < int(threshold_bytes):
