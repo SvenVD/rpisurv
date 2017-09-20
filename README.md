@@ -23,7 +23,7 @@ You can think of rpisurv as a wrapper for omxplayer with following features. Rpi
 - move into folder `cd rpisurv`
 - run `sudo ./install.sh`
 - Get the correct rtsp stream url for your ip camera(s), there are some examples in /etc/rpisurv
-- configure your rtsp streams in /etc/rpisurv.
+- configure your rtsp streams in /etc/rpisurv ( do NOT use tabs in this file, only use spaces! ).
 - configure your max number of columns in /etc/rpisurv
 - reboot
 
