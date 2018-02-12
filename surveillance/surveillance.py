@@ -348,13 +348,13 @@ if __name__ == '__main__':
     if type(cfg["advanced"]) is dict:
         fixed_width=cfg['advanced']['fixed_width'] if 'fixed_width' in cfg["advanced"] else None #Override of autocalculation width if set
         fixed_height=cfg['advanced']['fixed_height'] if 'fixed_height' in cfg["advanced"] else None #Override of autocalculation height if set
-        update_stats_enabled=cfg['advanced']['update_stats'] if 'update_stats' in cfg["advanced"] else True #Override of update_stats if set
+        update_stats_enabled=cfg['advanced']['update_stats'] if 'update_stats' in cfg["advanced"] else False #Override of update_stats if set
         interval_check_status=cfg['advanced']['interval_check_status'] if 'interval_check_status' in cfg["advanced"] else 25 #Override of interval_check_status if set
         memory_usage_check=cfg['advanced']['memory_usage_check'] if 'memory_usage_check' in cfg["advanced"] else True #Override of memory_usage_check if set
     else:
         fixed_width=None
         fixed_height=None
-        update_stats_enabled=True
+        update_stats_enabled=False
         interval_check_status=25
         memory_usage_check=True
 
