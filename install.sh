@@ -17,17 +17,11 @@ get_init_sys() {
   fi
 }
 
-
 echo "Use this installer on your own risk. Make sure this host does not contain important data and is replacable"
 echo "This installer will disable graphical login on your pi, please revert with the raspi-config command if needed"
 echo
-echo "By using this software, you agree that by default limited and non-sensitive (runtime and unique id) stats"
-echo "will be sent regularly to a collector server. You can disable this anytime by changing the update_stats: config option to False."
-echo "This has been introduced to get a general idea about how big the rpisurv community is."
-echo
 echo "Do you want to continue press <Enter>, Ctrl-C to cancel"
 read
-
 
 get_init_sys
 BASEPATH="$(cd $(dirname "${BASH_SOURCE[0]}");pwd)"
