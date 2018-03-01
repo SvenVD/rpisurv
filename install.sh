@@ -27,7 +27,7 @@ get_init_sys
 BASEPATH="$(cd $(dirname "${BASH_SOURCE[0]}");pwd)"
 
 #Install needed packages
-sudo apt-get install python-pygame python-yaml python libraspberrypi-bin -y
+sudo apt-get install python-pygame python-yaml python libraspberrypi-bin rsync -y
 
 #Only install omxplayer if it isn't already installed (from source or package)
 if [ ! -e /usr/bin/omxplayer ];then
