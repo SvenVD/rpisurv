@@ -70,4 +70,4 @@ If you used the install.sh script, you can configure your streams in /etc/rpisur
 
 ## Feature requests
 
-Feature requests are tracked on https://feathub.com/SvenVD/rpisurv. If you would like to have a feature implemented on rpisurv, please check that this is not already been requested on feathub. If it is then add your vote to it, if it is not then request it as a new feature.
+Feature requests are tracked on https://feathub.com/SvenVD/rpisurv. If you would like to have a feature implemented on rpisurv, please check that this is not already been requested on feathub. If it is then add your vote to it, if it is not then request it as a new feature. The votes give us an indication on how feature requests compare to each other regarding popularity.
