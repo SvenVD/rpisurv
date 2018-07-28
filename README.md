@@ -67,3 +67,7 @@ If you used the install.sh script, you can configure your streams in /etc/rpisur
   Note that you need a version of omxplayer which is released afer 14 March 2016 (https://github.com/popcornmix/omxplayer/pull/433) to do this.
 
 - On a raspberry pi 3 it seems the default overscan settings are not good. If full screen is not used, if you have an unused bar in the bottom -> try to set `disable_overscan=1` in /boot/config.txt
+
+## Feature requests
+
+Feature requests are tracked on https://feathub.com/SvenVD/rpisurv. If you would like to have a feature implemented on rpisurv, please check that this is not already been requested on feathub. If it is then add your vote to it, if it is not then request it as a new feature.
