@@ -61,4 +61,7 @@ target/
 # Pycharm
 .idea
 
+# vscode
+.vscode
+
 *.log

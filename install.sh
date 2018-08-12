@@ -27,7 +27,7 @@ get_init_sys
 BASEPATH="$(cd $(dirname "${BASH_SOURCE[0]}");pwd)"
 
 #Install needed packages
-sudo apt-get install python-pygame python-yaml python libraspberrypi-bin rsync -y
+sudo apt-get install coreutils python-pygame python-yaml python-dbus python libraspberrypi-bin -y
 
 #Only install omxplayer if it isn't already installed (from source or package)
 if [ ! -e /usr/bin/omxplayer ];then
@@ -55,14 +55,30 @@ fi
 SOURCEDIR="$BASEPATH/surveillance"
 MAINSOURCE="surveillance.py"
 CONFFILE="conf/surveillance.yml"
+BACKUPCONFFILE=/tmp/surveillance.yml.$(date +%Y%m%d_%s)
+
 
 
 DESTPATH="/usr/local/bin/rpisurv"
 sudo mkdir -p "$DESTPATH"
 
+if [ -f "$DESTPATH/$CONFFILE" ]; then sudo cp -v "$DESTPATH/$CONFFILE" "${BACKUPCONFFILE}";fi
+echo
+echo "Existing config file will be backed up to "${BACKUPCONFFILE}""
+
+
+echo
+echo "Do you want to overwrite you current config file with the example config file?"
+echo "Newer major versions of rpisurv are not backwards compatible with old format of config file"
+echo "Type yes/no"
+read ANSWER
+
 sudo rsync -av "$SOURCEDIR/" "$DESTPATH/"
 
-
+if [ x"$ANSWER" == x"no" ]; then
+    #Putting back old config file
+    if [ -f "${BACKUPCONFFILE}" ]; then sudo cp -v "${BACKUPCONFFILE}" "$DESTPATH/$CONFFILE" ; fi
+fi
 
 STARTUPCMD="cd $DESTPATH; python "$MAINSOURCE" &"
 

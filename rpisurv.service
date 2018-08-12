@@ -1,10 +1,12 @@
 [Unit]
 Description=Rpisurv Raspberry Pi Surveillance
 After=network-online.target
+Wants=network-online.target
 
 [Service]
 Type=simple
 ExecStart=/usr/bin/rpisurv
+ExecStop="/bin/rm -fv /tmp/omxplayerdbus*"
 KillMode=control-group
 Restart=on-failure
 

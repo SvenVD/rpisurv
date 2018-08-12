@@ -32,14 +32,14 @@ def generate_uniqid():
     return str(mac_hash)
 
 
-def update_stats(uniqid, runtime, update_stats_enabled):
+def update_stats(version, uniqid, runtime, update_stats_enabled):
     if update_stats_enabled:
         # Run stats in separate short lived process to not interfere main program
-        multiprocessing.Process(target=send_stats, args=(uniqid, runtime)).start()
+        multiprocessing.Process(target=send_stats, args=(version, uniqid, runtime)).start()
     else:
         logger.info("Sending stats is disabled, not sending stats")
 
-def send_stats(uniqid,runtime):
+def send_stats(version, uniqid, runtime):
     #Because this is run as a subprocess we need to start logging again
     logger_send_stats = setup_logging(logfilepath="logs/send_stats.log",loggername="send_stats")
 
@@ -53,10 +53,10 @@ def send_stats(uniqid,runtime):
     ]
     #Extra info will be send via cookie headers
     #opener.addheaders.append(('Cookie', 'runtime='+ runtime + ';reservedkey=reservedvalue'))
-    opener.addheaders.append(('Cookie', 'runtime='+ runtime ))
+    opener.addheaders.append(('Cookie', 'runtime='+ runtime + ';version='+ str(version)  ))
 
     #f = opener.open("http://httpbin.org/cookies")
-    logger_send_stats.debug("Start sending uniqid " + uniqid + " and runtime " + runtime + " to " + destination + " for updating stats rpisurv community")
+    logger_send_stats.debug("Start sending uniqid " + uniqid + ", runtime " + runtime + ", version " + str(version) + " to " + destination + " for updating stats rpisurv community")
     try:
         response = opener.open(destination, timeout=20)
     except urllib2.HTTPError, e:

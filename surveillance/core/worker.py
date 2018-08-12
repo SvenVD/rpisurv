@@ -4,11 +4,21 @@ import platform
 import os
 import shlex
 import signal
-from setuplogging import setup_logging
+from util.setuplogging import setup_logging
 
-def worker(name,rtsp_url,omxplayer_extra_options,coordinates,stopworker):
-    def start_subprocess(rtsp_url,coordinates):
-        command_line='/usr/bin/omxplayer --live --timeout 60 --aidx -1 -o hdmi' + ' ' + omxplayer_extra_options + ' ' +  rtsp_url + ' --win ' + '"' + " ".join(map(str,coordinates)) + '"'
+def worker(name,url,omxplayer_extra_options,coordinates,stopworker):
+    """
+    Example substituted: ['/usr/bin/omxplayer', '--video_fifo', '1', '--video_queue', '1', '--live', '--timeout', '60', '--aidx', '-1', '-o', 'hdmi', 'rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_175k.mov', '--win', '960 0 1920 540', '--dbus_name', 'org.mpris.MediaPlayer2.cam_stream2']
+    """
+    def start_subprocess(url,coordinates):
+        command_line='/usr/bin/omxplayer \
+                     --video_fifo 1 \
+                     --video_queue 1 \
+                     --live \
+                     --timeout 60 \
+                     --aidx -1 \
+                     -o hdmi \
+                     ' + ' ' + omxplayer_extra_options + ' ' + url + ' --win ' + '"' + " ".join(map(str,coordinates))  + '"' + ' --dbus_name org.mpris.MediaPlayer2.' + name
         command_line_shlex=shlex.split(command_line)
         logger.debug("Starting stream " + name + " with commandline " + str(command_line_shlex))
         #The other process is just to be able to develop/simulate on a Windows or OSX machine
@@ -46,19 +56,22 @@ def worker(name,rtsp_url,omxplayer_extra_options,coordinates,stopworker):
 
     #Start stream and watchdog
     attempts=0
-    proc=start_subprocess(rtsp_url,coordinates)
+    proc=start_subprocess(url,coordinates)
+    logger.debug("stopworker.value = " + name + " " + str(stopworker.value))
     while attempts < 100000 and stopworker.value == False:
+        #logger.debug("stopworker.value in loop = " + name + " " + str(stopworker.value))
         if proc.poll() != None:
             proc.communicate(input="\n")
-            proc=start_subprocess(rtsp_url,coordinates)
+            proc=start_subprocess(url,coordinates)
             attempts = attempts + 1
             #Wait for omxplayer to crash, or not
             time.sleep(10)
-            logger.info("Trying to restart" + name +" attempts:" + str(attempts))
+            logger.info("Trying to restart " + name +" attempts:" + str(attempts))
         else:
             attempts=0
-        time.sleep(5)
+        time.sleep(0.5)
 
     #If we come to this point, we are instructed to kill this stream
+    logger.debug("This stream " + name + " is about to be stopped")
     stop_subprocess(proc)
-    logger.info("This stream has been stopped")
+    logger.info("This stream " + name + " has been stopped")

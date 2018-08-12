@@ -1,2 +1,4 @@
 #!/bin/bash
+#Removing leftover dbus connections first
+/bin/rm -fv /tmp/omxplayerdbus*
 cd /usr/local/bin/rpisurv; python surveillance.py
