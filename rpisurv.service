@@ -6,9 +6,9 @@ Wants=network-online.target
 [Service]
 Type=simple
 ExecStart=/usr/bin/rpisurv
-ExecStop="/bin/rm -fv /tmp/omxplayerdbus*"
 KillMode=control-group
 Restart=on-failure
+RestartSec=20
 
 [Install]
 WantedBy=multi-user.target

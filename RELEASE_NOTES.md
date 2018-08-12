@@ -19,7 +19,3 @@ The normal update [procedure](https://github.com/SvenVD/rpisurv/blob/v2.0_branch
 - "autostretch" and "nr_of_columns" options are now per-screen configuration options.
 - Installer has been updated to request the user to preserve his current configuration file.
 
-
-
-
-

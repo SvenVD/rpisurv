@@ -20,7 +20,7 @@ You can think of rpisurv as a wrapper for omxplayer with following features (Rpi
 - Rpisurv implements a watchdog for every stream displayed, if the process gets killed somehow. It will try to restart the stream/process. This gives you a very robust surveillance screen.
 - Autocalculcate coordinates for every stream displayed. The last stream defined will be stretched to make use of the complete screen but only if some pixels are unused (if autostretch option is True).
 - Stream up/down detection and autorearrange of the screen layout (if disable_probing_for_all_streams is False). So for example if you stop a camera (or just stop the server on the camera), rpisurv will detects this and will recalculate/redraw the screen with the still available cameras. The same is true if a previous unconnectable rtsp stream becomes connectable. All without any user interaction.
-- All this behaviour is available per screen, but as of 2.0 you can configure multiple screens and cycle between them in an automated way.
+- All this behaviour is available per screen, but as of 2.0 you can configure multiple screens and cycle between them in an automated way or via the keyboard.
 
 ## How to get started
 In short: The idea is to connect your raspberry pi to a monitor and tell rpisurv which stream(s) and screen(s) it should display or cycle between. Rpisurv will autocalculate all the rest.
@@ -53,7 +53,7 @@ After installation you may change the placeholder images to something you like.
 
 If you used the install.sh script, you can configure your streams in /etc/rpisurv. Do not forget to reboot afterwards.
 
-If you are connected via keyboard, you can force the next screen rpisurv by pressing and holding n or space for some seconds in case multiple screens were defined (this takes longer depending on amount of unconnectable streams and they thus need to wait for timeout, keep holding until screen changes. Note, you can change probe_timeout per camera stream if needed).
+If you are connected via keyboard, you can force the next screen by pressing and holding n or space for some seconds in case multiple screens were defined (this takes longer depending on amount of unconnectable streams and they thus need to wait for timeout, keep holding until screen changes. Note, you can change probe_timeout per camera stream if needed).
 
 Keys F1 to F12, will force the equal numbered screen to be shown onscreen (this takes longer depending on amount of unconnectable streams and they thus need to wait for timeout, keep holding until screen changes. Note, you can change probe_timeout per camera stream if needed).
 

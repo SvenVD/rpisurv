@@ -27,7 +27,7 @@ get_init_sys
 BASEPATH="$(cd $(dirname "${BASH_SOURCE[0]}");pwd)"
 
 #Install needed packages
-sudo apt-get install coreutils python-pygame python-yaml python-dbus python libraspberrypi-bin -y
+sudo apt-get install coreutils procps python-pygame python-yaml python-dbus python libraspberrypi-bin -y
 
 #Only install omxplayer if it isn't already installed (from source or package)
 if [ ! -e /usr/bin/omxplayer ];then
