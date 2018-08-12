@@ -53,7 +53,7 @@ After installation you may change the placeholder images to something you like.
 
 If you used the install.sh script, you can configure your streams in /etc/rpisurv. Do not forget to reboot afterwards.
 
-If you are connected via keyboard, you can force the next screen rpisurv by pressing and holding n or space for some seconds in case multiple screens were defined (this takes longer depending on amount of unconnectable streams and they thus need to wait for timeout, keep holding until screen changes. Note, you can change probe_timeout per camera stream if needed).
+If you are connected via keyboard, you can force the next screen by pressing and holding n or space for some seconds in case multiple screens were defined (this takes longer depending on amount of unconnectable streams and they thus need to wait for timeout, keep holding until screen changes. Note, you can change probe_timeout per camera stream if needed).
 
 Keys F1 to F12, will force the equal numbered screen to be shown onscreen (this takes longer depending on amount of unconnectable streams and they thus need to wait for timeout, keep holding until screen changes. Note, you can change probe_timeout per camera stream if needed).
 
