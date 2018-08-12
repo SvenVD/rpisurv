@@ -29,6 +29,7 @@ In short: The idea is to connect your raspberry pi to a monitor and tell rpisurv
 - If you are going to have multiple streams, add gpu_mem=512 to your /boot/config.txt
 - git clone this repository: `git clone https://github.com/SvenVD/rpisurv`
 - move into folder `cd rpisurv`
+- OPTIONAL: checkout a specific branch, for example `cd rpisurv; git checkout v2.0_branch`, if you want to override the default version on master
 - run `sudo ./install.sh`
 - Get the correct stream url for your ip camera(s), there are some examples in /etc/rpisurv
 - configure your screen(s) and stream(s) in /etc/rpisurv.
@@ -37,6 +38,7 @@ In short: The idea is to connect your raspberry pi to a monitor and tell rpisurv
 
 ## How to update <a name="how-to-update"></a>
 - `cd rpisurv; git pull`
+- OPTIONAL: checkout a specific branch, for example `cd rpisurv; git checkout v2.0_branch`, if you want to override the default version on master
 - run `sudo ./install.sh` (The installer will ask if you want to preserve your current config file)
 - `systemctl restart rpisurv`
 
