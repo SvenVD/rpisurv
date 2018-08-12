@@ -20,7 +20,7 @@ You can think of rpisurv as a wrapper for omxplayer with following features (Rpi
 - Rpisurv implements a watchdog for every stream displayed, if the process gets killed somehow. It will try to restart the stream/process. This gives you a very robust surveillance screen.
 - Autocalculcate coordinates for every stream displayed. The last stream defined will be stretched to make use of the complete screen but only if some pixels are unused (if autostretch option is True).
 - Stream up/down detection and autorearrange of the screen layout (if disable_probing_for_all_streams is False). So for example if you stop a camera (or just stop the server on the camera), rpisurv will detects this and will recalculate/redraw the screen with the still available cameras. The same is true if a previous unconnectable rtsp stream becomes connectable. All without any user interaction.
-- All this behaviour is available per screen, but as of 2.0 you can configure multiple screens and cycle between them in an automated way.
+- All this behaviour is available per screen, but as of 2.0 you can configure multiple screens and cycle between them in an automated way or via the keyboard.
 
 ## How to get started
 In short: The idea is to connect your raspberry pi to a monitor and tell rpisurv which stream(s) and screen(s) it should display or cycle between. Rpisurv will autocalculate all the rest.
