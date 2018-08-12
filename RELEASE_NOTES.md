@@ -11,12 +11,12 @@ The normal update [procedure](https://github.com/SvenVD/rpisurv/blob/v2.0_branch
 - There is virtually no limit(hardware or software) for the amount of screens that can be defined.
 - Implemented "Add mjpeg camera support" [link](https://feathub.com/SvenVD/rpisurv/+5) but not limited to mjpeg support, all omxplayer supported http/https streams can be configured.
 - Possibility to force next screen in a carousel/slideshow by pressing "n" or "space" on an attached keyboard.
-- Enabling the user to configure the duration of each screen in the carousel/slideshow by overriding the default with the option duration, see [example config file](https://github.com/SvenVD/rpisurv/blob/v2.0_branch/surveillance/conf/surveillance.yml).
-- Enabling the user to specify a probe_timeout per camera stream. This for slow connecting streams to not be regarded as unconnectable by rpisurv, see [example config file](https://github.com/SvenVD/rpisurv/blob/v2.0_branch/surveillance/conf/surveillance.yml).
-- keep_first_screen_layout option in v1.0 has been replaced by disable_probing_for_all_streams in v2.0 and has become a per screen configuration, which effect is roughly the same. (Not recommended to enable this though).
+- Enabling the user to configure the duration of each screen in the carousel/slideshow by overriding the default with the "duration" option, see [example config file](https://github.com/SvenVD/rpisurv/blob/v2.0_branch/surveillance/conf/surveillance.yml).
+- Enabling the user to specify a "probe_timeout" per camera stream. This for slow connecting streams to not be regarded as unconnectable by rpisurv, see [example config file](https://github.com/SvenVD/rpisurv/blob/v2.0_branch/surveillance/conf/surveillance.yml).
+- "keep_first_screen_layout" option in v1.0 has been replaced by "disable_probing_for_all_streams" option in v2.0 and has become a per screen configuration, which effect is roughly the same. (Not recommended to enable this though).
 - All existing functionality from v1.0 is still available. If you only define one screen you essentially get the rpisurv v1.0 behaviour.
 - rtps_urls config option which was already deprecated in v1.0 is now completely removed.
-- autostretch and nr_of_columns options are now per-screen configuration options.
+- "autostretch" and "nr_of_columns" options are now per-screen configuration options.
 - Installer has been updated to request the user to preserve his current configuration file.
 
 
