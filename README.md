@@ -1,4 +1,11 @@
-# rpisurv - Raspberry pi surveillance an RPI IP Camera Monitor
+### Newsflash
+
+#### Version v2.0 has been released in beta! Checkout [v2.0.beta](https://github.com/SvenVD/rpisurv/tree/v2.0_branch) and
+see [ v2.0.beta RELEASE_NOTES ](https://github.com/SvenVD/rpisurv/blob/v2.0_branch/RELEASE_NOTES.md)
+
+
+
+# rpisurv 1.0 - Raspberry pi surveillance an RPI IP Camera Monitor
 Follow us on facebook https://www.facebook.com/rpisurv
 
 If you like this software please consider donating:
