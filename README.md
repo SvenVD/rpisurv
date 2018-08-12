@@ -6,7 +6,7 @@ If you like this software please consider donating:
 
 ## Release notes
 
-See [RELEASE_NOTES](https://github.com/SvenVD/rpisurv/blob/master/RELEASE_NOTES.md)
+See [RELEASE_NOTES](https://github.com/SvenVD/rpisurv/blob/v2.0_branch/RELEASE_NOTES.md)
 
 Note: Debug logging will be enabled by default during beta phase.
 
@@ -32,7 +32,7 @@ In short: The idea is to connect your raspberry pi to a monitor and tell rpisurv
 - run `sudo ./install.sh`
 - Get the correct stream url for your ip camera(s), there are some examples in /etc/rpisurv
 - configure your screen(s) and stream(s) in /etc/rpisurv.
-- OPTIONAL: configure optional options per screen or per camera stream in /etc/rpisurv, the [example config file](https://github.com/SvenVD/rpisurv/blob/master/surveillance/conf/surveillance.yml) file explains them all
+- OPTIONAL: configure optional options per screen or per camera stream in /etc/rpisurv, the [example config file](https://github.com/SvenVD/rpisurv/blob/v2.0_branch/surveillance/conf/surveillance.yml) file explains them all
 - reboot
 
 ## How to update <a name="how-to-update"></a>
@@ -62,7 +62,7 @@ Disable rotation (as in pause rotation, as in fix the current displayed screen) 
 
 - I advise you to test your urls in vlc or omxplayer (command line) first. It should work in these applications before attempting to use them in rpisurv
 
-- If you used the install.sh script, logs are created at /usr/local/bin/rpisurv/logs/. You can use them for troubleshooting. Enable DEBUG logging for very detailed output of what is going on. see [logging_config](https://github.com/SvenVD/rpisurv/blob/master/surveillance/conf/logging.yml) 
+- If you used the install.sh script, logs are created at /usr/local/bin/rpisurv/logs/. You can use them for troubleshooting. Enable DEBUG logging for very detailed output of what is going on. see [logging_config](https://github.com/SvenVD/rpisurv/blob/v2.0_branch/surveillance/conf/logging.yml)
 
 - If you are connected via keyboard, you can stop rpisurv by pressing and holding q (this can take some seconds) .
 
@@ -72,7 +72,7 @@ Disable rotation (as in pause rotation, as in fix the current displayed screen) 
   - `sudo systemctl status rpisurv` to see last log and status of service
 
 - If you want to stream rtsp over tcp please add `rtsp_over_tcp: true` to the stream in /etc/rpisurv.
-  See [example config file](https://github.com/SvenVD/rpisurv/blob/master/surveillance/conf/surveillance.yml) for an example.
+  See [example config file](https://github.com/SvenVD/rpisurv/blob/v2.0_branch/surveillance/conf/surveillance.yml) for an example.
   If you have a "smearing" effect this option may resolve it.
   Note that you need a version of omxplayer older then 14 March 2016 (https://github.com/popcornmix/omxplayer/pull/433) to do this.
 
