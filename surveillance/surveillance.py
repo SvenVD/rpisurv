@@ -112,7 +112,7 @@ if __name__ == '__main__':
     #Setup logger
     logger = setup_logging()
 
-    version="2.0.beta1"
+    version="2.0.beta2"
     logger.info("Starting rpisurv " + version)
 
     #Read in config

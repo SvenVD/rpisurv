@@ -1,4 +1,4 @@
-# rpisurv 2.0.beta1 release notes
+# rpisurv 2.0.beta release notes
 ## Upgrade notes from 1.0
 The config file is still a yaml file but the keys have been changed to support the configuration of multiple screen in a rotation
 You must manually convert your 1.0 config file to the new 2.0 config file format. However the format is still as clear to use, but it is still a yaml file. So as always watch the indentations and do not use tabs, see [example config file](https://github.com/SvenVD/rpisurv/blob/v2.0_branch/surveillance/conf/surveillance.yml)
