@@ -79,7 +79,7 @@ class ScreenManager:
 
             #Destroy current active and cached screens
             self.all_screens[self.activeindex].destroy()
-            self.all_screens[self.futurecacheindex].destroy()
+            self.all_screens[self.currentcacheindex].destroy()
 
             #Show new requested screen
             self.activeindex = requested_index
