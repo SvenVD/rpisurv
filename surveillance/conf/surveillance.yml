@@ -2,123 +2,122 @@
 #THE FOLLOWING ARE EXAMPLES WITH ALL OPTIONS EXPLAINED, REMOVE OR ADAPT THEM WITH YOUR REAL CONFIG
 
 essentials:
-    #rpisurv will rotate over the following screens in the order they are configured here, if you only define one screen no rotation will happen
+  #rpisurv will rotate over the following screens in the order they are configured here, if you only define one screen no rotation will happen
 
-    #If you enable this option no auto rotation will happen, but you will still be able to select a screen by pressing and holding a Function Key (F1-F12)
-    #Defaults to False
-    #disable_autorotation: False
+  #If you enable this option no auto rotation will happen, but you will still be able to select a screen by pressing and holding a Function Key (F1-F12)
+  #Defaults to False
+  #disable_autorotation: False
 
-    screens:
-        #Start config for example screen one, this is the minimal config. This will show a 4x4 if all streams are connectable,
-        #otherwise rpisurv, by default, rearranges the screen to only show the connectable streams. To disable the latter set disable_probing_for_all_streams=True
-        #Force this screen to be shown with pressing and holding F1
-      - camera_streams:
-          - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1"
-          - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
-            #You can also configure http or https streams like for mjpeg streams
-          - url: "http://<ip or dnsname>:<port>/suffix"
-          - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/play1.sdp"
+  screens:
+      #Start config for example screen one, this is the minimal config. This will show a 4x4 if all streams are connectable,
+      #otherwise rpisurv, by default, rearranges the screen to only show the connectable streams. To disable the latter set disable_probing_for_all_streams=True
+      #Force this screen to be shown by pressing and holding F1
+    - camera_streams:
+        - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1"
+        - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
+          #You can also configure http or https streams like for mjpeg streams
+        - url: "http://<ip or dnsname>:<port>/suffix"
+        - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/play1.sdp"
 
-        #Start of config for example screen two.
-        #Force this screen to be shown with pressing and holding F2
-      - camera_streams:
-            #Dlink dcs-5222l example
-          - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/play1.sdp"
-            #OPTIONAL AND ADVANCED PER CAMERASTREAM OPTIONS, IF NOT CONFIGURED A DEFAULT VALUE WILL BE USED
-            #Increase probe_timeout if you have streams that are slow to connect to. If they longer then probe_timeout seconds then rpisurv will consider them unconnectable
-            #Default to 4 seconds
-            probe_timeout: 10
-            #Enable this option if you want the rtsp stream to stream over tcp instead of udp, this may solve a "smearing" effect on some setups. Defaults to false
-            #Note that you need a version of omxplayer older then 14 March 2016 for this option to work
-            rtsp_over_tcp: true
-            #Foscam-fi9821w example
-          - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
-            #Dahua IPC-HDW4200S example or IPC-HDW4300S
-          - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1"
+      #Start of config for example screen two.
+      #Force this screen to be shown by pressing and holding F2
+    - camera_streams:
+          #Dlink dcs-5222l example
+        - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/play1.sdp"
+          #OPTIONAL AND ADVANCED PER CAMERASTREAM OPTIONS, IF NOT CONFIGURED A DEFAULT VALUE WILL BE USED
+          #Increase probe_timeout if you have streams that are slow to connect to. If they longer then probe_timeout seconds then rpisurv will consider them unconnectable
+          #Default to 4 seconds
+          probe_timeout: 10
+          #Enable this option if you want the rtsp stream to stream over tcp instead of udp, this may solve a "smearing" effect on some setups. Defaults to false
+          #Note that you need a version of omxplayer older then 14 March 2016 for this option to work
+          rtsp_over_tcp: true
+          #Foscam-fi9821w example
+        - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
+          #Dahua IPC-HDW4200S example or IPC-HDW4300S
+        - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1"
 
-        #OPTIONAL AND ADVANCED PER SCREEN OPTIONS, YOU CAN CONFIGURE THIS PER SCREEN, IF NOT CONFIGURED A DEFAULT VALUE WILL BE USED
-        #NOT recommendeded to enable disable_probing_for_all_streams, it disables some autohealing functions of rpisurv
-        #Also if using multiple screens, enabling this will slow down rotation of one screen to the next if there are unconnectable screens
-        #This also disabled rpisurv only drawing the connectable screens using up all pixels. In other words, you will get a placeholder for an unconnectable stream instead of not showing at all
-        #Roughly the same as the obsoleted keep_first_screen_layout in rpisurv v1.0
-        #Defaults to False
-        disable_probing_for_all_streams: False
+      #OPTIONAL AND ADVANCED PER SCREEN OPTIONS, YOU CAN CONFIGURE THIS PER SCREEN, IF NOT CONFIGURED A DEFAULT VALUE WILL BE USED
+      #NOT recommendeded to enable disable_probing_for_all_streams, it disables some autohealing functions of rpisurv
+      #Also if using multiple screens, enabling this will slow down rotation of one screen to the next if there are unconnectable screens
+      #This also disabled rpisurv only drawing the connectable screens using up all pixels. In other words, you will get a placeholder for an unconnectable stream instead of not showing at all
+      #Roughly the same as the obsoleted keep_first_screen_layout in rpisurv v1.0
+      #Defaults to False
+      disable_probing_for_all_streams: False
 
-        #How many columns you want the program to use, it will autocalculate the amount of row needed based on the resolution of your screen
-        #Default = 2
-        nr_of_columns: "2"
+      #How many columns you want the program to use, it will autocalculate the amount of row needed based on the resolution of your screen
+      #Default = 2
+      nr_of_columns: "2"
 
-        #Autostretching makes sures all of your pixels will be uses to display streams, so you have a maximum surveillance area.
-        #But this will probably destroy the aspect ratio of your last stream.
-        #Defaults to False
-        autostretch: False
+      #Autostretching makes sures all of your pixels will be uses to display streams, so you have a maximum surveillance area.
+      #But this will probably destroy the aspect ratio of your last stream.
+      #Defaults to False
+      autostretch: False
 
-        #This is how long this screen will be shown each rotation. This value is in seconds and is approximate (since reconnecting screens during a screen show etc are not taken into account)
-        #Defaults to 20
-        duration: 60
+      #This is how long this screen will be shown each rotation. This value is in seconds and is approximate (since reconnecting screens during a screen show etc are not taken into account)
+      #Defaults to 20
+      duration: 60
 
 
+      #Start config for example screen three, this is the minimal config. This will show a 4x4
+      #Force this screen to be shown by pressing and holding F3
+    - camera_streams:
+        - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1"
+        - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
+        - url: "http://<ip or dnsname>:<port>/suffix"
+        - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/play1.sdp"
 
-        #Start config for example screen three, this is the minimal config. This will show a 4x4
-        #Force this screen to be shown with pressing and holding F3
-      - camera_streams:
-          - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1"
-          - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
-          - url: "http://<ip or dnsname>:<port>/suffix"
-          - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/play1.sdp"
+      #Start config for example screen four. This will show a 3x1 on first row + 1 stretched screen on second row if all streams are connectable
+      #otherwise rpisurv, by default, rearranges the screen to only show the connectable streams. To disable the latter set disable_probing_for_all_streams=True
+      #Force this screen to be shown by pressing and holding F4
+    - camera_streams:
+        - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1"
+        - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
+        - url: "http://<ip or dnsname>:<port>/suffix"
+        - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/play1.sdp"
+      nr_of_columns: "3"
+      autostretch: True
 
-        #Start config for example screen four. This will show a 3x1 on first row + 1 stretched screen on second row if all streams are connectable
-        #otherwise rpisurv, by default, rearranges the screen to only show the connectable streams. To disable the latter set disable_probing_for_all_streams=True
-        #Force this screen to be shown with pressing and holding F4
-      - camera_streams:
-          - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1"
-          - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
-          - url: "http://<ip or dnsname>:<port>/suffix"
-          - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/play1.sdp"
-          nr_of_columns: "3"
-          autostretch: True
+      #Start config for example screen five. This will show a 4x4 with one placeholder if all streams are connectable
+      #otherwise rpisurv, by default, rearranges the screen to only show the connectable streams. To disable the latter set disable_probing_for_all_streams=True
+      #Force this screen to be shown by pressing and holding F5
+    - camera_streams:
+        - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1"
+        - url: "http://<ip or dnsname>:<port>/suffix"
+        - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
+      nr_of_columns: "2"
+      autostretch: False
 
-        #Start config for example screen five. This will show a 4x4 with one placeholder if all streams are connectable
-        #otherwise rpisurv, by default, rearranges the screen to only show the connectable streams. To disable the latter set disable_probing_for_all_streams=True
-        #Force this screen to be shown with pressing and holding F5
-      - camera_streams:
-          - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1"
-          - url: "http://<ip or dnsname>:<port>/suffix"
-          - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
-          nr_of_columns: "2"
-          autostretch: False
-
-        #DEFINE AS MANY SCREENS AS YOU WANT
-        #When reaching last defined screen, rotate will start at the beginning again
-        #You can have as many screens as you want, they are dynamically loaded offscreen and only the next one is loaded, so this is not limited on hardware
+      #DEFINE AS MANY SCREENS AS YOU WANT
+      #When reaching last defined screen, rotate will start at the beginning again
+      #You can have as many screens as you want, they are dynamically loaded offscreen and only the next one is loaded, so this is not limited on hardware
 
 
 #!!!Normal users do not need to edit this section!!!
 advanced:
-    ##Enable this option if you want to have a fixed width of all your camera streams,
-    ##By default rpisurv autocalculates this value, this can cause streams to get "stretched",
-    ##if this value exceeds the available width, rpisurv will fallback to autocalculation
-    #fixed_width: 500
+  ##Enable this option if you want to have a fixed width of all your camera streams,
+  ##By default rpisurv autocalculates this value, this can cause streams to get "stretched",
+  ##if this value exceeds the available width, rpisurv will fallback to autocalculation
+  #fixed_width: 500
 
-    ##Enable this option if you want to have a fixed height for all your camera streams,
-    ##By default rpisurv autocalculates this value, this can cause streams to get "stretched",
-    ##if this value exceeds the available height, rpisurv will fallback to autocalculation
-    #fixed_height: 500
+  ##Enable this option if you want to have a fixed height for all your camera streams,
+  ##By default rpisurv autocalculates this value, this can cause streams to get "stretched",
+  ##if this value exceeds the available height, rpisurv will fallback to autocalculation
+  #fixed_height: 500
 
-    #Rpisurv sends usage stats to it's statistics server to give the rpisurv community an idea how widespread this software is being used
-    #No performance impact is measured when using this option, no sensitive data is being sent. All data is anonymised.
-    #By default this is false
-    #update_stats: False
+  #Rpisurv sends usage stats to it's statistics server to give the rpisurv community an idea how widespread this software is being used
+  #No performance impact is measured when using this option, no sensitive data is being sent. All data is anonymised.
+  #By default this is false
+  #update_stats: False
 
-    #By default rpisurv checks every 19 seconds since start of rpisurv if it needs to redraw the current running screen
-    #interval_check_status: 19
+  #By default rpisurv checks every 19 seconds since start of rpisurv if it needs to redraw the current running screen
+  #interval_check_status: 19
 
-    #By default rpisurv will check memory usage, set to False to skip memory usage check
-    #memory_usage_check: True
+  #By default rpisurv will check memory usage, set to False to skip memory usage check
+  #memory_usage_check: True
 
 #These are fallbacks if autodetection fails;
 #Normally you do not need to configure these
 fallbacks:
-    resolution:
-        width: "1920"
-        height: "1080"
+  resolution:
+    width: "1920"
+    height: "1080"
