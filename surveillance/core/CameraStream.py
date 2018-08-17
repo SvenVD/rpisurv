@@ -59,22 +59,32 @@ class CameraStream:
             tries += 1
             if tries == triesthreshold:
               logger.error('CameraStream: ' + self.name + ' CRITICAL Failed to connect to omxplayer at dbus address:' + busfinder.get_address() + ' with dbus name: ' + _dbus_name)
+              self.dbusconnection = None
             time.sleep(0.5)
 
     def set_videopos(self,new_coordinates):
         logger.debug('CameraStream: ' + self.name + ' Set new position for ' + self.name + ' with new coordinates: + ' + str(new_coordinates) + ' on dbus interface')
         if platform.system() == "Linux":
-            self.dbusconnection.VideoPosWrapper((ObjectPath('/not/used'), String(" ".join(map(str,new_coordinates)))))
+            if self.dbusconnection is not None:
+                self.dbusconnection.VideoPosWrapper((ObjectPath('/not/used'), String(" ".join(map(str,new_coordinates)))))
+            else:
+                logger.error('CameraStream: ' + self.name + ' has no dbus connection, probably because omxplayer crashed because it can not connect to this stream. As a result we could not change its videopos dynamically for this stream at this time.')
 
     def hide_stream(self):
         logger.debug('CameraStream: Hide stream instruction ' + self.name + ' received from dbus interface')
         if platform.system() == "Linux":
-            self.dbusconnection.player_interface.SetAlpha(ObjectPath('/not/used'), Int64(0))
+            if self.dbusconnection is not None:
+                self.dbusconnection.player_interface.SetAlpha(ObjectPath('/not/used'), Int64(0))
+            else:
+                logger.error('CameraStream: ' + self.name + ' has no dbus connection, probably because omxplayer crashed because it can not connect to this stream. As a result we could not hide this stream at this time.')
 
     def unhide_stream(self):
         logger.debug('CameraStream: Unhide stream instruction ' + self.name + ' received from dbus interface')
         if platform.system() == "Linux":
-            self.dbusconnection.player_interface.SetAlpha(ObjectPath('/not/used'), Int64(255))
+            if self.dbusconnection is not None:
+                self.dbusconnection.player_interface.SetAlpha(ObjectPath('/not/used'), Int64(255))
+            else:
+                logger.error('CameraStream: ' + self.name + ' has no dbus connection, probably because omxplayer crashed because it can not connect to this stream. As a result we could not unhide this stream at this time.')
 
     def is_connectable(self):
         if self.scheme == "rtsp":

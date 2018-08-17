@@ -62,6 +62,7 @@ class ScreenManager:
         return self.all_screens[self.futurecacheindex].disable_probing_for_all_streams
 
     def force_show_screen(self, requested_index):
+        '''this method force a particular screen to be shown on-screen'''
         logger.debug("ScreenManager:  activeindex = " + str(self.activeindex) + ", futurecacheindex = " + str(self.futurecacheindex))
         if requested_index > self.max_index:
             #Note name of screens start with 1 but list of screens index start at 0
@@ -135,7 +136,7 @@ class ScreenManager:
 
 
     def _init_screens(self):
-        '''This method initiates the first active and first cache screen at start'''
+        '''This method initiates all screen instances'''
         counter = 1
         self.all_screens=[]
         # -1 because list start at zero
