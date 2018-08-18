@@ -107,7 +107,7 @@ advanced:
   #Rpisurv sends usage stats to it's statistics server to give the rpisurv community an idea how widespread this software is being used
   #No performance impact is measured when using this option, no sensitive data is being sent. All data is anonymised.
   #By default this is false
-  #update_stats: False
+  update_stats: True
 
   #By default rpisurv checks every 19 seconds since start of rpisurv if it needs to redraw the current running screen
   #interval_check_status: 19

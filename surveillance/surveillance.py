@@ -52,7 +52,7 @@ def check_free_gpumem():
 
 
 def handle_stats( stats_counter ):
-    stats_counter_thresh=1800
+    stats_counter_thresh=3600
     # Updating stats for rpisurv community every 1800 loops
     if stats_counter % stats_counter_thresh == 0:
         stats.update_stats(version, uniqid, str(stats.get_runtime(start_time)), update_stats_enabled)
@@ -112,7 +112,9 @@ if __name__ == '__main__':
     #Setup logger
     logger = setup_logging()
 
-    version="2.0.beta3"
+    fullversion_for_installer = "2.0.beta4"
+
+    version = fullversion_for_installer
     logger.info("Starting rpisurv " + version)
 
     #Read in config

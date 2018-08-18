@@ -5,7 +5,9 @@ if [ ! "$BASH_VERSION" ] ; then
     exit 1
 fi
 
-
+show_version() {
+    grep fullversion_for_installer "$BASEPATH/surveillance/surveillance.py" | head -n 1 | cut -d"=" -f2
+}
 get_init_sys() {
   if command -v systemctl > /dev/null && systemctl | grep -q '\-\.mount'; then
     SYSTEMD=1
@@ -17,17 +19,28 @@ get_init_sys() {
   fi
 }
 
-echo "Use this installer on your own risk. Make sure this host does not contain important data and is replacable"
-echo "This installer will disable graphical login on your pi, please revert with the raspi-config command if needed"
-echo
-echo "Do you want to continue press <Enter>, Ctrl-C to cancel"
-read
-
 get_init_sys
 BASEPATH="$(cd $(dirname "${BASH_SOURCE[0]}");pwd)"
 
+echo "Use this installer on your own risk. Make sure this host does not contain important data and is replacable"
+echo "This installer will disable graphical login on your pi, please revert with the raspi-config command if needed."
+echo
+echo -n "The following version will be installed:"
+show_version
+echo
+echo "By using this software, you agree that by default limited and non-sensitive (runtime, unique id and version) stats"
+echo "will be sent on a regular interval to a collector server over an encrypted connection."
+echo "You can disable this anytime by changing the update_stats: config option to False."
+echo "This has been introduced to get an idea of how much users are testing a beta version of the software."
+echo "Once the software comes out of beta, stats sending will be disabled by default."
+echo
+echo "Do you want to continue press <Enter>, <Ctrl-C> to cancel"
+read
+
+
+
 #Install needed packages
-sudo apt-get install coreutils procps python-pygame python-yaml python-dbus python libraspberrypi-bin -y
+sudo apt-get install coreutils openssl procps python-pygame python-yaml python-dbus python-openssl python libraspberrypi-bin -y
 
 #Only install omxplayer if it isn't already installed (from source or package)
 if [ ! -e /usr/bin/omxplayer ];then
