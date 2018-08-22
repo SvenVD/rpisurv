@@ -40,6 +40,7 @@ read
 
 
 #Install needed packages
+sudo apt-get update
 sudo apt-get install coreutils openssl procps python-pygame python-yaml python-dbus python-openssl python libraspberrypi-bin -y
 
 #Only install omxplayer if it isn't already installed (from source or package)
