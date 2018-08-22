@@ -116,3 +116,4 @@ else
 fi
 #Link config file into /etc as convenient way to edit
 sudo ln -fs $DESTPATH/"$CONFFILE" /etc/rpisurv
+sudo ln -fs $DESTPATH/"$CONFFILE" /etc/rpisurv.conf

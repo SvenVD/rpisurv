@@ -31,9 +31,9 @@ In short: The idea is to connect your raspberry pi to a monitor and tell rpisurv
 - move into folder `cd rpisurv`
 - OPTIONAL: checkout a specific branch, for example `git checkout v2.0_branch`, if you want to override the default version on master
 - run `sudo ./install.sh`
-- Get the correct stream url for your ip camera(s), there are some examples in /etc/rpisurv
-- configure your screen(s) and stream(s) in /etc/rpisurv.
-- OPTIONAL: configure optional options per screen or per camera stream in /etc/rpisurv, the [example config file](https://github.com/SvenVD/rpisurv/blob/v2.0_branch/surveillance/conf/surveillance.yml) file explains them all
+- Get the correct stream url for your ip camera(s), there are some examples in /etc/rpisurv.conf
+- configure your screen(s) and stream(s) in /etc/rpisurv.conf.
+- OPTIONAL: configure optional options per screen or per camera stream in /etc/rpisurv.conf, the [example config file](https://github.com/SvenVD/rpisurv/blob/v2.0_branch/surveillance/conf/surveillance.yml) file explains them all
 - reboot
 
 ## How to update <a name="how-to-update"></a>
@@ -51,7 +51,7 @@ After installation you may change the placeholder images to something you like.
 
 ## Rpisurv in operation
 
-If you used the install.sh script, you can configure your streams in /etc/rpisurv. Do not forget to reboot afterwards.
+If you used the install.sh script, you can configure your streams in /etc/rpisurv.conf. Do not forget to reboot afterwards.
 
 If you are connected via keyboard, you can force the next screen by pressing and holding n or space for some seconds in case multiple screens were defined (this takes longer depending on amount of unconnectable streams and they thus need to wait for timeout, keep holding until screen changes. Note, you can change probe_timeout per camera stream if needed).
 
@@ -73,7 +73,7 @@ Disable rotation (as in pause rotation, as in fix the current displayed screen) 
   - `sudo systemctl start rpisurv` to start the screen
   - `sudo systemctl status rpisurv` to see last log and status of service
 
-- If you want to stream rtsp over tcp please add `rtsp_over_tcp: true` to the stream in /etc/rpisurv.
+- If you want to stream rtsp over tcp please add `rtsp_over_tcp: true` to the stream in /etc/rpisurv.conf.
   See [example config file](https://github.com/SvenVD/rpisurv/blob/v2.0_branch/surveillance/conf/surveillance.yml) for an example.
   If you have a "smearing" effect this option may resolve it.
   Note that you need a version of omxplayer older then 14 March 2016 (https://github.com/popcornmix/omxplayer/pull/433) to do this.
