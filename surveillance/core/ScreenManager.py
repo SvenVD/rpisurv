@@ -7,7 +7,7 @@ logger = logging.getLogger('l_default')
 
 class ScreenManager:
     """This class creates and handles screens objects  and rotation"""
-    def __init__(self,screen_manager_name,resolution,screens_cfg,fixed_width_per_screen, fixed_height_per_screen):
+    def __init__(self,screen_manager_name,resolution,screens_cfg,fixed_width_per_screen, fixed_height_per_screen, cache_next_screen):
         self.name = screen_manager_name
         self.resolution = resolution
         self.screens_cfg=screens_cfg
@@ -15,6 +15,7 @@ class ScreenManager:
         self.fixed_height_per_screen=fixed_height_per_screen
         self.firstrun = True
         self.activeindex = 0
+        self.cache_next_screen = cache_next_screen
         self.futurecacheindex = 1
         self.currentcacheindex = -1
 
@@ -31,8 +32,14 @@ class ScreenManager:
             self.all_screens[self.futurecacheindex].update_connectable_camera_streams(skip=True)
         else:
             self.all_screens[self.futurecacheindex].update_connectable_camera_streams(skip=False)
-        #Update the screen in this case means start all omxplayer instances for this screen in cache
-        self.all_screens[self.futurecacheindex].update_screen()
+
+
+        if self.cache_next_screen:
+            #Update the screen for a cached screen means: start all omxplayer instances for this screen in offscreen
+            #If self.cache_next_screen is False then the _create_cached_screen does not really create a cached screen, it only updates internal counters
+            self.all_screens[self.futurecacheindex].update_screen()
+        else:
+            logger.debug("ScreenManager: not starting omxplayer instances offscreen for screen " + self.all_screens[self.futurecacheindex].name + " since cache_next_screen option was set to False")
 
         self.currentcacheindex = self.futurecacheindex
         self.futurecacheindex = self.futurecacheindex + 1

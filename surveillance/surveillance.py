@@ -112,7 +112,7 @@ if __name__ == '__main__':
     #Setup logger
     logger = setup_logging()
 
-    fullversion_for_installer = "2.0.beta4"
+    fullversion_for_installer = "2.0.beta5"
 
     version = fullversion_for_installer
     logger.info("Starting rpisurv " + version)
@@ -127,12 +127,14 @@ if __name__ == '__main__':
         update_stats_enabled=cfg['advanced']['update_stats'] if 'update_stats' in cfg["advanced"] else False #Override of update_stats if set
         interval_check_status=cfg['advanced']['interval_check_status'] if 'interval_check_status' in cfg["advanced"] else 19 #Override of interval_check_status if set
         memory_usage_check=cfg['advanced']['memory_usage_check'] if 'memory_usage_check' in cfg["advanced"] else True #Override of memory_usage_check if set
+        cache_next_screen=cfg['advanced']['cache_next_screen'] if 'cache_next_screen' in cfg["advanced"] else True #Override of cache_next_screen if set
     else:
         fixed_width=None
         fixed_height=None
         update_stats_enabled=False
         interval_check_status=19
         memory_usage_check=True
+        cache_next_screen=True
 
     #Detect resolution
     resolution=get_resolution()
@@ -145,7 +147,7 @@ if __name__ == '__main__':
     loop_counter=0
 
 
-    screen_manager_main=ScreenManager('screen_manager_main', resolution,screens_cfg,fixed_width, fixed_height)
+    screen_manager_main=ScreenManager('screen_manager_main', resolution, screens_cfg, fixed_width, fixed_height, cache_next_screen)
     #First rotate to init first run
     screen_manager_main.rotate_next()
     logger.debug("MAIN: bootstrap update_active_screen")

@@ -109,6 +109,12 @@ advanced:
   #By default this is false
   update_stats: True
 
+  #By default rpisurv will cache the next screen in the rotation (if more than one screen is configured), to speed up rotation events.
+  #However, this action takes up some resources of the raspberry pi.
+  #If you do not mind a slower rotate event (slower building up of the screen during a rotate event) and you want to free up some resources, then set this to False
+  #This will also speed up first start since no cached screen needs to be started at boot time.
+  #cache_next_screen: True
+
   #By default rpisurv checks every 19 seconds since start of rpisurv if it needs to redraw the current running screen
   #interval_check_status: 19
 
