@@ -112,7 +112,7 @@ if __name__ == '__main__':
     #Setup logger
     logger = setup_logging()
 
-    fullversion_for_installer = "2.0.beta5"
+    fullversion_for_installer = "2.0.beta6"
 
     version = fullversion_for_installer
     logger.info("Starting rpisurv " + version)
@@ -167,13 +167,12 @@ if __name__ == '__main__':
 
         #Check if we need to rotate:
         if not disable_autorotation:
-            if screen_manager_main.get_active_screen_actual_duration() >= screen_manager_main.get_active_screen_duration():
+            if screen_manager_main.get_active_screen_run_time() >= screen_manager_main.get_active_screen_duration():
                 screen_manager_main.rotate_next()
-                #In case the screen in cache had disconncected or reconnectable streams, check and update it once it becomes active
+                #In case the screen in cache had disconnected or reconnectable streams, check and update it once it becomes active
                 logger.debug("MAIN: after rotate_next start update_active_screen")
                 screen_manager_main.update_active_screen()
 
-            screen_manager_main.increment_active_screen_actual_duration()
         else:
             logger.debug("MAIN: disable_autorotation is True, use keyboard only to rotate between screens")
 

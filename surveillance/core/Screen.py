@@ -1,5 +1,6 @@
 import logging
 import math
+import time
 
 from CameraStream import CameraStream
 import util.draw as draw
@@ -20,14 +21,14 @@ class Screen:
         self.name = screenname
         self.screen_cfg = screen_cfg
         self.camera_streams_cfg = screen_cfg["camera_streams"]
-        self.actual_duration = 0
-        self.duration = self.screen_cfg.setdefault('duration', 20)
+        self.duration = self.screen_cfg.setdefault('duration', 30)
         logger.debug("Screen:" + self.name + "duration from config is: " + "self.duration")
         self.resolution = resolution
         self.pygamescreen = pygamescreen
         self.fixed_width = fixed_width
         self.fixed_height = fixed_height
         self.first_run = True
+        self.start_of_active_time = -1
         self.previous_connectable_camera_streams = []
         #Init these two the same otherwise, code will detect a cache event on first run of the screen
         self.previous_cached = True
@@ -90,7 +91,7 @@ class Screen:
         self.previous_cached = True
         self.cached = True
         self.first_run = True
-        self.actual_duration = 0
+        self.start_of_active_time = -1
 
     def destroy_all_placeholder(self):
         # TODO This can be done more elegant if we collect all placeholders when they are drawn to a list and then kill each of them individually here?
@@ -101,8 +102,19 @@ class Screen:
 
     def make_active(self):
         logger.debug("Screen: Make screen " + self.name + " active")
+        #Set start time
+        self.start_of_active_time = time.time()
+        logger.debug("Screen: " + self.name + " start_of_active_time: " + str(self.start_of_active_time))
         self.cached = False
-        # viceo pos move to onscreen
+
+    def get_active_run_time(self):
+        '''Returns -1 if cached and how long the screen is in active mode if not cached'''
+        if not self.cached:
+            active_run_time = long(round((time.time() - self.start_of_active_time)))
+        else:
+            active_run_time = -1
+        logger.debug("Screen: " + self.name + " active_run_time: " + str(active_run_time) + " / " + str(self.duration))
+        return active_run_time
 
     def update_screen(self):
 

@@ -53,7 +53,9 @@ essentials:
       #Defaults to False
       autostretch: False
 
-      #This is how long this screen will be shown each rotation. This value is in seconds and is approximate (since reconnecting screens during a screen show etc are not taken into account)
+      #This is how long this screen will be shown each rotation.
+      #If this is set to a very low value then it can happen that building up the active and/or the cached screen takes longer then this duration,
+      #in that case the building and caching needs to finish first before timer will be expired and next screen is shown
       #Defaults to 20
       duration: 60
 

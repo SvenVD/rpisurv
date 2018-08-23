@@ -48,16 +48,8 @@ class ScreenManager:
                 self.max_index) + "), resetting futurecacheindex ")
             self.futurecacheindex = 0
 
-    def increment_active_screen_actual_duration(self):
-        self.all_screens[self.activeindex].actual_duration = self.all_screens[self.activeindex].actual_duration + 1
-        if self.max_index != 0:
-            logger.debug("ScreenManager: " + self.name + " screen " +  self.all_screens[self.activeindex].name +
-                         " actual_duration is " + str(self.all_screens[self.activeindex].actual_duration) + " / max: "
-            + str(self.all_screens[self.activeindex].duration))
-        return self.all_screens[self.activeindex].actual_duration
-
-    def get_active_screen_actual_duration(self):
-        return self.all_screens[self.activeindex].actual_duration
+    def get_active_screen_run_time(self):
+        return self.all_screens[self.activeindex].get_active_run_time()
 
     def get_active_screen_duration(self):
         return self.all_screens[self.activeindex].duration
