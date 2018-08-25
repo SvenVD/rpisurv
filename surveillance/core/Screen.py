@@ -22,7 +22,7 @@ class Screen:
         self.screen_cfg = screen_cfg
         self.camera_streams_cfg = screen_cfg["camera_streams"]
         self.duration = self.screen_cfg.setdefault('duration', 30)
-        logger.debug("Screen:" + self.name + "duration from config is: " + "self.duration")
+        logger.debug("Screen: " + self.name + " duration from config is: " + str(self.duration))
         self.resolution = resolution
         self.pygamescreen = pygamescreen
         self.fixed_width = fixed_width
