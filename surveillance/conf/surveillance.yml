@@ -9,7 +9,7 @@ essentials:
   #disable_autorotation: False
 
   screens:
-      #Start config for example screen one, this is the minimal config. This will show a 4x4 if all streams are connectable,
+      #Start config for example screen one, this is the minimal config. This will show a 2x2 if all streams are connectable,
       #otherwise rpisurv, by default, rearranges the screen to only show the connectable streams. To disable the latter set disable_probing_for_all_streams=True
       #Force this screen to be shown by pressing and holding F1
     - camera_streams:
@@ -60,7 +60,7 @@ essentials:
       duration: 60
 
 
-      #Start config for example screen three, this is the minimal config. This will show a 4x4
+      #Start config for example screen three, this is the minimal config. This will show a 2x2
       #Force this screen to be shown by pressing and holding F3
     - camera_streams:
         - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1"
@@ -68,7 +68,7 @@ essentials:
         - url: "http://<ip or dnsname>:<port>/suffix"
         - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/play1.sdp"
 
-      #Start config for example screen four. This will show a 3x1 on first row + 1 stretched screen on second row if all streams are connectable
+      #Start config for example screen four. This will show a 1x3 on first row + 1 stretched screen on second row if all streams are connectable
       #otherwise rpisurv, by default, rearranges the screen to only show the connectable streams. To disable the latter set disable_probing_for_all_streams=True
       #Force this screen to be shown by pressing and holding F4
     - camera_streams:
@@ -79,7 +79,7 @@ essentials:
       nr_of_columns: "3"
       autostretch: True
 
-      #Start config for example screen five. This will show a 4x4 with one placeholder if all streams are connectable
+      #Start config for example screen five. This will show a 2x2 with one placeholder if all streams are connectable
       #otherwise rpisurv, by default, rearranges the screen to only show the connectable streams. To disable the latter set disable_probing_for_all_streams=True
       #Force this screen to be shown by pressing and holding F5
     - camera_streams:
