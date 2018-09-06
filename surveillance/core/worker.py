@@ -18,6 +18,7 @@ def worker(name,url,omxplayer_extra_options,coordinates,stopworker):
                      --timeout 60 \
                      --aidx -1 \
                      -o hdmi \
+                     --threshold 0 \
                      ' + ' ' + omxplayer_extra_options + ' ' + url + ' --win ' + '"' + " ".join(map(str,coordinates))  + '"' + ' --dbus_name org.mpris.MediaPlayer2.' + name
         command_line_shlex=shlex.split(command_line)
         logger.debug("Starting stream " + name + " with commandline " + str(command_line_shlex))
