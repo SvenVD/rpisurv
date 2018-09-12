@@ -53,11 +53,11 @@ After installation you may change the placeholder images to something you like.
 
 If you used the install.sh script, you can configure your streams in /etc/rpisurv.conf. Do not forget to reboot afterwards.
 
-If you are connected via keyboard, you can force the next screen by pressing and holding n or space for some seconds in case multiple screens were defined (this takes longer depending on amount of unconnectable streams and they thus need to wait for timeout, keep holding until screen changes. Note, you can change probe_timeout per camera stream if needed).
+If you are connected via keyboard/keypad, you can force the next screen by pressing and holding n or space (or keypad "+") for some seconds in case multiple screens were defined (this takes longer depending on amount of unconnectable streams and they thus need to wait for timeout, keep holding until screen changes. Note, you can change probe_timeout per camera stream if needed).
 
-Keys F1 to F12, will force the equal numbered screen to be shown onscreen (this takes longer depending on amount of unconnectable streams and they thus need to wait for timeout, keep holding until screen changes. Note, you can change probe_timeout per camera stream if needed).
+Keys F1 to F12 (or keypad 0 to 9), will force the equal numbered screen to be shown onscreen (this takes longer depending on amount of unconnectable streams and they thus need to wait for timeout, keep holding until screen changes. Note, you can change probe_timeout per camera stream if needed).
 
-Disable rotation (as in pause rotation, as in fix the current displayed screen) dynamically during runtime. By pressing "p" to pause or "r" to resume/rotate. This overrides the disable_autorotation option if this has been set in the config file.
+Disable rotation (as in pause rotation, as in fix the current displayed screen) dynamically during runtime. By pressing "p" (or keypad "*") to pause or "r" (or keypad ".")' to resume/rotate. This overrides the disable_autorotation option if this has been set in the config file.
 
 
 ## Troubleshooting
@@ -66,7 +66,7 @@ Disable rotation (as in pause rotation, as in fix the current displayed screen) 
 
 - If you used the install.sh script, logs are created at /usr/local/bin/rpisurv/logs/. You can use them for troubleshooting. Enable DEBUG logging for very detailed output of what is going on. see [logging_config](https://github.com/SvenVD/rpisurv/blob/v2.0_branch/surveillance/conf/logging.yml)
 
-- If you are connected via keyboard, you can stop rpisurv by pressing and holding q (this can take some seconds) .
+- If you are connected via keyboard/keypad, you can stop rpisurv by pressing and holding q (or keypad "/") (this can take some seconds) .
 
 - To manage the screen without rebooting use systemctl
   - `sudo systemctl stop rpisurv` to stop the screen

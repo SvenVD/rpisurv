@@ -11,7 +11,7 @@ essentials:
   screens:
       #Start config for example screen one, this is the minimal config. This will show a 2x2 if all streams are connectable,
       #otherwise rpisurv, by default, rearranges the screen to only show the connectable streams. To disable the latter set disable_probing_for_all_streams=True
-      #Force this screen to be shown by pressing and holding F1
+      #Force this screen to be shown by pressing and holding F1 or keypad 0
     - camera_streams:
         - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1"
         - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
@@ -20,7 +20,7 @@ essentials:
         - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/play1.sdp"
 
       #Start of config for example screen two.
-      #Force this screen to be shown by pressing and holding F2
+      #Force this screen to be shown by pressing and holding F2 or keypad 1
     - camera_streams:
           #Dlink dcs-5222l example
         - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/play1.sdp"
@@ -61,7 +61,7 @@ essentials:
 
 
       #Start config for example screen three, this is the minimal config. This will show a 2x2
-      #Force this screen to be shown by pressing and holding F3
+      #Force this screen to be shown by pressing and holding F3 or keypad 2
     - camera_streams:
         - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1"
         - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
@@ -70,7 +70,7 @@ essentials:
 
       #Start config for example screen four. This will show a 1x3 on first row + 1 stretched screen on second row if all streams are connectable
       #otherwise rpisurv, by default, rearranges the screen to only show the connectable streams. To disable the latter set disable_probing_for_all_streams=True
-      #Force this screen to be shown by pressing and holding F4
+      #Force this screen to be shown by pressing and holding F4 or keypad 3
     - camera_streams:
         - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1"
         - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
@@ -81,7 +81,7 @@ essentials:
 
       #Start config for example screen five. This will show a 2x2 with one placeholder if all streams are connectable
       #otherwise rpisurv, by default, rearranges the screen to only show the connectable streams. To disable the latter set disable_probing_for_all_streams=True
-      #Force this screen to be shown by pressing and holding F5
+      #Force this screen to be shown by pressing and holding F5 or keypad 4
     - camera_streams:
         - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1"
         - url: "http://<ip or dnsname>:<port>/suffix"
