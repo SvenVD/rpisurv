@@ -1,6 +1,7 @@
 [Unit]
 Description=Rpisurv Raspberry Pi Surveillance
 After=network-online.target
+Wants=network-online.target
 
 [Service]
 Type=simple
