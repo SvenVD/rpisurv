@@ -1,6 +1,7 @@
 import logging
 import multiprocessing
 import platform
+import base64
 import re
 import socket
 import time
@@ -105,6 +106,19 @@ class CameraStream:
             else:
                 logger.error('CameraStream: ' + self.name + ' has no dbus connection, probably because omxplayer crashed because it can not connect to this stream. As a result we could not unhide this stream at this time.')
 
+    def _urllib2open_wrapper(self):
+        '''Handles username and password inside URL like following example: "http://test:test@httpbin.org:80/basic-auth/test/test" '''
+        if self.parsed.password is not None and self.parsed.username is not None:
+            host_info = self.parsed.netloc.rpartition('@')[-1]
+            strippedcreds_url = self.parsed._replace(netloc=host_info)
+            print strippedcreds_url.geturl()
+            request = urllib2.Request(strippedcreds_url.geturl())
+            base64string = base64.encodestring('%s:%s' % (self.parsed.username, self.parsed.password)).replace('\n', '')
+            request.add_header("Authorization", "Basic %s" % base64string)
+            return urllib2.urlopen(request, timeout=self.probe_timeout)
+        else:
+            return urllib2.urlopen(self.url, timeout=self.probe_timeout)
+
     def is_connectable(self):
         if self.scheme == "rtsp":
             try:
@@ -132,7 +146,7 @@ class CameraStream:
                 return False
         elif self.scheme in ["http","https"]:
              try:
-                connection = urllib2.urlopen(self.url, timeout=self.probe_timeout)
+                connection = self._urllib2open_wrapper()
                 if connection.getcode() == 200:
                     logger.debug("CameraStream: " + self.name + " " + str(self.no_credentials_url) + " Connectable")
                     return True
