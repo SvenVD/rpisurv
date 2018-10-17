@@ -37,29 +37,40 @@ class CameraStream:
         self.port = self.parsed.port
         self.scheme = self.parsed.scheme
         self.hostname = self.parsed.hostname
-        self.no_credentials_url = '{}://{}'.format(self.scheme, self.hostname)
+        self.obfuscated_credentials_url = '{}://{}'.format(self.scheme, self.hostname)
         #Handle no port given
-        if self.port == None:
-            if self.scheme == "rtsp":
+        if self.scheme == "rtsp":
+            #handle if no port is given
+            if self.port == None:
                 # Default to default rtsp port, if no port is given in the url
                 self.port = 554
 
-        self._generate_no_credentials_url()
+            #Command used for rtsp probing
+            self.rtsp_options_cmd = "OPTIONS " + self._manipulate_credentials_in_url("remove")  + " RTSP/1.0\r\nCSeq: 1\r\nUser-Agent: rpisurv\r\nAccept: application/sdp\r\n\r\n"
+
+        self.obfuscated_credentials_url = self._manipulate_credentials_in_url("obfuscate")
 
         if self.scheme not in ["rtsp", "http", "https"]:
-            logger.error("CameraStream: " + self.name + " Scheme " + self.scheme + " in " + self.no_credentials_url + " is currently not supported, you can make a feature request on https://feathub.com/SvenVD/rpisurv")
+            logger.error("CameraStream: " + self.name + " Scheme " + self.scheme + " in " + self.obfuscated_credentials_url + " is currently not supported, you can make a feature request on https://feathub.com/SvenVD/rpisurv")
             sys.exit()
 
-        self.rtsp_options_cmd = "OPTIONS rtsp://" + self.hostname + ":" + str(self.port) + " RTSP/1.0\r\nCSeq: 1\r\nUser-Agent: python\r\nAccept: application/sdp\r\n\r\n"
 
-    def _generate_no_credentials_url(self):
-        '''This is mainly used to not log the credentials in plain text in the logfile for error messages'''
+    def _manipulate_credentials_in_url(self,action):
+        '''
+        Depending on action:
+        "obfuscate" :  is used to not log the credentials in plain text in the logfile for error messages
+        "remove" : is used for the rtsp options probe
+        '''
         if self.parsed.password is not None or self.parsed.username is not None:
             host_info = self.parsed.netloc.rpartition('@')[-1]
-            obfuscated = self.parsed._replace(netloc='<hidden_username>:<hidden_password>@{}'.format(host_info))
-            self.no_credentials_url = obfuscated.geturl()
+            if action == "obfuscate":
+                obfuscated = self.parsed._replace(netloc='<hidden_username>:<hidden_password>@{}'.format(host_info))
+                return obfuscated.geturl()
+            elif action == "remove":
+                no_credentials = self.parsed._replace(netloc='{}'.format(host_info))
+                return no_credentials.geturl()
         else:
-            self.no_credentials_url = self.url
+            return self.url
 
     def _setup_dbus_connection(self):
         """ Setups a dbus connection to the omxplayer instances started during worker processes """
@@ -107,7 +118,7 @@ class CameraStream:
                 logger.error('CameraStream: ' + self.name + ' has no dbus connection, probably because omxplayer crashed because it can not connect to this stream. As a result we could not unhide this stream at this time.')
 
     def _urllib2open_wrapper(self):
-        '''Handles username and password inside URL like following example: "http://test:test@httpbin.org:80/basic-auth/test/test" '''
+        '''Handles authentication username and password inside URL like following example: "http://test:test@httpbin.org:80/basic-auth/test/test" '''
         if self.parsed.password is not None and self.parsed.username is not None:
             host_info = self.parsed.netloc.rpartition('@')[-1]
             strippedcreds_url = self.parsed._replace(netloc=host_info)
@@ -130,38 +141,38 @@ class CameraStream:
                 rtsp_response=s.recv(4096)
                 s.close()
             except Exception as e:
-                logger.error("CameraStream: " + self.name + " " + str(self.no_credentials_url) + " Not Connectable (failed socket connect), configured timeout: " + str(self.probe_timeout) +  " " + repr(e))
+                logger.error("CameraStream: " + self.name + " " + str(self.obfuscated_credentials_url) + " Not Connectable (failed socket connect), configured timeout: " + str(self.probe_timeout) + " " + repr(e))
                 return False
 
             #If we come to this point it means we have some data received, before we return True we need to check if are connected to an RTSP server
             if not rtsp_response:
-                logger.error("CameraStream: " + self.name + " " + str(self.no_credentials_url) + " Not Connectable (failed rtsp validation, no response from rtsp server)")
+                logger.error("CameraStream: " + self.name + " " + str(self.obfuscated_credentials_url) + " Not Connectable (failed rtsp validation, no response from rtsp server)")
                 return False
 
             if re.match("RTSP/1.0",rtsp_response.splitlines()[0]):
-                logger.debug("CameraStream: " + self.name + " " + str(self.no_credentials_url) + " Connectable")
+                logger.debug("CameraStream: " + self.name + " " + str(self.obfuscated_credentials_url) + " Connectable")
                 return True
             else:
-                logger.error("CameraStream: " + self.name + " " + str(self.no_credentials_url) + " Not Connectable (failed rtsp validation, is this an rtsp stream?)")
+                logger.error("CameraStream: " + self.name + " " + str(self.obfuscated_credentials_url) + " Not Connectable (failed rtsp validation, is this an rtsp stream?)")
                 return False
         elif self.scheme in ["http","https"]:
              try:
                 connection = self._urllib2open_wrapper()
                 if connection.getcode() == 200:
-                    logger.debug("CameraStream: " + self.name + " " + str(self.no_credentials_url) + " Connectable")
+                    logger.debug("CameraStream: " + self.name + " " + str(self.obfuscated_credentials_url) + " Connectable")
                     return True
                 else:
-                    logger.error("CameraStream: " + self.name + " " + str(self.no_credentials_url) + " Not Connectable (http response code: " + str(connection.getcode()) + ")")
+                    logger.error("CameraStream: " + self.name + " " + str(self.obfuscated_credentials_url) + " Not Connectable (http response code: " + str(connection.getcode()) + ")")
                     return False
                 connection.close()
              except urllib2.URLError as e:
-                logger.error("CameraStream: " + self.name + " " + str(self.no_credentials_url) + " Not Connectable (URLerror), " + repr(e))
+                logger.error("CameraStream: " + self.name + " " + str(self.obfuscated_credentials_url) + " Not Connectable (URLerror), " + repr(e))
                 return False
              except socket.timeout as e:
-                logger.error("CameraStream: " + self.name + " " + str(self.no_credentials_url) +  " Not Connectable (failed socket connect, configured timeout: " +  str(self.probe_timeout) + " ), " + repr(e))
+                logger.error("CameraStream: " + self.name + " " + str(self.obfuscated_credentials_url) + " Not Connectable (failed socket connect, configured timeout: " + str(self.probe_timeout) + " ), " + repr(e))
                 return False
         else:
-            logger.error("CameraStream: " + self.name + " Scheme " + str(self.scheme) + " in " + str(self.no_credentials_url) + " is currently not supported, you can make a feature request on https://feathub.com/SvenVD/rpisurv")
+            logger.error("CameraStream: " + self.name + " Scheme " + str(self.scheme) + " in " + str(self.obfuscated_credentials_url) + " is currently not supported, you can make a feature request on https://feathub.com/SvenVD/rpisurv")
             sys.exit()
 
     def show_status(self):
