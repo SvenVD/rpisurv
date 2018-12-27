@@ -70,7 +70,7 @@ def worker(name,url,omxplayer_extra_options,coordinates,stopworker):
             logger.info("Trying to restart " + name +" attempts:" + str(attempts))
         else:
             attempts=0
-        time.sleep(0.5)
+        time.sleep(0.1)
 
     #If we come to this point, we are instructed to kill this stream
     logger.debug("This stream " + name + " is about to be stopped")

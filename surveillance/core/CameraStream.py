@@ -218,4 +218,7 @@ class CameraStream:
         #Stopworker shared value will stop the while loop in the worker, so the worker will run to end. No need to explicitely terminate the worker
         self.stopworker.value= True
         logger.debug("CameraStream: MAIN Value of stopworker for " + self.name + " is " + str(self.stopworker.value))
-        #self.worker.join()
+
+        #Wait for the worker to be terminated before continuing https://github.com/SvenVD/rpisurv/issues/84
+        logger.debug("CameraStream: Executing join for stream " + self.name)
+        self.worker.join()
