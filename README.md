@@ -10,7 +10,7 @@ See [RELEASE_NOTES](https://github.com/SvenVD/rpisurv/blob/master/RELEASE_NOTES.
 
 ## Goal
 Rpisurv is designed to be simple to use (no need to fiddle with coordinates or detailed layout configs) and to be able to run unattended for long periods of time. Therefore watchdogs and autohealing logic have been implemented.
-Versions 2 adds functionality to define multiple screens which can be cycled between.
+Version 2 adds functionality to define multiple screens which can be cycled between.
 
 ## Description
 You can think of rpisurv as a wrapper for omxplayer with following features (Rpisurv uses omxplayer to fully make use of the GPU of the raspberry pi).
