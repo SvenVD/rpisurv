@@ -14,7 +14,7 @@ get_init_sys() {
   elif [ -f /etc/init.d/cron ] && [ ! -h /etc/init.d/cron ]; then
     SYSTEMD=0
   else
-    echo "Unrecognised init system"
+    echo "Unrecognized init system"
     return 1
   fi
 }
@@ -28,12 +28,12 @@ echo
 echo -n "The following version will be installed:"
 show_version
 echo
-echo "By using this software, you agree that by default limited and non-sensitive (runtime, unique id and version) stats"
-echo "will be sent on a regular interval to a collector server over an encrypted connection."
-echo "You can disable this anytime by changing the update_stats: config option to False."
-echo "This has been introduced to get an idea of how much users are testing a beta version of the software."
-echo "Once the software comes out of beta, stats sending will be disabled by default."
-echo
+#echo "By using this software, you agree that by default limited and non-sensitive (runtime, unique id and version) stats"
+#echo "will be sent on a regular interval to a collector server over an encrypted connection."
+#echo "You can disable this anytime by changing the update_stats: config option to False."
+#echo "This has been introduced to get an idea of how much users are testing a beta version of the software."
+#echo "Once the software comes out of beta, stats sending will be disabled by default."
+#echo
 echo "Do you want to continue press <Enter>, <Ctrl-C> to cancel"
 read
 

@@ -8,12 +8,12 @@ handlers:
     h_console:
         class: logging.StreamHandler
         formatter: f_default
-        level: DEBUG
+        level: INFO
         stream: ext://sys.stdout
     h_rotfile:
         class : logging.handlers.RotatingFileHandler
         formatter: f_default
-        level: DEBUG
+        level: INFO
         #Note this filename is only for the main process. Other dynamically created filenames will overwrites this one per camera stream
         filename: logs/main.log
         maxBytes: 1000000
@@ -21,14 +21,14 @@ handlers:
 
 loggers:
     l_default:
-        level: DEBUG
+        level: INFO
         handlers:
           - h_console
           - h_rotfile
         propagate: False
 
 root:
-    level: DEBUG
+    level: INFO
     handlers:
       - h_console
       - h_rotfile
