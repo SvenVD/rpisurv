@@ -83,4 +83,4 @@ Disable rotation (as in pause rotation, as in fix the current displayed screen) 
 
 ## Feature requests
 
-Feature requests are tracked on https://feathub.com/SvenVD/rpisurv. If you would like to have a feature implemented on rpisurv, please check that this is not already been requested on feathub. If it is then add your vote to it, if it is not then request it as a new feature. The votes give us an indication on how feature requests compare to each other regarding popularity.
+Feature requests are tracked on https://community.rpisurv.net. If you would like to have a feature implemented on rpisurv, please check that this is not already been requested on https://community.rpisurv.net. If it is then add your vote to it, if it is not then request it as a new feature. The votes give us an indication on how feature requests compare to each other regarding popularity.
