@@ -1,4 +1,4 @@
-# rpisurv 2 - Raspberry pi surveillance an RPI IP Camera Monitor
+# Rpisurv 2 - Raspberry pi surveillance an RPI IP Camera Monitor
 Join the community on https://community.rpisurv.net.  
 Follow us on facebook https://www.facebook.com/rpisurv.   
 Have a chat on https://gitter.im/rpisurv/general.  
