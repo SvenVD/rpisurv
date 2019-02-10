@@ -1,7 +1,7 @@
 # rpisurv 2 - Raspberry pi surveillance an RPI IP Camera Monitor
-Join the community on https://community.rpisurv.net
-Follow us on facebook https://www.facebook.com/rpisurv 
-Have a chat on https://gitter.im/rpisurv/general.
+Join the community on https://community.rpisurv.net.  
+Follow us on facebook https://www.facebook.com/rpisurv.   
+Have a chat on https://gitter.im/rpisurv/general.  
 
 If you like this software please consider donating:
  <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QPJU9K2KZ8D94" target="_blank" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/x-click-but21.gif" alt="" /></a>
