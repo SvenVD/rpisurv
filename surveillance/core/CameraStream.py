@@ -190,12 +190,16 @@ class CameraStream:
         if self.imageurl:
             # This is an imageurl instead of a camerastream, do not start omxplayer stuff
             if self.is_connectable():
-                # image_str = urllib2.urlopen(self.url).read()
-                image_str = self._urllib2open_wrapper().read()
-                # create a file object (stream)
-                self.image_file = io.BytesIO(image_str)
-                self.calculate_field_geometry()
-                draw.placeholder(self.coordinates[0], self.coordinates[1], self.normal_fieldwidth, self.normal_fieldheight, self.image_file, self.pygamescreen)
+                try:
+                    # image_str = urllib2.urlopen(self.url).read()
+                    image_str = self._urllib2open_wrapper().read()
+                    # create a file object (stream)
+                    self.image_file = io.BytesIO(image_str)
+                    self.calculate_field_geometry()
+                    draw.placeholder(self.coordinates[0], self.coordinates[1], self.normal_fieldwidth, self.normal_fieldheight, self.image_file, self.pygamescreen)
+                except Exception as e:
+                    #Do not crash rpisurv if there is something wrong with loading the image at this time
+                    logger.error("CameraStream: This stream " + self.name + " refresh_image_from_url " + repr(e))
         else:
             logger.debug("CameraStream: This stream " + self.name + " is not an imageurl, skip refreshing imageurl")
 
