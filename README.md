@@ -19,6 +19,7 @@ You can think of rpisurv as a wrapper for omxplayer with following features (Rpi
 - Autocalculcate coordinates for every stream displayed. The last stream defined will be stretched to make use of the complete screen but only if some pixels are unused (if autostretch option is True).
 - Stream up/down detection and autorearrange of the screen layout (if disable_probing_for_all_streams is False). So for example if you stop a camera (or just stop the server on the camera), rpisurv will detect this and will recalculate/redraw the screen with the still available cameras. The same is true if a previous unconnectable rtsp stream becomes connectable. All without any user interaction.
 - All this behaviour is available per screen, but as of version 2 you can configure multiple screens and cycle between them in an automated way or via the keyboard.
+- Since 2.1.0 you can now also specify "image streams", to display images next to or instead of camera streams. The images will be auto-updated if they change remotely.
 
 ## How to get started
 In short: The idea is to connect your raspberry pi to a monitor and tell rpisurv which stream(s) and screen(s) it should display or cycle between. Rpisurv will autocalculate all the rest.

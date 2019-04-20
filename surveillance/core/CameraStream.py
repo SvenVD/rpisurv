@@ -6,6 +6,7 @@ import re
 import socket
 import time
 import sys
+import io
 import urllib2
 from urlparse import urlparse
 
@@ -27,6 +28,7 @@ class CameraStream:
         self.worker = None
         self.omxplayer_extra_options = ""
         self.probe_timeout = camera_stream.setdefault("probe_timeout",3)
+        self.imageurl = camera_stream.setdefault("imageurl", False)
         self.url = camera_stream["url"]
         #Check if rtsp_over_tcp option exist otherwise default to false
         self.rtsp_over_tcp=camera_stream["rtsp_over_tcp"] if 'rtsp_over_tcp' in camera_stream else False
@@ -175,34 +177,58 @@ class CameraStream:
             logger.error("CameraStream: " + self.name + " Scheme " + str(self.scheme) + " in " + str(self.obfuscated_credentials_url) + " is currently not supported, you can make a feature request on https://feathub.com/SvenVD/rpisurv")
             sys.exit()
 
-    def show_status(self):
+    def calculate_field_geometry(self):
         self.normal_fieldwidth=self.coordinates[2] - self.coordinates[0]
         self.normal_fieldheight=self.coordinates[3] - self.coordinates[1]
+
+    def show_status(self):
+        self.calculate_field_geometry()
         draw.placeholder(self.coordinates[0], self.coordinates[1], self.normal_fieldwidth, self.normal_fieldheight, "images/connecting.png", self.pygamescreen)
+
+
+    def refresh_image_from_url(self):
+        if self.imageurl:
+            # This is an imageurl instead of a camerastream, do not start omxplayer stuff
+            if self.is_connectable():
+                # image_str = urllib2.urlopen(self.url).read()
+                image_str = self._urllib2open_wrapper().read()
+                # create a file object (stream)
+                self.image_file = io.BytesIO(image_str)
+                self.calculate_field_geometry()
+                draw.placeholder(self.coordinates[0], self.coordinates[1], self.normal_fieldwidth, self.normal_fieldheight, self.image_file, self.pygamescreen)
+        else:
+            logger.debug("CameraStream: This stream " + self.name + " is not an imageurl, skip refreshing imageurl")
 
     def start_stream(self, coordinates, pygamescreen, cached):
         self.coordinates=coordinates
         self.pygamescreen=pygamescreen
         logger.debug("CameraStream: Start stream " + self.name)
 
-        #Start worker process and dbus connnection only if it isn't running already
-        if self.worker and self.worker.is_alive():
-            logger.debug("CameraStream: Worker from " + self.name + " is still alive not starting new worker")
-        else:
-            self.stopworker = multiprocessing.Value('b', False)
-            self.worker = multiprocessing.Process(target=worker.worker, args=(self.name,self.url,self.omxplayer_extra_options,self.coordinates,self.stopworker))
-            self.worker.daemon = True
-            self.worker.start()
-            if platform.system() == "Linux":
-                #dbus connection can only be setup once the stream is correctly started
-                self._setup_dbus_connection()
 
-        #Update position
-        self.set_videopos(self.coordinates)
+        if not self.imageurl:
+            #Start worker process and dbus connnection only if it isn't running already
+            if self.worker and self.worker.is_alive():
+                logger.debug("CameraStream: Worker from " + self.name + " is still alive not starting new worker")
+            else:
+                self.stopworker = multiprocessing.Value('b', False)
+                self.worker = multiprocessing.Process(target=worker.worker, args=(self.name,self.url,self.omxplayer_extra_options,self.coordinates,self.stopworker))
+                self.worker.daemon = True
+                self.worker.start()
+                if platform.system() == "Linux":
+                    #dbus connection can only be setup once the stream is correctly started
+                    self._setup_dbus_connection()
+
+            #Update position
+            self.set_videopos(self.coordinates)
 
         if not cached:
             logger.debug("CameraStream: This stream " + self.name + " is not running in cache")
             self.show_status()
+
+            if self.imageurl:
+                self.refresh_image_from_url()
+
+
         else:
             logger.debug("CameraStream: This stream " + self.name + " is running in cache")
 
@@ -215,10 +241,12 @@ class CameraStream:
 
     def stop_stream(self):
         logger.debug("CameraStream: Stop stream " + self.name)
-        #Stopworker shared value will stop the while loop in the worker, so the worker will run to end. No need to explicitely terminate the worker
-        self.stopworker.value= True
-        logger.debug("CameraStream: MAIN Value of stopworker for " + self.name + " is " + str(self.stopworker.value))
+        if not self.imageurl:
+            #Only stop something if this is not an imageurl, for imageurl nothing has to be stopped
+            #Stopworker shared value will stop the while loop in the worker, so the worker will run to end. No need to explicitely terminate the worker
+            self.stopworker.value= True
+            logger.debug("CameraStream: MAIN Value of stopworker for " + self.name + " is " + str(self.stopworker.value))
 
-        #Wait for the worker to be terminated before continuing https://github.com/SvenVD/rpisurv/issues/84
-        logger.debug("CameraStream: Executing join for stream " + self.name)
-        self.worker.join()
+            #Wait for the worker to be terminated before continuing https://github.com/SvenVD/rpisurv/issues/84
+            logger.debug("CameraStream: Executing join for stream " + self.name)
+            self.worker.join()

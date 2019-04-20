@@ -258,5 +258,8 @@ class Screen:
 
         #refresh all placeholders that were created on the screen itself, but do not do this if we are running in cache
         if not self.cached:
+            #If there are imageurls then now is the time to refresh them all
+            for cam_stream in self.cam_streams_to_draw:
+                cam_stream.refresh_image_from_url()
             draw.refresh()
 
