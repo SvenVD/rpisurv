@@ -1,8 +1,8 @@
 # rpisurv 2 release notes
 ## New features 2.1.0
-It is now possible to show an image instead of a camerastream. The image is fetched from a choosen remote url. On top of that this remote url is watched for changes
-If the image is changed on the remote site, rpisurv will detect this and will also fetch the new image and update it on screen. The polling frequency is controlled by advanced: interval_check_status config option in /etc/rpisurv.conf.
-The "image stream" follows the same health checks as a normal camera stream. This means if the specified image is unavailable it will not be shown on-screen by default (you can override this).
+It is now possible to show an image instead of a camerastream. The image is fetched from a choosen remote url. On top of that this remote url is watched for changes.  
+If the image is changed on the remote site, rpisurv will detect this and will also fetch the new image and update it on screen. The polling frequency is controlled by ```advanced: interval_check_status``` config option in /etc/rpisurv.conf.
+The "image stream" follows the same health checks as a normal camera stream. This means if the specified image is unavailable it will not be shown on-screen by default (you can override this).  
 This feature has been requested on [link](https://www.tapatalk.com/groups/rpisurv/show-random-images-from-an-accessible-url-instead--t6.html). 
 
 
