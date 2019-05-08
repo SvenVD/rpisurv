@@ -1,5 +1,8 @@
-# rpisurv 2 - Raspberry pi surveillance an RPI IP Camera Monitor
-Follow us on facebook https://www.facebook.com/rpisurv
+# Rpisurv 2 - Raspberry pi surveillance an RPI IP Camera Monitor
+Join the community on https://community.rpisurv.net (Please use this place for support questions instead of github issues).    
+Bug tracking https://github.com/SvenVD/rpisurv/issues.  
+Follow us on facebook https://www.facebook.com/rpisurv.     
+Have a chat on https://gitter.im/rpisurv/general.    
 
 If you like this software please consider donating:
  <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QPJU9K2KZ8D94" target="_blank" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/x-click-but21.gif" alt="" /></a>
@@ -82,4 +85,4 @@ Disable rotation (as in pause rotation, as in fix the current displayed screen) 
 
 ## Feature requests
 
-Feature requests are tracked on https://feathub.com/SvenVD/rpisurv. If you would like to have a feature implemented on rpisurv, please check that this is not already been requested on feathub. If it is then add your vote to it, if it is not then request it as a new feature. The votes give us an indication on how feature requests compare to each other regarding popularity.
+Feature requests are tracked on https://community.rpisurv.net. If you would like to have a feature implemented on rpisurv, please check that this is not already been requested on https://community.rpisurv.net. If it is then add your vote to it, if it is not then request it as a new feature. The votes give us an indication on how feature requests compare to each other regarding popularity.  
