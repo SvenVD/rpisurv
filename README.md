@@ -1,8 +1,8 @@
 # Rpisurv 2 - Raspberry pi surveillance an RPI IP Camera Monitor
-Join the community on https://community.rpisurv.net (Please use this place for support questions instead of github issues).    
-Bug tracking https://github.com/SvenVD/rpisurv/issues.  
-Follow us on facebook https://www.facebook.com/rpisurv.     
-Have a chat on https://gitter.im/rpisurv/general.    
+Join the community on https://community.rpisurv.net (Please use this place for support questions instead of github issues).
+Bug tracking https://github.com/SvenVD/rpisurv/issues.
+Follow us on facebook https://www.facebook.com/rpisurv.
+Have a chat on https://gitter.im/rpisurv/general.
 
 If you like this software please consider donating:
  <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QPJU9K2KZ8D94" target="_blank" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/x-click-but21.gif" alt="" /></a>
@@ -59,7 +59,7 @@ If you are connected via keyboard/keypad, you can force the next screen by press
 
 Keys F1 to F12 (or keypad 0 to 9), will force the equal numbered screen to be shown onscreen (this takes longer depending on amount of unconnectable streams and they thus need to wait for timeout, keep holding until screen changes. Note, you can change probe_timeout per camera stream if needed).
 
-Disable rotation (as in pause rotation, as in fix the current displayed screen) dynamically during runtime. By pressing "p" (or keypad "*") to pause or "r" (or keypad ".")' to resume/rotate. This overrides the disable_autorotation option if this has been set in the config file.
+Disable rotation (as in pause rotation, as in fix the current displayed screen) dynamically during runtime. By pressing "p" (or keypad "*") to pause or "r" (or "," or keypad ".")' to resume/rotate. This overrides the disable_autorotation option if this has been set in the config file.
 
 
 ## Troubleshooting
@@ -68,7 +68,7 @@ Disable rotation (as in pause rotation, as in fix the current displayed screen) 
 
 - If you used the install.sh script, logs are created at /usr/local/bin/rpisurv/logs/. You can use them for troubleshooting. Enable DEBUG logging for very detailed output of what is going on. see [logging_config](https://github.com/SvenVD/rpisurv/blob/master/surveillance/conf/logging.yml)
 
-- If you are connected via keyboard/keypad, you can stop rpisurv by pressing and holding q (or keypad "/") (this can take some seconds) .
+- If you are connected via keyboard/keypad, you can stop rpisurv by pressing and holding q (or backspace or keypad "/") (this can take some seconds) .
 
 - To manage the screen without rebooting use systemctl
   - `sudo systemctl stop rpisurv` to stop the screen
@@ -85,4 +85,4 @@ Disable rotation (as in pause rotation, as in fix the current displayed screen) 
 
 ## Feature requests
 
-Feature requests are tracked on https://community.rpisurv.net. If you would like to have a feature implemented on rpisurv, please check that this is not already been requested on https://community.rpisurv.net. If it is then add your vote to it, if it is not then request it as a new feature. The votes give us an indication on how feature requests compare to each other regarding popularity.  
+Feature requests are tracked on https://community.rpisurv.net. If you would like to have a feature implemented on rpisurv, please check that this is not already been requested on https://community.rpisurv.net. If it is then add your vote to it, if it is not then request it as a new feature. The votes give us an indication on how feature requests compare to each other regarding popularity.

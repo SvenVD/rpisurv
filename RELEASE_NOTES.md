@@ -1,9 +1,16 @@
 # rpisurv 2 release notes
+## Changes in 2.1.2
+The "comma" key can now be used to resume rotation, also the "backspace" key can now be used to quit rpisurv. This to allow german keypads to have all the needed functions.
+This change has been requested on [link](https://www.tapatalk.com/groups/rpisurv/on-keypad-operation-change-rotation-key-from-to-t28.html).
+
+## Bugfix in 2.1.1
+Do not crash rpisurv if there is something wrong with loading the image.
+
 ## New features 2.1.0
-It is now possible to show an image instead of a camerastream. The image is fetched from a choosen remote url. On top of that this remote url is watched for changes.  
+It is now possible to show an image instead of a camerastream. The image is fetched from a choosen remote url. On top of that this remote url is watched for changes.
 If the image is changed on the remote site, rpisurv will detect this and will also fetch the new image and update it on screen. The polling frequency is controlled by ```advanced: interval_check_status``` config option in /etc/rpisurv.conf.
-The "image stream" follows the same health checks as a normal camera stream. This means if the specified image is unavailable it will not be shown on-screen by default (you can override this).  
-This feature has been requested on [link](https://www.tapatalk.com/groups/rpisurv/show-random-images-from-an-accessible-url-instead--t6.html). 
+The "image stream" follows the same health checks as a normal camera stream. This means if the specified image is unavailable it will not be shown on-screen by default (you can override this).
+This feature has been requested on [link](https://www.tapatalk.com/groups/rpisurv/show-random-images-from-an-accessible-url-instead--t6.html).
 
 
 ## Upgrade notes from 1.0
