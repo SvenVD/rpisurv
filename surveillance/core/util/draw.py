@@ -20,7 +20,7 @@ def blank_screen(absposx,absposy,width,height,surface):
 
 def placeholder(absposx,absposy,width,height,background_img_path,surface):
     """This function creates a new placeholder"""
-    logger.debug("Drawing placeholder with coordinates: " + str(absposx) + ", " + str( absposy) + " and width: " + str(width) +  " height: " + str(height) + " with image " + background_img_path )
+    logger.debug("Drawing placeholder with coordinates: " + str(absposx) + ", " + str( absposy) + " and width: " + str(width) +  " height: " + str(height) + " with image " + str(background_img_path) )
     background_img = pygame.image.load(background_img_path)
     background_img = pygame.transform.scale(background_img, (width, height))
     surface.blit(background_img, (absposx, absposy))
@@ -31,14 +31,14 @@ def check_keypress():
     try:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_q or event.key == pygame.K_a or event.key == pygame.K_KP_DIVIDE:
-                    logger.debug("Keypress 'a' or 'q' or 'keypad /' detected.")
+                if event.key == pygame.K_q or event.key == pygame.K_a or event.key == pygame.K_KP_DIVIDE or event.key == pygame.K_BACKSPACE:
+                    logger.debug("Keypress 'a' or 'q' or 'backspace' or 'keypad /' detected.")
                     return "end_event"
                 if event.key == pygame.K_n or event.key == pygame.K_SPACE or event.key == pygame.K_KP_PLUS:
                     logger.debug("Keypress 'n' or 'space' or 'keypad +' detected.")
                     return "next_event"
-                if event.key == pygame.K_r or event.key == pygame.K_KP_PERIOD:
-                    logger.debug("Keypress 'r' or 'keypad .' detected")
+                if event.key == pygame.K_r or event.key == pygame.K_KP_PERIOD or event.key == pygame.K_COMMA:
+                    logger.debug("Keypress 'r' or ',' or 'keypad .' detected")
                     return "resume_rotation"
                 if event.key == pygame.K_p or event.key == pygame.K_KP_MULTIPLY:
                     logger.debug("Keypress 'p' or 'keypad *' detected")

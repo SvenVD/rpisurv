@@ -1,8 +1,8 @@
 # Rpisurv 2 - Raspberry pi surveillance an RPI IP Camera Monitor
-Join the community on https://community.rpisurv.net (Please use this place for support questions instead of github issues).  
-Bug tracking https://github.com/SvenVD/rpisurv/issues.
-Follow us on facebook https://www.facebook.com/rpisurv.   
-Have a chat on https://gitter.im/rpisurv/general.  
+Join the community on https://community.rpisurv.net (Please use this place for support questions instead of github issues).<br/>
+Bug tracking https://github.com/SvenVD/rpisurv/issues.<br/>
+Follow us on facebook https://www.facebook.com/rpisurv.<br/>
+Have a chat on https://gitter.im/rpisurv/general.<br/>
 
 If you like this software please consider donating:
  <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QPJU9K2KZ8D94" target="_blank" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/x-click-but21.gif" alt="" /></a>
@@ -22,6 +22,7 @@ You can think of rpisurv as a wrapper for omxplayer with following features (Rpi
 - Autocalculcate coordinates for every stream displayed. The last stream defined will be stretched to make use of the complete screen but only if some pixels are unused (if autostretch option is True).
 - Stream up/down detection and autorearrange of the screen layout (if disable_probing_for_all_streams is False). So for example if you stop a camera (or just stop the server on the camera), rpisurv will detect this and will recalculate/redraw the screen with the still available cameras. The same is true if a previous unconnectable rtsp stream becomes connectable. All without any user interaction.
 - All this behaviour is available per screen, but as of version 2 you can configure multiple screens and cycle between them in an automated way or via the keyboard.
+- Since 2.1.0 you can now also specify "image streams", to display images next to or instead of camera streams. The images will be auto-updated if they change remotely.
 
 ## How to get started
 In short: The idea is to connect your raspberry pi to a monitor and tell rpisurv which stream(s) and screen(s) it should display or cycle between. Rpisurv will autocalculate all the rest.
@@ -58,7 +59,7 @@ If you are connected via keyboard/keypad, you can force the next screen by press
 
 Keys F1 to F12 (or keypad 0 to 9), will force the equal numbered screen to be shown onscreen (this takes longer depending on amount of unconnectable streams and they thus need to wait for timeout, keep holding until screen changes. Note, you can change probe_timeout per camera stream if needed).
 
-Disable rotation (as in pause rotation, as in fix the current displayed screen) dynamically during runtime. By pressing "p" (or keypad "*") to pause or "r" (or keypad ".")' to resume/rotate. This overrides the disable_autorotation option if this has been set in the config file.
+Disable rotation (as in pause rotation, as in fix the current displayed screen) dynamically during runtime. By pressing "p" (or keypad "*") to pause or "r" (or "," or keypad ".")' to resume/rotate. This overrides the disable_autorotation option if this has been set in the config file.
 
 
 ## Troubleshooting
@@ -67,7 +68,7 @@ Disable rotation (as in pause rotation, as in fix the current displayed screen) 
 
 - If you used the install.sh script, logs are created at /usr/local/bin/rpisurv/logs/. You can use them for troubleshooting. Enable DEBUG logging for very detailed output of what is going on. see [logging_config](https://github.com/SvenVD/rpisurv/blob/master/surveillance/conf/logging.yml)
 
-- If you are connected via keyboard/keypad, you can stop rpisurv by pressing and holding q (or keypad "/") (this can take some seconds) .
+- If you are connected via keyboard/keypad, you can stop rpisurv by pressing and holding q (or backspace or keypad "/") (this can take some seconds) .
 
 - To manage the screen without rebooting use systemctl
   - `sudo systemctl stop rpisurv` to stop the screen
