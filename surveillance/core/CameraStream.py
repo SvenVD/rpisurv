@@ -121,16 +121,18 @@ class CameraStream:
 
     def _urllib2open_wrapper(self):
         '''Handles authentication username and password inside URL like following example: "http://test:test@httpbin.org:80/basic-auth/test/test" '''
+        headers = {'User-Agent': 'Mozilla/5.0'}
         if self.parsed.password is not None and self.parsed.username is not None:
             host_info = self.parsed.netloc.rpartition('@')[-1]
             strippedcreds_url = self.parsed._replace(netloc=host_info)
             print strippedcreds_url.geturl()
-            request = urllib2.Request(strippedcreds_url.geturl())
+            request = urllib2.Request(strippedcreds_url.geturl(), None, headers)
             base64string = base64.encodestring('%s:%s' % (self.parsed.username, self.parsed.password)).replace('\n', '')
             request.add_header("Authorization", "Basic %s" % base64string)
             return urllib2.urlopen(request, timeout=self.probe_timeout)
         else:
-            return urllib2.urlopen(self.url, timeout=self.probe_timeout)
+            request = urllib2.Request(self.url, None, headers )
+            return urllib2.urlopen(request, timeout=self.probe_timeout)
 
     def is_connectable(self):
         if self.scheme == "rtsp":
