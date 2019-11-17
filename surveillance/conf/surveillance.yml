@@ -37,7 +37,7 @@ essentials:
           rtsp_over_tcp: true
           #freeform_advanced_omxplayer_options, most omxplayer options can be passed directly here.
           #This is for advanced users only, not all combinations have been tested
-          #You could use this for example to display this particular camerastream on the second screen in case of a dual hdmi setup ( raspberry pi 4 )
+          #You could use this for example to display this particular camerastream on the second display in case of a dual hdmi setup ( raspberry pi 4 )
           freeform_advanced_omxplayer_options: "--display 2"
           #Foscam-fi9821w example
         - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
