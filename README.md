@@ -78,7 +78,7 @@ Disable rotation (as in pause rotation, as in fix the current displayed screen) 
 - If you want to stream rtsp over tcp please add `rtsp_over_tcp: true` to the stream in /etc/rpisurv.conf.
   See [example config file](https://github.com/SvenVD/rpisurv/blob/master/surveillance/conf/surveillance.yml) for an example.
   If you have a "smearing" effect this option may resolve it.
-  Note that you need a version of omxplayer which is released afer 14 March 2016 (https://github.com/popcornmix/omxplayer/pull/433) to do this.
+  Note that you need a version of omxplayer which is released after 14 March 2016 (https://github.com/popcornmix/omxplayer/pull/433) to do this.
 
 - On a raspberry pi 3 it seems the default overscan settings are not good. If full screen is not used, if you have an unused bar in the bottom -> try to set `disable_overscan=1` in /boot/config.txt
 
