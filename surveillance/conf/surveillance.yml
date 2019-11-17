@@ -35,6 +35,10 @@ essentials:
           #Enable this option if you want the rtsp stream to stream over tcp instead of udp, this may solve a "smearing" effect on some setups. Defaults to false
           #Note that you need a version of omxplayer which is released after 14 March 2016 for this option to work
           rtsp_over_tcp: true
+          #freeform_advanced_omxplayer_options, most omxplayer options can be passed directly here.
+          #This is for advanced users only, not all combinations have been tested
+          #You could use this for example to display this particular camerastream on the second screen in case of a dual hdmi setup ( raspberry pi 4 )
+          freeform_advanced_omxplayer_options: "--display 2"
           #Foscam-fi9821w example
         - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
           #Dahua IPC-HDW4200S example or IPC-HDW4300S

@@ -1,4 +1,12 @@
 # rpisurv 2 release notes
+## Changes in 2.1.4
+Introduced freeform_advanced_omxplayer_options option, so that advanced users have all the advanced omxplayers features at their disposal.
+For example, dual display configuration when running on a raspberry 4 [link](https://www.tapatalk.com/groups/rpisurv/raspberry-pi-4-t32.html#p199).
+
+## Changes in 2.1.3
+Fixing potential failure of fetching images from remote servers with a WAF.
+This change has been requested on [link](https://www.tapatalk.com/groups/rpisurv/can-t-get-image-to-load-t45.html).
+
 ## Changes in 2.1.2
 The "comma" key can now be used to resume rotation, also the "backspace" key can now be used to quit rpisurv. This to allow german keypads to have all the needed functions.
 This change has been requested on [link](https://www.tapatalk.com/groups/rpisurv/on-keypad-operation-change-rotation-key-from-to-t28.html).

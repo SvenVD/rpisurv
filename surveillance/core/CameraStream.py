@@ -27,6 +27,7 @@ class CameraStream:
         self.name = name
         self.worker = None
         self.omxplayer_extra_options = ""
+        self.freeform_advanced_omxplayer_options = camera_stream.setdefault("freeform_advanced_omxplayer_options","")
         self.probe_timeout = camera_stream.setdefault("probe_timeout",3)
         self.imageurl = camera_stream.setdefault("imageurl", False)
         self.url = camera_stream["url"]
@@ -35,6 +36,7 @@ class CameraStream:
         #If rtsp over tcp option is true add extra option to omxplayer
         if self.rtsp_over_tcp:
             self.omxplayer_extra_options = self.omxplayer_extra_options + "--avdict rtsp_transport:tcp"
+        self.omxplayer_extra_options = self.omxplayer_extra_options + self.freeform_advanced_omxplayer_options
         self.parsed=urlparse(self.url)
         self.port = self.parsed.port
         self.scheme = self.parsed.scheme
