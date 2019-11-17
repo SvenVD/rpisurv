@@ -33,7 +33,7 @@ essentials:
           #Default to 4 seconds
           probe_timeout: 10
           #Enable this option if you want the rtsp stream to stream over tcp instead of udp, this may solve a "smearing" effect on some setups. Defaults to false
-          #Note that you need a version of omxplayer older then 14 March 2016 for this option to work
+          #Note that you need a version of omxplayer which is released after 14 March 2016 for this option to work
           rtsp_over_tcp: true
           #Foscam-fi9821w example
         - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
