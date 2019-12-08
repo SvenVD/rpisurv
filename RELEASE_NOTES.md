@@ -1,4 +1,7 @@
 # rpisurv 2 release notes
+## Changes in 2.1.5
+Fixed bug in freeform_advanced_omxplayer_options option
+
 ## Changes in 2.1.4
 Introduced freeform_advanced_omxplayer_options option, so that advanced users have all the advanced omxplayers features at their disposal.
 For example, dual display configuration when running on a raspberry 4 [link](https://www.tapatalk.com/groups/rpisurv/raspberry-pi-4-t32.html#p199).
