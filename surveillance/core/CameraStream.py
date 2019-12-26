@@ -31,6 +31,7 @@ class CameraStream:
         self.probe_timeout = camera_stream.setdefault("probe_timeout",3)
         self.imageurl = camera_stream.setdefault("imageurl", False)
         self.url = camera_stream["url"]
+        self.aidx = camera_stream.setdefault("aidx","-1")
         #Check if rtsp_over_tcp option exist otherwise default to false
         self.rtsp_over_tcp=camera_stream["rtsp_over_tcp"] if 'rtsp_over_tcp' in camera_stream else False
         #If rtsp over tcp option is true add extra option to omxplayer
@@ -219,7 +220,7 @@ class CameraStream:
                 logger.debug("CameraStream: Worker from " + self.name + " is still alive not starting new worker")
             else:
                 self.stopworker = multiprocessing.Value('b', False)
-                self.worker = multiprocessing.Process(target=worker.worker, args=(self.name,self.url,self.omxplayer_extra_options,self.coordinates,self.stopworker))
+                self.worker = multiprocessing.Process(target=worker.worker, args=(self.name,self.url,self.omxplayer_extra_options,self.coordinates,self.stopworker,self.aidx))
                 self.worker.daemon = True
                 self.worker.start()
                 if platform.system() == "Linux":

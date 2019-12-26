@@ -34,7 +34,7 @@ In short: The idea is to connect your raspberry pi to a monitor and tell rpisurv
 - OPTIONAL: checkout a specific branch, for example `git checkout v2_latest`, if you want to override the default version on master
 - run `sudo ./install.sh`
 - Get the correct stream url for your ip camera(s), there are some examples in /etc/rpisurv.conf
-- configure your screen(s) and stream(s) in /etc/rpisurv.conf.
+- Configure your screen(s) and stream(s) in /etc/rpisurv.conf. Remove all example config first! This dummy config is for documentation only, you will fail to start rpisurv if you do not remove these examples.
 - OPTIONAL: configure optional options per screen or per camera stream in /etc/rpisurv.conf, the [example config file](https://github.com/SvenVD/rpisurv/blob/master/surveillance/conf/surveillance.yml) file explains them all
 - reboot
 

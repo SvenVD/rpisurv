@@ -1,4 +1,9 @@
 # rpisurv 2 release notes
+## Changes in 2.1.6
+Added "aidx" option to be able to enable audio for a particular stream [link](https://www.tapatalk.com/groups/rpisurv/audio-t11-s20.html).
+This is a one to one mapping with the omxplayer aidx (Audio stream index) option, the default for rpisurv is the value -1 (audio disabled). 
+To enable audio for a stream try setting this to 1.
+
 ## Changes in 2.1.5
 Fixed bug in freeform_advanced_omxplayer_options option
 
