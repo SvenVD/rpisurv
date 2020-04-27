@@ -1,4 +1,8 @@
 # rpisurv 2 release notes
+## Changes in 2.1.7
+Http probe did not handle all exceptions which could crash rpisurv on rare occasions like described in the [link](https://www.tapatalk.com/groups/rpisurv/viewtopic.php?p=339#p339).
+Fixed by inserting a fallback exception handler in the http probe logic.
+
 ## Changes in 2.1.6
 Added "aidx" option to be able to enable audio for a particular stream [link](https://www.tapatalk.com/groups/rpisurv/audio-t11-s20.html).
 This is a one to one mapping with the omxplayer aidx (Audio stream index) option, the default for rpisurv is the value -1 (audio disabled). 

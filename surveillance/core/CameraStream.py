@@ -178,6 +178,9 @@ class CameraStream:
              except socket.timeout as e:
                 logger.error("CameraStream: " + self.name + " " + str(self.obfuscated_credentials_url) + " Not Connectable (failed socket connect, configured timeout: " + str(self.probe_timeout) + " ), " + repr(e))
                 return False
+             except Exception as e:
+                 logger.error("CameraStream: " + self.name + " " + str(self.obfuscated_credentials_url) + " Not Connectable (" + repr(e) + " )")
+                 return False
         else:
             logger.error("CameraStream: " + self.name + " Scheme " + str(self.scheme) + " in " + str(self.obfuscated_credentials_url) + " is currently not supported, you can make a feature request on https://community.rpisurv.net")
             sys.exit()
