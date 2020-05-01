@@ -53,6 +53,19 @@ def check_keypress():
                         return numeric_key_counter
                 else:
                     return None
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                pos = pygame.mouse.get_pos()
+                display_w = pygame.display.Info().current_w
+                quarter = display_w / 4
+                lastQuarter = display_w - quarter
+                if pos[0] > lastQuarter:
+                    touchResult = "next_event"
+                elif pos[0] > quarter and pos[0] < lastQuarter:
+                    touchResult = "resume_rotation"
+                else:
+                    touchResult = "pause_rotation"
+             elif event.type == pygame.MOUSEBUTTONUP:
+                return touchResult
     except pygame.error as e:
         logger.debug("Exception " + repr(e))
         exit(0)
