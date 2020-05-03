@@ -27,14 +27,17 @@ class CameraStream:
         self.name = name
         self.worker = None
         self.omxplayer_extra_options = ""
+        self.freeform_advanced_omxplayer_options = camera_stream.setdefault("freeform_advanced_omxplayer_options","")
         self.probe_timeout = camera_stream.setdefault("probe_timeout",3)
         self.imageurl = camera_stream.setdefault("imageurl", False)
         self.url = camera_stream["url"]
+        self.aidx = camera_stream.setdefault("aidx","-1")
         #Check if rtsp_over_tcp option exist otherwise default to false
         self.rtsp_over_tcp=camera_stream["rtsp_over_tcp"] if 'rtsp_over_tcp' in camera_stream else False
         #If rtsp over tcp option is true add extra option to omxplayer
         if self.rtsp_over_tcp:
             self.omxplayer_extra_options = self.omxplayer_extra_options + "--avdict rtsp_transport:tcp"
+        self.omxplayer_extra_options = self.omxplayer_extra_options + ' ' + self.freeform_advanced_omxplayer_options
         self.parsed=urlparse(self.url)
         self.port = self.parsed.port
         self.scheme = self.parsed.scheme
@@ -121,16 +124,18 @@ class CameraStream:
 
     def _urllib2open_wrapper(self):
         '''Handles authentication username and password inside URL like following example: "http://test:test@httpbin.org:80/basic-auth/test/test" '''
+        headers = {'User-Agent': 'Mozilla/5.0'}
         if self.parsed.password is not None and self.parsed.username is not None:
             host_info = self.parsed.netloc.rpartition('@')[-1]
             strippedcreds_url = self.parsed._replace(netloc=host_info)
             print strippedcreds_url.geturl()
-            request = urllib2.Request(strippedcreds_url.geturl())
+            request = urllib2.Request(strippedcreds_url.geturl(), None, headers)
             base64string = base64.encodestring('%s:%s' % (self.parsed.username, self.parsed.password)).replace('\n', '')
             request.add_header("Authorization", "Basic %s" % base64string)
             return urllib2.urlopen(request, timeout=self.probe_timeout)
         else:
-            return urllib2.urlopen(self.url, timeout=self.probe_timeout)
+            request = urllib2.Request(self.url, None, headers )
+            return urllib2.urlopen(request, timeout=self.probe_timeout)
 
     def is_connectable(self):
         if self.scheme == "rtsp":
@@ -173,6 +178,9 @@ class CameraStream:
              except socket.timeout as e:
                 logger.error("CameraStream: " + self.name + " " + str(self.obfuscated_credentials_url) + " Not Connectable (failed socket connect, configured timeout: " + str(self.probe_timeout) + " ), " + repr(e))
                 return False
+             except Exception as e:
+                 logger.error("CameraStream: " + self.name + " " + str(self.obfuscated_credentials_url) + " Not Connectable (" + repr(e) + " )")
+                 return False
         else:
             logger.error("CameraStream: " + self.name + " Scheme " + str(self.scheme) + " in " + str(self.obfuscated_credentials_url) + " is currently not supported, you can make a feature request on https://community.rpisurv.net")
             sys.exit()
@@ -215,7 +223,7 @@ class CameraStream:
                 logger.debug("CameraStream: Worker from " + self.name + " is still alive not starting new worker")
             else:
                 self.stopworker = multiprocessing.Value('b', False)
-                self.worker = multiprocessing.Process(target=worker.worker, args=(self.name,self.url,self.omxplayer_extra_options,self.coordinates,self.stopworker))
+                self.worker = multiprocessing.Process(target=worker.worker, args=(self.name,self.url,self.omxplayer_extra_options,self.coordinates,self.stopworker,self.aidx))
                 self.worker.daemon = True
                 self.worker.start()
                 if platform.system() == "Linux":

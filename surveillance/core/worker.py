@@ -6,7 +6,7 @@ import shlex
 import signal
 from util.setuplogging import setup_logging
 
-def worker(name,url,omxplayer_extra_options,coordinates,stopworker):
+def worker(name,url,omxplayer_extra_options,coordinates,stopworker,aidx):
     """
     Example substituted: ['/usr/bin/omxplayer', '--video_fifo', '1', '--video_queue', '1', '--live', '--timeout', '60', '--aidx', '-1', '-o', 'hdmi', 'rtsp://184.72.239.149:554/vod/mp4:BigBuckBunny_175k.mov', '--win', '960 0 1920 540', '--dbus_name', 'org.mpris.MediaPlayer2.cam_stream2']
     """
@@ -16,7 +16,7 @@ def worker(name,url,omxplayer_extra_options,coordinates,stopworker):
                      --video_queue 1 \
                      --live \
                      --timeout 60 \
-                     --aidx -1 \
+                     --aidx ' + str(aidx) + ' \
                      -o hdmi \
                      --threshold 0 \
                      ' + ' ' + omxplayer_extra_options + ' ' + url + ' --win ' + '"' + " ".join(map(str,coordinates))  + '"' + ' --dbus_name org.mpris.MediaPlayer2.' + name

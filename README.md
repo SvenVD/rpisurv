@@ -34,7 +34,7 @@ In short: The idea is to connect your raspberry pi to a monitor and tell rpisurv
 - OPTIONAL: checkout a specific branch, for example `git checkout v2_latest`, if you want to override the default version on master
 - run `sudo ./install.sh`
 - Get the correct stream url for your ip camera(s), there are some examples in /etc/rpisurv.conf
-- configure your screen(s) and stream(s) in /etc/rpisurv.conf.
+- Configure your screen(s) and stream(s) in /etc/rpisurv.conf. Remove all example config first! This dummy config is for documentation only, you will fail to start rpisurv if you do not remove these examples.
 - OPTIONAL: configure optional options per screen or per camera stream in /etc/rpisurv.conf, the [example config file](https://github.com/SvenVD/rpisurv/blob/master/surveillance/conf/surveillance.yml) file explains them all
 - reboot
 
@@ -80,7 +80,9 @@ Disable rotation (as in pause rotation, as in fix the current displayed screen) 
   If you have a "smearing" effect this option may resolve it.
   Note that you need a version of omxplayer which is released after 14 March 2016 (https://github.com/popcornmix/omxplayer/pull/433) to do this.
 
-- On a raspberry pi 3 it seems the default overscan settings are not good. If full screen is not used, if you have an unused bar in the bottom -> try to set `disable_overscan=1` in /boot/config.txt
+- On a raspberry pi 3 and 4 it seems the default overscan settings are not good. If full screen is not used, if you have an unused bar in the bottom -> try to set `disable_overscan=1` in /boot/config.txt
+
+- Users on a raspberry pi 4 which experience flickering can try to set `disable_overscan=1` in /boot/config.txt. As reported here: [link](https://www.tapatalk.com/groups/rpisurv/camera-flickering-not-sure-what-is-the-issue-t48.html#p192).
 
 
 ## Feature requests
