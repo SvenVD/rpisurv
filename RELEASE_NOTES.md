@@ -1,4 +1,8 @@
 # rpisurv 2 release notes
+## Changes in 2.1.8
+[nicolake](https://github.com/SvenVD/rpisurv/pull/100) provided some code to be able for touch screens to control rpisurv with basic commands. 
+This has been incorporated into rpisurv.
+
 ## Changes in 2.1.7
 Http probe did not handle all exceptions which could crash rpisurv on rare occasions like described in the [link](https://www.tapatalk.com/groups/rpisurv/viewtopic.php?p=339#p339).
 Fixed by inserting a fallback exception handler in the http probe logic.

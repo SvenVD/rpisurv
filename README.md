@@ -61,6 +61,13 @@ Keys F1 to F12 (or keypad 0 to 9), will force the equal numbered screen to be sh
 
 Disable rotation (as in pause rotation, as in fix the current displayed screen) dynamically during runtime. By pressing "p" (or keypad "*") to pause or "r" (or "," or keypad ".")' to resume/rotate. This overrides the disable_autorotation option if this has been set in the config file.
 
+Touchscreen control:
+The width of the screen is divided in four sections, 
+- Touching on the first section trigger a pause event.
+- Touching In the two sections in the middle trigger a resume event.
+- Touching In the last section, a next screen event.
+Note that a mouse can be used, however mouse cursor is hidden by default.
+
 
 ## Troubleshooting
 

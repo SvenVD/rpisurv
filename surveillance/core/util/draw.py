@@ -27,7 +27,7 @@ def placeholder(absposx,absposy,width,height,background_img_path,surface):
     refresh()
     return background_img
 
-def check_keypress():
+def check_input():
     try:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -53,8 +53,36 @@ def check_keypress():
                         return numeric_key_counter
                 else:
                     return None
+
+
+            # Touch screen handling
+            # the width of the screen is divided in four sections,
+            # touching or clicking on the first section trigger a pause event,
+            # in the two sections in the middle trigger a resume event
+            # and in the last section, a next screen event.
+            elif event.type == pygame.MOUSEBUTTONUP:
+                #For debug set_visible(True)
+                #pygame.mouse.set_visible(True)
+                logger.debug("draw: pygame.MOUSEBUTTONUP detected")
+                pos = pygame.mouse.get_pos()
+                display_w = pygame.display.Info().current_w
+                logger.debug("draw touch/mouse handling: pygame detected display width of " + str(display_w))
+                quarter = display_w / 4
+                firstQuarter = quarter
+                lastQuarter = display_w - quarter
+                logger.debug("draw touch/mouse handling: firstQuarter " + str(firstQuarter) + " and lastquarter " + str(lastQuarter))
+                if pos[0] > lastQuarter:
+                    logger.debug("draw touch/mouse handling: detected touch/mouse in lastquarter")
+                    touchResult = "next_event"
+                elif pos[0] > firstQuarter and pos[0] < lastQuarter:
+                    logger.debug("draw touch/mouse handling: detected touch/mouse in middle")
+                    touchResult = "resume_rotation"
+                else:
+                    logger.debug("draw touch/mouse handling: detected touch/mouse in first quarter")
+                    touchResult = "pause_rotation"
+                return touchResult
     except pygame.error as e:
-        logger.debug("Exception " + repr(e))
+        logger.debug("draw: Exception " + repr(e))
         exit(0)
 
 def refresh():

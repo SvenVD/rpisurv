@@ -81,11 +81,11 @@ def sigterm_handler(_signo, _stack_frame):
     sys.exit(0)
 
 
-def handle_keypresses():
+def handle_input():
     global disable_autorotation
-    event = draw.check_keypress()
+    event = draw.check_input()
     if event == "next_event":
-        logger.debug("Main: force next screen keyboard event detected, start rotate_next event")
+        logger.debug("Main: force next screen input event detected, start rotate_next event")
         screen_manager_main.rotate_next()
         # This can do not harm, but is not really needed in this case, since the screen was already updated in cache and we merely swap it on screen as is.
         # We do not check update_connectable_cameras this time as this is to slow for the user to wait for and we live with the fact if there is one unavailable or one became available since cache time,
@@ -93,7 +93,7 @@ def handle_keypresses():
         # logger.debug("MAIN: after keyboard next_event start update_active_screen with skip_update_connectable_camera true")
         # screen_manager_main.update_active_screen(skip_update_connectable_camera = True)
     if event == "end_event":
-        logger.debug("Main:  quit_on_keyboard event detected")
+        logger.debug("Main:  quit input event detected")
         screen_manager_main.destroy()
     if event == "resume_rotation":
         logger.debug("Main: resume_rotation event detected")
@@ -112,7 +112,7 @@ if __name__ == '__main__':
     #Setup logger
     logger = setup_logging()
 
-    fullversion_for_installer = "2.1.7"
+    fullversion_for_installer = "2.1.8"
 
     version = fullversion_for_installer
     logger.info("Starting rpisurv " + version)
@@ -159,7 +159,7 @@ if __name__ == '__main__':
         loop_counter += 1
 
         #Handle keypresses
-        handle_keypresses()
+        handle_input()
 
         #Check free mem and log warning
         if memory_usage_check:
@@ -174,7 +174,7 @@ if __name__ == '__main__':
                 screen_manager_main.update_active_screen()
 
         else:
-            logger.debug("MAIN: disable_autorotation is True, use keyboard only to rotate between screens")
+            logger.debug("MAIN: disable_autorotation is True, use input keyboard/mouse/touch only to rotate between screens")
 
         #Only update the screen/check connectable cameras every interval_check_status seconds
         if loop_counter % int(interval_check_status) == 0:
