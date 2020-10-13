@@ -1,4 +1,8 @@
 # rpisurv 2 release notes
+## Changes in 2.1.9
+A long requested feature [link](https://www.tapatalk.com/groups/rpisurv/grid-lay-out-show-one-stream-bigger-then-others-t5.html) has now finally made it to rpisurv.  
+Instead of letting rpisurv calculate the layout for you, you can now create complex custom layouts yourself. [Examples click here](https://gist.github.com/SvenVD/0cb1a40261b7c7f2d4cffac24dc9181d)
+
 ## Changes in 2.1.8
 [nicolake](https://github.com/SvenVD/rpisurv/pull/100) provided some code to be able for touch screens to control rpisurv with basic commands. 
 This has been incorporated into rpisurv.

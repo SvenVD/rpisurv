@@ -12,7 +12,7 @@ If you like this software please consider donating:
 See [RELEASE_NOTES](https://github.com/SvenVD/rpisurv/blob/master/RELEASE_NOTES.md)
 
 ## Goal
-Rpisurv is designed to be simple to use (no need to fiddle with coordinates or detailed layout configs) and to be able to run unattended for long periods of time. Therefore watchdogs and autohealing logic have been implemented.
+Rpisurv is designed to be simple to use (no need to fiddle with coordinates or detailed layout configs, although you [can](https://gist.github.com/SvenVD/0cb1a40261b7c7f2d4cffac24dc9181d) if you really want) and to be able to run unattended for long periods of time. Therefore watchdogs and autohealing logic have been implemented.
 Version 2 adds functionality to define multiple screens which can be cycled between.
 
 ## Description

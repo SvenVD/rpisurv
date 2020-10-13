@@ -27,6 +27,8 @@ class CameraStream:
         self.name = name
         self.worker = None
         self.omxplayer_extra_options = ""
+        #This option overrides any other coordinates passed to this stream
+        self.force_coordinates=camera_stream.setdefault("force_coordinates", False)
         self.freeform_advanced_omxplayer_options = camera_stream.setdefault("freeform_advanced_omxplayer_options","")
         self.probe_timeout = camera_stream.setdefault("probe_timeout",3)
         self.imageurl = camera_stream.setdefault("imageurl", False)
@@ -212,7 +214,11 @@ class CameraStream:
             logger.debug("CameraStream: This stream " + self.name + " is not an imageurl, skip refreshing imageurl")
 
     def start_stream(self, coordinates, pygamescreen, cached):
-        self.coordinates=coordinates
+        if self.force_coordinates and not cached:
+            logger.debug("CameraStream: This stream " + self.name + " uses force_coordinates " + str(self.force_coordinates) + " which will override pre-calculated coordinates of " + str(coordinates) )
+            self.coordinates = self.force_coordinates
+        else:
+            self.coordinates=coordinates
         self.pygamescreen=pygamescreen
         logger.debug("CameraStream: Start stream " + self.name)
 
