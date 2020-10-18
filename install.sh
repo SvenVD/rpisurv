@@ -76,20 +76,37 @@ BACKUPCONFFILE=/tmp/surveillance.yml.$(date +%Y%m%d_%s)
 DESTPATH="/usr/local/bin/rpisurv"
 sudo mkdir -p "$DESTPATH"
 
-if [ -f "$DESTPATH/$CONFFILE" ]; then sudo cp -v "$DESTPATH/$CONFFILE" "${BACKUPCONFFILE}";fi
-echo
-echo "Existing config file will be backed up to "${BACKUPCONFFILE}""
+if [ -f "$DESTPATH/$CONFFILE" ];then 
+   echo
+   echo "Existing config file will be backed up to "${BACKUPCONFFILE}""
+   sudo cp -v "$DESTPATH/$CONFFILE" "${BACKUPCONFFILE}"
+
+   echo
+   echo "Do you want to overwrite your current config file with the example config file?"
+   echo "Newer major versions of rpisurv are not backwards compatible with old format of config file"
+   echo "Type yes/no"
+   read USEEXAMPLECONFIG
+else
+   USEEXAMPLECONFIG="yes"
+fi
+
+if [ -d /usr/local/bin/rpisurv/images/ ];then
+   echo
+   echo "Do you want to overwrite you current images directory (/usr/local/bin/rpisurv/images/) with the images from the installer?"
+   echo "Type yes/no"
+   read OVERWRITESIMAGES
+else
+   OVERWRITESIMAGES="yes"
+fi
 
 
-echo
-echo "Do you want to overwrite you current config file with the example config file?"
-echo "Newer major versions of rpisurv are not backwards compatible with old format of config file"
-echo "Type yes/no"
-read ANSWER
+if [ x"$OVERWRITESIMAGES" == x"no" ]; then
+    RSYNCOPTIONS="--exclude /images"
+fi
 
-sudo rsync -av "$SOURCEDIR/" "$DESTPATH/"
+sudo rsync -av $RSYNCOPTIONS "$SOURCEDIR/" "$DESTPATH/"
 
-if [ x"$ANSWER" == x"no" ]; then
+if [ x"$USEEXAMPLECONFIG" == x"no" ]; then
     #Putting back old config file
     if [ -f "${BACKUPCONFFILE}" ]; then sudo cp -v "${BACKUPCONFFILE}" "$DESTPATH/$CONFFILE" ; fi
 fi
