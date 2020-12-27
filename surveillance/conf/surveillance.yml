@@ -42,15 +42,27 @@ essentials:
           #Optional: aidx: this is a one to one mapping with the omxplayer aidx (Audio stream index) option, the default for rpisurv is the value -1 (audio disabled).
           #To enable audio for this stream try setting this to 1. You do not have to set this option if you do not want audio, the default is -1
           aidx: -1
+          #Optional and advanced option: force_coordinates: If you are not happy with the pre-calculated position on the screen of a particular stream then you can override it with this option
+          #Note: Once you do this, the layout of this particular screen becomes the responsability of the user
+          #Note2: rpisurv will continue to draw other streams with the pre-calculated values if they do not have force_coordinates set.
+          #Remember that rpisurv autocalculation can be influenced by nr_of_columns option
+          #This can cause overlap with other streams but the user can correct this by manually calculating and setting the position of the other camera streams with force_coordinates
+          #Note2: You can also put camera streams on top of each other if you use this option and a combination of freeform_advanced_omxplayer_options: "--layer 1000"
+          #Note3: This works transparently with rotation of screens, every screen can have a different layout
+          #force_coordinates: [upperleft corner x position, upperleft corner y position, downright corner x position, downright corner y position]
+          #Minimal example see here: https://gist.github.com/SvenVD/0cb1a40261b7c7f2d4cffac24dc9181d
+          force_coordinates: [0, 800, 600, 1080]
+
           #Foscam-fi9821w example
         - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
           #Dahua IPC-HDW4200S example or IPC-HDW4300S
         - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1"
 
       #OPTIONAL AND ADVANCED PER SCREEN OPTIONS, YOU CAN CONFIGURE THIS PER SCREEN, IF NOT CONFIGURED A DEFAULT VALUE WILL BE USED
-      #NOT recommendeded to enable disable_probing_for_all_streams, it disables some autohealing functions of rpisurv
+      #NOT recommendeded to enable disable_probing_for_all_streams, it disables the removal of dead feeds which also disables auto-rearranging the screen layout.
       #Also if using multiple screens, enabling this will slow down rotation of one screen to the next if there are unconnectable screens
-      #This also disabled rpisurv only drawing the connectable screens using up all pixels. In other words, you will get a placeholder for an unconnectable stream instead of not showing at all
+      #This also disables rpisurv only drawing the connectable screens using up all pixels.
+      #In other words, you will get a placeholder for an unconnectable stream instead of not showing at all
       #Roughly the same as the obsoleted keep_first_screen_layout in rpisurv v1.0
       #Defaults to False
       disable_probing_for_all_streams: False
@@ -110,11 +122,13 @@ advanced:
   ##Enable this option if you want to have a fixed width of all your camera streams,
   ##By default rpisurv autocalculates this value, this can cause streams to get "stretched",
   ##if this value exceeds the available width, rpisurv will fallback to autocalculation
+  ##Note, this value will be ignored for a stream that uses force_coordinates
   #fixed_width: 500
 
   ##Enable this option if you want to have a fixed height for all your camera streams,
   ##By default rpisurv autocalculates this value, this can cause streams to get "stretched",
   ##if this value exceeds the available height, rpisurv will fallback to autocalculation
+  ##Note, this value will be ignored for a stream that uses force_coordinates
   #fixed_height: 500
 
   #Rpisurv sends usage stats to it's statistics server to give the rpisurv community an idea how widespread this software is being used

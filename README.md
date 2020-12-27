@@ -12,7 +12,7 @@ If you like this software please consider donating:
 See [RELEASE_NOTES](https://github.com/SvenVD/rpisurv/blob/master/RELEASE_NOTES.md)
 
 ## Goal
-Rpisurv is designed to be simple to use (no need to fiddle with coordinates or detailed layout configs) and to be able to run unattended for long periods of time. Therefore watchdogs and autohealing logic have been implemented.
+Rpisurv is designed to be simple to use (no need to fiddle with coordinates or detailed layout configs, although you [can](https://gist.github.com/SvenVD/0cb1a40261b7c7f2d4cffac24dc9181d) if you really want) and to be able to run unattended for long periods of time. Therefore watchdogs and autohealing logic have been implemented.
 Version 2 adds functionality to define multiple screens which can be cycled between.
 
 ## Description
@@ -60,6 +60,13 @@ If you are connected via keyboard/keypad, you can force the next screen by press
 Keys F1 to F12 (or keypad 0 to 9), will force the equal numbered screen to be shown onscreen (this takes longer depending on amount of unconnectable streams and they thus need to wait for timeout, keep holding until screen changes. Note, you can change probe_timeout per camera stream if needed).
 
 Disable rotation (as in pause rotation, as in fix the current displayed screen) dynamically during runtime. By pressing "p" (or keypad "*") to pause or "r" (or "," or keypad ".")' to resume/rotate. This overrides the disable_autorotation option if this has been set in the config file.
+
+Touchscreen control:
+The width of the screen is divided in four sections, 
+- Touching on the first section trigger a pause event.
+- Touching In the two sections in the middle trigger a resume event.
+- Touching In the last section, a next screen event.
+Note that a mouse can be used, however mouse cursor is hidden by default.
 
 
 ## Troubleshooting
