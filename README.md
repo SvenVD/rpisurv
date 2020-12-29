@@ -82,7 +82,7 @@ This is a remote location with a video stream, Rpisurv will do its best to displ
 
 ## Release notes
 
-See [RELEASE_NOTES]((https://github.com/SvenVD/rpisurv/releases))
+See [RELEASE_NOTES](https://github.com/SvenVD/rpisurv/releases)
 
 ## Placeholder images
 After installation you may change the placeholder images to something you like.
