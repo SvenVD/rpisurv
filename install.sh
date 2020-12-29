@@ -113,7 +113,7 @@ fi
 sudo rsync -av $RSYNCOPTIONS "$SOURCEDIR/" "$DESTPATH/"
 
 #Make sure pngview is executable by root
-sudo chmod 770 surveillance/bin/pngview
+sudo chmod 770 "${SOURCEDIR}"/bin/pngview
 
 
 STARTUPCMD="cd $DESTPATH; python "$MAINSOURCE" &"
