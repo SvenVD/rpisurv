@@ -141,7 +141,7 @@ if __name__ == '__main__':
     #Setup logger
     logger = setup_logging()
 
-    fullversion_for_installer = "3.0.0-beta2"
+    fullversion_for_installer = "3.0.0-beta3"
 
     version = fullversion_for_installer
     logger.info("Starting rpisurv " + version)
