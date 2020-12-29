@@ -1,0 +1,58 @@
+#THIS IS A YAML FILE, INDENTATION IS IMPORTANT. ALSO DO NOT USE TABS FOR INDENTATION, BUT USE SPACES
+
+essentials:
+  screens:
+      #######################################################################################################
+      # Below config is included for demo and test purposes
+      # After installation you can start rpisurv and the demo should be started
+      # For full list of all options see comments in display1.yml
+      #######################################################################################################
+
+    - camera_streams:
+        - url: "file:///usr/local/bin/rpisurv/demo/resources/Big_Buck_Bunny_Trailer_fast_480p30.m4v"
+          force_coordinates: [0, 0, 1920, 1080]
+        - url: "file:///usr/local/bin/rpisurv/demo/resources/Big_Buck_Bunny_Trailer_fast_480p30.m4v"
+          force_coordinates: [100, 100, 700, 500]
+          showontop: True
+      duration: 20
+    - camera_streams:
+        - url: "file:///usr/local/bin/rpisurv/demo/resources/Big_Buck_Bunny_Trailer_fast_480p30.m4v"
+        - url: "file:///usr/local/bin/rpisurv/demo/resources/demo.png"
+          imageurl: true
+        - url: "file:///usr/local/bin/rpisurv/demo/resources/demo.png"
+          imageurl: true
+        - url: "file:///usr/local/bin/rpisurv/demo/resources/Big_Buck_Bunny_Trailer_fast_480p30.m4v"
+      duration: 20
+      nr_of_columns: 2
+    - camera_streams:
+        - url: "file:///usr/local/bin/rpisurv/demo/resources/demo.png"
+          imageurl: true
+        - url: "file:///usr/local/bin/rpisurv/demo/resources/Big_Buck_Bunny_Trailer_fast_480p30.m4v"
+        - url: "file:///usr/local/bin/rpisurv/demo/resources/Big_Buck_Bunny_Trailer_fast_480p30.m4v"
+        - url: "file:///usr/local/bin/rpisurv/demo/resources/demo.png"
+          imageurl: true
+      duration: 20
+      nr_of_columns: 2
+    - camera_streams:
+        - url: "file:///usr/local/bin/rpisurv/demo/resources/Big_Buck_Bunny_Trailer_fast_480p30.m4v"
+          force_coordinates: [600, 0, 1920, 800]
+        - url: "file:///usr/local/bin/rpisurv/demo/resources/Big_Buck_Bunny_Trailer_fast_480p30.m4v"
+          force_coordinates: [1600, 100, 1900, 200]
+          showontop: True
+        - url: "file:///usr/local/bin/rpisurv/demo/resources/demo.png"
+          imageurl: true
+          force_coordinates: [0, 0, 600, 400]
+        - url: "file:///usr/local/bin/rpisurv/demo/resources/demo.png"
+          imageurl: true
+          force_coordinates: [0, 400, 600, 800]
+        - url: "file:///usr/local/bin/rpisurv/demo/resources/demo.png"
+          force_coordinates: [0, 800, 600, 1080]
+          imageurl: true
+        - url: "file:///usr/local/bin/rpisurv/demo/resources/demo.png"
+          imageurl: true
+          force_coordinates: [600, 800, 1260, 1080]
+        - url: "file:///usr/local/bin/rpisurv/demo/resources/demo.png"
+          imageurl: true
+          force_coordinates: [1260, 800, 1920, 1080]
+      duration: 20
+

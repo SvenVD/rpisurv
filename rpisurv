@@ -1,5 +1,3 @@
 #!/bin/bash
 #Removing leftover dbus connections first
-/usr/bin/pkill -f "dbus-daemon --fork"
-/bin/rm -fv /tmp/omxplayerdbus*
-cd /usr/local/bin/rpisurv; python surveillance.py
+cd /usr/local/bin/rpisurv; python3 surveillance.py

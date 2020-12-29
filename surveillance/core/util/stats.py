@@ -1,10 +1,10 @@
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import hashlib
 import time
 import ssl
 import logging
 from uuid import getnode as get_mac
-from setuplogging import setup_logging
+from .setuplogging import setup_logging
 import multiprocessing
 
 logger = logging.getLogger('l_default')
@@ -17,13 +17,13 @@ def start_timer():
 def get_runtime(start_time):
     '''get runtime in seconds'''
     currentime=time.time()
-    runtime=long(round((currentime - start_time)))
+    runtime=int(round((currentime - start_time)))
     logger.debug("Current time detected is " + str(currentime) + " runtime calculated is " + str(runtime))
 
     return runtime
 
 def generate_uniqid():
-    mac=str(get_mac())
+    mac=str(get_mac()).encode('utf-8')
 
     #Hash the mac address to ensure anonymity
     m = hashlib.new('sha256')
@@ -55,9 +55,9 @@ def send_stats(version, uniqid, runtime):
     context.options |= ssl.OP_NO_TLSv1_1
     #Normally this has been set by ssl.Purpose.SERVER_AUTH but for safety in future explicitly set CERT_REQUIRED
     context.verify_mode = ssl.CERT_REQUIRED
-    httpshandler = urllib2.HTTPSHandler(context=context)
+    httpshandler = urllib.request.HTTPSHandler(context=context)
 
-    opener = urllib2.build_opener(httpshandler)
+    opener = urllib.request.build_opener(httpshandler)
     opener.addheaders=[
         ('User-Agent', uniqid),
         ('Pragma', 'no-cache'),
@@ -67,13 +67,13 @@ def send_stats(version, uniqid, runtime):
     #opener.addheaders.append(('Cookie', 'runtime='+ runtime + ';reservedkey=reservedvalue'))
     opener.addheaders.append(('Cookie', 'runtime='+ runtime + ';version='+ str(version)  ))
 
-    urllib2.install_opener(opener)
+    urllib.request.install_opener(opener)
 
     #f = opener.open("http://httpbin.org/cookies")
     logger_send_stats.debug("Start sending uniqid " + uniqid + ", runtime " + runtime + ", version " + str(version) + " to " + destination + " for updating stats rpisurv community")
     try:
         response = opener.open(destination, timeout=20)
-    except urllib2.HTTPError, e:
+    except urllib.error.HTTPError as e:
         logger_send_stats.error("There was an error connecting to the statistics server at " + destination + ". Failed with code " + str(e.code))
     except Exception as e:
         logger_send_stats.error("There was an error connecting to the statistics server at " + destination + " , the error is " + repr(e))

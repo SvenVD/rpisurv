@@ -1,9 +1,9 @@
 import logging
 import math
 import time
+import collections
 
-from CameraStream import CameraStream
-import util.draw as draw
+from .CameraStream import CameraStream
 
 #We do not need exact floating point numbers, use builtin "float" instead
 #from decimal import getcontext, Decimals
@@ -13,37 +13,42 @@ logger = logging.getLogger('l_default')
 
 class Screen:
     """This class creates and handles camerastreams objects and their position"""
-    def __init__(self, screenname, screen_cfg, resolution, pygamescreen, fixed_width, fixed_height):
+    def __init__(self, screenname, screen_cfg, display, drawinstance):
         ## Init vars
+        #Use vcgencmd dispmanx_list to see on which layer framebuffer is located
+        #Highest observed was 2147483647 on a rpi4, start high with some tolerance,so caching has a long way to count down before it needs to reset the layer
+        self.layer_init_value=2000000000
+        self.layer=self.layer_init_value
+        self.display_vlc_hdmi_id=str(int(display["hdmi"]) + 1)
         self.disable_probing_for_all_streams = screen_cfg.setdefault('disable_probing_for_all_streams', False)
         self.nr_of_columns = screen_cfg.setdefault('nr_of_columns', 2)
-        self.autostretch = screen_cfg.setdefault('autostretch', False)
         self.name = screenname
         self.screen_cfg = screen_cfg
         self.camera_streams_cfg = screen_cfg["camera_streams"]
         self.duration = self.screen_cfg.setdefault('duration', 30)
         logger.debug("Screen: " + self.name + " duration from config is: " + str(self.duration))
-        self.resolution = resolution
-        self.pygamescreen = pygamescreen
-        self.fixed_width = fixed_width
-        self.fixed_height = fixed_height
+        self.drawinstance = drawinstance
         self.first_run = True
         self.start_of_active_time = -1
         self.previous_connectable_camera_streams = []
-        #Init these two the same otherwise, code will detect a cache event on first run of the screen
-        self.previous_cached = True
-        self.cached = True
-        if self.cached:
-            logger.debug("Screen: This screen: " + self.name + " will be started in cache")
-        else:
-            logger.debug("Screen: This screen: " + self.name + " will not be started in cache")
 
 
         ## Init functions
         # Sets internal variable resolution
-        self.resolution_width = int(self.resolution[0])
-        self.resolution_height = int(self.resolution[1])
+        self.resolution_width = int(display["resolution"]["width"])
+        self.resolution_height = int(display["resolution"]["height"])
         self._init_camera_streams()
+
+
+    def has_image_url(self):
+        """Returns True if this screen has at least one stream that is an imageurl"""
+
+        for camera_stream in self.all_camera_streams:
+            if camera_stream.is_imageurl():
+                logger.debug(
+                    "Screen: " + self.name + " has_image_url: detected at least one imageurl: " + camera_stream.name )
+                return True
+        return False
 
     def _init_camera_streams(self):
         '''Instantiate camera instances and put them in a list'''
@@ -52,7 +57,7 @@ class Screen:
         for camera_stream in self.camera_streams_cfg:
             counter = counter + 1
             cam_stream_name = self.name + "_cam_stream" + str(counter)
-            cam_stream = CameraStream(cam_stream_name, camera_stream)
+            cam_stream = CameraStream(cam_stream_name, camera_stream, self.drawinstance, self.display_vlc_hdmi_id)
             self.all_camera_streams.append(cam_stream)
 
     def update_connectable_camera_streams(self, skip = False):
@@ -81,52 +86,53 @@ class Screen:
     def destroy(self):
         logger.debug("Screen: Destroying screen: " + self.name)
 
-        self.destroy_all_placeholder()
         for cam_stream_to_stop in self.previous_connectable_camera_streams:
             cam_stream_to_stop.stop_stream()
 
         # Reset vars for next iteration of this screen, object stays in memory
         self.previous_connectable_camera_streams = []
-        # Init these two the same otherwise, code will detect a cache event on first run of the screen
-        self.previous_cached = True
-        self.cached = True
         self.first_run = True
         self.start_of_active_time = -1
 
-    def destroy_all_placeholder(self):
-        # TODO This can be done more elegant if we collect all placeholders when they are drawn to a list and then kill each of them individually here?
-        # Instead of drawing over them
-        if not self.cached:
-            draw.blank_screen(0, 0, self.resolution_width, self.resolution_height, self.pygamescreen)
-            draw.refresh()
+    def set_layer(self,layer):
+        self.layer = layer
+        logger.debug("Screen: layer for screen " + self.name + " has been set to " + str(self.layer))
 
-    def make_active(self):
-        logger.debug("Screen: Make screen " + self.name + " active")
+    def get_layer(self):
+        return self.layer
+
+    def reset_layer(self):
+        logger.debug("Screen: layer for screen " + self.name + " will be reset to " + str(self.layer_init_value) + " coming from " + str(self.layer))
+        self.layer=self.layer_init_value
+
+    def reset_active_timer(self):
+        logger.debug("Screen: reset_active_timer " + self.name)
         #Set start time
         self.start_of_active_time = time.time()
         logger.debug("Screen: " + self.name + " start_of_active_time: " + str(self.start_of_active_time))
-        self.cached = False
 
     def get_active_run_time(self):
-        '''Returns -1 if cached and how long the screen is in active mode if not cached'''
-        if not self.cached:
-            active_run_time = long(round((time.time() - self.start_of_active_time)))
-        else:
-            active_run_time = -1
+        '''Returns how long the screen is in active mode'''
+        active_run_time = int(round((time.time() - self.start_of_active_time)))
         logger.debug("Screen: " + self.name + " active_run_time: " + str(active_run_time) + " / " + str(self.duration))
         return active_run_time
 
+    def _is_connectable_streams_changed(self):
+        """Returns True if previous_connectable_camera_streams list has different items from connectable_camera_streams regardless of order"""
+        #logger.debug(f"connectable_camera_streams {collections.Counter(self.connectable_camera_streams)} previous_connectable_camera_streams {collections.Counter(self.previous_connectable_camera_streams)}")
+        if collections.Counter(self.connectable_camera_streams) == collections.Counter(self.previous_connectable_camera_streams):
+            return False
+        else:
+            return True
+
     def update_screen(self):
-
         # Other option to compare could be with to convert the list into a set: print set(connectable_camera_streams) == set(previous_connectable_camera_streams)
-        # Only re-draw screen if something is changed or try redrawing if there is no camerastream that is connectable OR if we change the screen from cached to not cached or vice versa
-        if cmp(self.connectable_camera_streams, self.previous_connectable_camera_streams) != 0 or len(self.previous_connectable_camera_streams) == 0 or self.previous_cached != self.cached:
-            logger.debug("Screen: " + self.name + " Connectable camera streams changed from " + str(len(self.previous_connectable_camera_streams)) + " to " + str(len(self.connectable_camera_streams)) + " or we change from previous_cached value: " + str(self.previous_cached) + " to current cached value: " + str(self.cached) + ", screen: " + self.name + " needs update/redraw")
-
-            #Stop all running streams only when some streams are not connectable
-            if cmp(self.connectable_camera_streams, self.previous_connectable_camera_streams) != 0 or len( self.previous_connectable_camera_streams) == 0:
-                for cam_stream_to_stop in self.cam_streams_to_stop:
-                    cam_stream_to_stop.stop_stream()
+        # Only re-draw screen if something is changed or try redrawing if there is no camerastream that is connectable OR if we change the screen
+        if self._is_connectable_streams_changed() or len(self.previous_connectable_camera_streams) == 0:
+            logger.debug(f"Screen {self.name} needs update/redraw: changes in connectable camera streams detected.( previous: {len(self.previous_connectable_camera_streams)} / now: {len(self.connectable_camera_streams)} or different connectable streams then before )")
+            #Stop all running streams before redrawing
+            for cam_stream_to_stop in self.cam_streams_to_stop:
+                cam_stream_to_stop.stop_stream()
 
 
             nr_of_columns=int(self.nr_of_columns)
@@ -136,15 +142,10 @@ class Screen:
             logger.debug( "Screen: " + self.name + " number of fields= " + str(fields))
 
             if fields == 0:
-                if not self.cached:
-                    #Draw no connectable placeholder
-                    draw.placeholder(0, 0, self.resolution_width, self.resolution_height, "images/noconnectable.png", self.pygamescreen)
-                    self.previous_connectable_camera_streams = self.connectable_camera_streams
-                    self.previous_cached = self.cached
+                #Draw no connectable placeholder
+                self.drawinstance.placeholder(0, 0, self.resolution_width, self.resolution_height, "images/noconnectable.png")
+                self.previous_connectable_camera_streams = self.connectable_camera_streams
                 return
-            else:
-                # Only destroy all placeholders when fields are not 0, this to prevent showing black screen flapping when noconnectable is shown fullscreen
-                self.destroy_all_placeholder()
 
 
             #If you have less fields than columns then only set fields amount columns
@@ -154,51 +155,27 @@ class Screen:
             #We calculate needed numbers of rows based on how many fields we have and how many columns per row we want
             nr_of_rows=math.ceil(float(fields)/nr_of_columns)
 
-            default_fieldwidth=self.resolution_width/nr_of_columns
+            default_fieldwidth=int(self.resolution_width/nr_of_columns)
             default_fieldheight=int(self.resolution_height/nr_of_rows)
 
             normal_fieldwidth=default_fieldwidth
             normal_fieldheight=default_fieldheight
 
-            if self.fixed_width is not None:
-                total_actual_width=  nr_of_columns * self.fixed_width
-                if not total_actual_width > self.resolution_width:
-                    normal_fieldwidth=self.fixed_width
-                    logger.debug("Screen: Detected advanced fixed_width config option, setting normal_fieldwidth to " + str(normal_fieldwidth))
-                else:
-                    logger.error("Screen: Total sum of advanced fixed_width (nr_columns * fixed_width) option (" + str(total_actual_width) + ") is more then available width (" + str(self.resolution_width) + "), falling back to autocalculated width: " + str(normal_fieldwidth))
-
-
-            if self.fixed_height is not None:
-               total_actual_height=  nr_of_rows * self.fixed_height
-               if not total_actual_height > self.resolution_height:
-                   normal_fieldheight=self.fixed_height
-                   logger.debug("Screen: Detected advanced fixed_height config option, setting normal_fieldheight to " + str(normal_fieldheight))
-               else:
-                   logger.error("Screen: Total sum of advanced fixed_height (nr rows * fixed_height) option (" + str(total_actual_height) + ") is more then available height (" + str(self.resolution_height) + "), falling back to autocalculated height: " + str(normal_fieldheight))
-
             currentrow=1
             currentwindow=1
             currentrowlength=nr_of_columns
 
-            if self.cached:
-                #cached means, warm the camerastreams offscreen, so they can be swapped onscreen when rotate is called
-                offset = self.resolution_width
-                logger.debug("Screen: This screen: " + self.name + " is updated in cache with offset:" + str(offset))
-            else:
-                offset = 0
-
-            x1=0 + offset
+            x1=0
             y1=0
-            x2=normal_fieldwidth + offset
+            x2=normal_fieldwidth
             y2=normal_fieldheight
 
             for cam_stream in self.cam_streams_to_draw:
 
                 if currentwindow > currentrowlength:
                     #This is a new row event
-                    x1=0 + offset
-                    x2=normal_fieldwidth + offset
+                    x1=0
+                    x2=normal_fieldwidth
                     y1=y1 + normal_fieldheight
                     y2=y2 + normal_fieldheight
 
@@ -212,29 +189,23 @@ class Screen:
 
                 #If this is the first field/window override some settings
                 if currentwindow == 1:
-                    x1=0 + offset
-                    x2=normal_fieldwidth + offset
+                    x1=0
+                    x2=normal_fieldwidth
 
-                #If this is the last field and we still have some screen space left, horizontally stretch it to use all space
                 if currentwindow == fields:
-                    if self.fixed_width is None and self.autostretch is True:
-                        #Sometimes this will override to the same value if the window end was already at the end of the screen
-                        #Other times it will really override to the end of the screen
-                        x2= self.resolution_width + offset
-                    else:
-                        #Start calculation to display placeholders
-                        free_horizontal_pixels = self.resolution_width - x2
-                        #If we have some unused screen space and this Screen is not a cached screen then start drawing placeholders
-                        if free_horizontal_pixels > 0 and not self.cached:
-                            logger.debug("Screen: We have " + str(free_horizontal_pixels) + " free_horizontal_pixels unused screen and autostretch is disabled. Start drawing placeholders")
-                            nr_of_placeholders=free_horizontal_pixels/normal_fieldwidth
-                            count_placeholders = 0
-                            placeholder_x = x1 + normal_fieldwidth
-                            placeholder_y = y1
-                            while count_placeholders < nr_of_placeholders:
-                                draw.placeholder(placeholder_x, placeholder_y, normal_fieldwidth, normal_fieldheight, "images/placeholder.png", self.pygamescreen)
-                                count_placeholders = count_placeholders + 1
-                                placeholder_x = placeholder_x + normal_fieldwidth
+                    #Start calculation to display placeholders
+                    free_horizontal_pixels = self.resolution_width - x2
+                    #If we have some unused screen space. Start drawing placeholders to fill the free space
+                    if free_horizontal_pixels > 0:
+                        logger.debug("Screen: We have " + str(free_horizontal_pixels) + " free_horizontal_pixels unused screen. Start drawing placeholders to fill the free space")
+                        nr_of_placeholders=free_horizontal_pixels/normal_fieldwidth
+                        count_placeholders = 0
+                        placeholder_x = x1 + normal_fieldwidth
+                        placeholder_y = y1
+                        while count_placeholders < nr_of_placeholders:
+                            self.drawinstance.placeholder(placeholder_x, placeholder_y, normal_fieldwidth, normal_fieldheight, "images/placeholder.png")
+                            count_placeholders = count_placeholders + 1
+                            placeholder_x = placeholder_x + normal_fieldwidth
 
                 logger.debug("Screen: cam stream name =" + cam_stream.name)
                 cam_stream_name = "cam_stream" + str(currentwindow)
@@ -242,10 +213,9 @@ class Screen:
                 # y1 #y coordinate upper left corner
                 # x2 #x coordinate absolute where window should end, count from left to right
                 # y2 #y coordinate from where window should end, count from top to bottom of screen
-                cam_stream.start_stream([x1,y1,x2,y2], self.pygamescreen, self.cached)
+                cam_stream.start_stream([x1,y1,x2,y2], self.layer)
                 #Debug test
                 #cam_stream.set_videopos([x1 + 50 ,y1 +50 ,x2 +50 ,y2 +50])
-                cam_stream.printcoordinates()
 
                 currentwindow = currentwindow + 1
         else:
@@ -254,12 +224,11 @@ class Screen:
                 len(self.connectable_camera_streams)) + ", screen: " + self.name + " does not need full redraw")
 
         self.previous_connectable_camera_streams = self.connectable_camera_streams
-        self.previous_cached = self.cached
 
-        #refresh all placeholders that were created on the screen itself, but do not do this if we are running in cache
-        if not self.cached:
-            #If there are imageurls then now is the time to refresh them all
-            for cam_stream in self.cam_streams_to_draw:
-                cam_stream.refresh_image_from_url()
-            draw.refresh()
+        #refresh all placeholders that were created on the screen itself.
+        #If there are imageurls then now is the time to refresh them all
+        for cam_stream in self.cam_streams_to_draw:
+            cam_stream.refresh_image_from_url()
+
+        self.drawinstance.refresh()
 

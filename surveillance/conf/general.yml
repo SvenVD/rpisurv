@@ -1,0 +1,41 @@
+#!!!Normal users do not need to edit this section!!!
+advanced:
+  #Rpisurv sends usage stats to it's statistics server to give the rpisurv community an idea how widespread this software is being used
+  #No performance impact is measured when using this option, no sensitive data is being sent. All data is anonymised.
+  #By default this is false
+  #update_stats: False
+
+  #By default Rpisurv will cache the next screen in the rotation to speed up the future rotation event.
+  #However, there are some cases where Rpisurv will  force disable caching of the next screen:
+  #- When dual displays are detected, caching of next screen will be automatically disabled on both displays to free up resources for actual streams
+  #  secondly pygame is not compatible with 2 displays, see https://github.com/pygame/pygame/issues/2356
+  #- When an imageurl is used in a screen then caching of the next screen will be automatically disabled because underlying software (pygame) is currently not compatible with our layered-caching approach
+  #- When a human sets this setting to "enable_opportunistic_caching_next_screen: False" (because he or she wants to exchange caching resources for more visible streams)
+  #By default this is True
+  #enable_opportunistic_caching_next_screen: True
+
+  #By default rpisurv will check memory usage, set to False to skip memory usage check
+  #By default this is True
+  #memory_usage_check: True
+
+  #By default rpisurv checks every 19 seconds if all cameras on the current active screen are still connectable or if unconnectable become connectable
+  #If there is a change in connectable/unconnectable screens rpisurv will update the screen with the new situation
+  #In the case of dual displays, it does check this independently every 19s for both active screens (2 screens are active on dual displays setup)
+  interval_check_status: 19
+
+#These are fallbacks if autodection fails;
+#Normally you do not need to configure these as rpisurv tries to autodetect this
+fallbacks:
+  displays:
+    - hdmi: 0
+      display_number: 2
+      resolution:
+        width: "1920"
+        height: "1080"
+      device_name: "fallback_device_0"
+#    - hdmi: 1
+#      display_number: 7
+#      resolution:
+#        width: "1920"
+#        height: "1080"
+#      device_name: "fallback_device_1"

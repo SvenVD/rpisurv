@@ -41,13 +41,13 @@ read
 
 #Install needed packages
 sudo apt-get update
-sudo apt-get install coreutils fbset openssl procps python-pygame python-yaml python-dbus python-openssl python libraspberrypi-bin -y
+sudo apt-get install coreutils fbset openssl procps python3-pygame python3-yaml python3-openssl python3 libraspberrypi-bin -y
 
-#Only install omxplayer if it isn't already installed (from source or package)
-if [ ! -e /usr/bin/omxplayer ];then
- sudo apt-get install omxplayer -y
+#Only install vlc if it isn't already installed (from source or package)
+if [ ! -e /usr/bin/vlc ];then
+ sudo apt-get install vlc -y
 else
- echo "Omxplayer install detected, not reinstalling"
+ echo "vlc install detected, not reinstalling"
 fi
 
 #Prevent starting up in graphical mode, we do not need this -> save resources
@@ -68,22 +68,20 @@ fi
 
 SOURCEDIR="$BASEPATH/surveillance"
 MAINSOURCE="surveillance.py"
-CONFFILE="conf/surveillance.yml"
-BACKUPCONFFILE=/tmp/surveillance.yml.$(date +%Y%m%d_%s)
-
+CONFDIR="conf"
+BACKUPCONFDIR=/tmp/backup_rpisurv3config_$(date +%Y%m%d_%s)
 
 
 DESTPATH="/usr/local/bin/rpisurv"
 sudo mkdir -p "$DESTPATH"
 
-if [ -f "$DESTPATH/$CONFFILE" ];then 
+if [ -d "$DESTPATH/${CONFDIR}" ];then
    echo
-   echo "Existing config file will be backed up to "${BACKUPCONFFILE}""
-   sudo cp -v "$DESTPATH/$CONFFILE" "${BACKUPCONFFILE}"
+   echo "Existing config dir will be backed up to "${BACKUPCONFDIR}""
+   sudo cp -arv "$DESTPATH/${CONFDIR}" "${BACKUPCONFDIR}"
 
    echo
-   echo "Do you want to overwrite your current config file with the example config file?"
-   echo "Newer major versions of rpisurv are not backwards compatible with old format of config file"
+   echo "Do you want to overwrite your current config files with the example config files?"
    echo "Type yes/no"
    read USEEXAMPLECONFIG
 else
@@ -99,17 +97,24 @@ else
    OVERWRITESIMAGES="yes"
 fi
 
+echo
+echo "Do you want me to (re-)start rpisurv after install?"
+echo "Type yes/no"
+read ANSWERSTART
 
 if [ x"$OVERWRITESIMAGES" == x"no" ]; then
-    RSYNCOPTIONS="--exclude /images"
+    RSYNCOPTIONS="${RSYNCOPTIONS} --exclude /images"
+fi
+
+if [ x"$USEEXAMPLECONFIG" == x"no" ]; then
+    RSYNCOPTIONS="${RSYNCOPTIONS} --exclude /conf"
 fi
 
 sudo rsync -av $RSYNCOPTIONS "$SOURCEDIR/" "$DESTPATH/"
 
-if [ x"$USEEXAMPLECONFIG" == x"no" ]; then
-    #Putting back old config file
-    if [ -f "${BACKUPCONFFILE}" ]; then sudo cp -v "${BACKUPCONFFILE}" "$DESTPATH/$CONFFILE" ; fi
-fi
+#Make sure pngview is executable by root
+sudo chmod 700 surveillance/bin/pngview
+
 
 STARTUPCMD="cd $DESTPATH; python "$MAINSOURCE" &"
 
@@ -132,6 +137,10 @@ else
         sudo echo  "exit 0" >> /etc/rc.local
     fi
 fi
-#Link config file into /etc as convenient way to edit
-sudo ln -fs $DESTPATH/"$CONFFILE" /etc/rpisurv
-sudo ln -fs $DESTPATH/"$CONFFILE" /etc/rpisurv.conf
+#Link config file dir into /etc as convenient way to edit
+if [ -f /etc/rpisurv ]; then sudo rm -fv /etc/rpisurv;fi
+sudo ln -fs $DESTPATH/"$CONFDIR" /etc/rpisurv
+
+if [ x"$ANSWERSTART" == x"yes" ]; then
+    sudo systemctl restart rpisurv
+fi
