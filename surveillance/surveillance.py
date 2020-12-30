@@ -55,7 +55,7 @@ def log_free_gpumem(logtype="reloc"):
 
 def fix_vlc_executed_as_root():
     logger.debug("Make sure vlc binary can be executed as root")
-    subprocess.check_call(["/usr/bin/sed -i 's/geteuid/getppid/' /usr/bin/vlc" ], shell=True)
+    subprocess.check_call(["/bin/sed -i 's/geteuid/getppid/' /usr/bin/vlc" ], shell=True)
 
 def handle_stats( stats_counter ):
     stats_counter_thresh=3600
@@ -141,7 +141,7 @@ if __name__ == '__main__':
     #Setup logger
     logger = setup_logging()
 
-    fullversion_for_installer = "3.0.0-beta3"
+    fullversion_for_installer = "3.0.0-beta4"
 
     version = fullversion_for_installer
     logger.info("Starting rpisurv " + version)
