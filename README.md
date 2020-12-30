@@ -13,6 +13,8 @@ Rpisurv is a free application that transforms your Raspberry Pi into a dedicated
 
 Take a look at some [showcases](https://www.tapatalk.com/groups/rpisurv/showcases-f8/)
 
+![Screenshot](https://gist.githubusercontent.com/SvenVD/12b24687f56dbba673a3938ef00cbf0a/raw/3b333e27f2e36e64d166b5c29e4ca5fcae9a9f56/demo2images_andautocalculation_small.png)
+
 ## Features
 ##### Self-healing and health monitoring including watchdogs
 - Every stream will be monitored by an external watchdog process, if the stream gets killed somehow, the watchdog will try to restart the stream/process. This gives you a very robust surveillance screen.
