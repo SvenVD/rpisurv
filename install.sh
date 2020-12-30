@@ -19,6 +19,15 @@ get_init_sys() {
   fi
 }
 
+is_vlc_mmal_present() {
+ sed -i 's/geteuid/getppid/' /usr/bin/vlc
+ if /usr/bin/vlc -H  2>/dev/null | grep -q -- '--mmal-layer';then
+    return 0
+ else
+    return 1
+ fi
+}
+
 get_init_sys
 BASEPATH="$(cd $(dirname "${BASH_SOURCE[0]}");pwd)"
 
@@ -41,13 +50,13 @@ read
 
 #Install needed packages
 sudo apt-get update
-sudo apt-get install coreutils fbset openssl procps python3-pygame python3-yaml python3-openssl python3 libraspberrypi-bin -y
+sudo apt-get install vlc sed coreutils fbset openssl procps python3-pygame python3-yaml python3-openssl python3 libraspberrypi-bin -y
 
-#Only install vlc if it isn't already installed (from source or package)
-if [ ! -e /usr/bin/vlc ];then
- sudo apt-get install vlc -y
-else
- echo "vlc install detected, not reinstalling"
+if ! is_vlc_mmal_present;then
+    echo "Your version of vlc does not have the needed mmal options. Rpisurv needs those"
+    echo "Minimum tested vlc version for Rpisurv is (VLC media player 3.0.11 Vetinari (revision 3.0.11-0-gdc0c5ced72)"
+    echo "Aborting installation, upgrade to latest vlc player with mmal support"
+    exit 2
 fi
 
 #Prevent starting up in graphical mode, we do not need this -> save resources
