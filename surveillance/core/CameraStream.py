@@ -57,7 +57,7 @@ class CameraStream:
 
         self.obfuscated_credentials_url = self._manipulate_credentials_in_url("obfuscate")
 
-        if self.scheme not in ["rtsp", "http", "https"]:
+        if self.scheme not in ["rtsp", "http", "https", "file"]:
             logger.error("CameraStream: " + self.name + " Scheme " + self.scheme + " in " + self.obfuscated_credentials_url + " is currently not supported, you can make a feature request on https://feathub.com/SvenVD/rpisurv")
             sys.exit()
 
@@ -164,6 +164,8 @@ class CameraStream:
             else:
                 logger.error("CameraStream: " + self.name + " " + str(self.obfuscated_credentials_url) + " Not Connectable (failed rtsp validation, is this an rtsp stream?)")
                 return False
+        elif self.scheme in ["file"]:
+            return True
         elif self.scheme in ["http","https"]:
              try:
                 connection = self._urllib2open_wrapper()
