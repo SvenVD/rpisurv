@@ -74,7 +74,7 @@ Note in dual displays mode imageurl type streams are only displayed on 1 display
 TIP: This can be used as part of a digital signage setup: several Rpisurv clients can be steered centrally by changing the image(s) on the central location.
 Rpisurv will autodetect interruptions and tries to restore the stream.
 #### rtsp://
-This is a remote location with a video stream, Rpisurv will do its best to display the stream, it will autodetect interruptions and tries to restore the stream.
+This is a remote location with a video stream, Rpisurv will do his best to display the stream, it will autodetect interruptions and tries to restore the stream.
 
 ## How to update Rpisurv to new version <a name="how-to-update"></a>
 - `cd rpisurv; git pull`
