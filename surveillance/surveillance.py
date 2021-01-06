@@ -73,22 +73,30 @@ def parse_tvservice():
     else:
         use_fallback_config = False
         regex_results = re.findall("Display Number (\d+), type HDMI (\d+)", tvserviceresult_l)
-        for regex_result in regex_results:
-            autodetected_display = {}
-            autodetected_display["display_number"]=regex_result[0]
-            autodetected_display["hdmi"]=regex_result[1]
-            autodetected_displays.append(autodetected_display)
-            #Get more details
-            tvserviceresult_detail_display = subprocess.check_output(['/usr/bin/tvservice', '-snv', autodetected_display["display_number"]], text=True)
-            regex_result = re.search("state .*, (\d+)x(\d+) .*", tvserviceresult_detail_display)
-            autodetected_display["resolution"] = {}
-            autodetected_display["resolution"]["width"] = regex_result.group(1)
-            autodetected_display["resolution"]["height"] = regex_result.group(2)
-            regex_result = re.search("device_name=(.*)", tvserviceresult_detail_display)
-            autodetected_display["device_name"] = regex_result.group(1)
-
-        for display in autodetected_displays:
-            logger.info(f"Auto detected display {display['device_name']} at HDMI {display['hdmi']} with display number {display['display_number']} {display['resolution']['width']} x {display['resolution']['height']}")
+        if len(regex_results) == 0:
+            use_fallback_config = True
+        else:
+            for regex_result in regex_results:
+                autodetected_display = {}
+                autodetected_display["display_number"]=regex_result[0]
+                autodetected_display["hdmi"]=regex_result[1]
+                autodetected_displays.append(autodetected_display)
+                #Get more details
+                tvserviceresult_detail_display = subprocess.check_output(['/usr/bin/tvservice', '-snv', autodetected_display["display_number"]], text=True)
+                regex_result = re.search("state .*, (\d+)x(\d+) .*", tvserviceresult_detail_display)
+                if regex_result is None:
+                    logger.error(f"Could not retrieve resolution for display {autodetected_display['display_number']}")
+                    use_fallback_config = True
+                    break
+                autodetected_display["resolution"] = {}
+                autodetected_display["resolution"]["width"] = regex_result.group(1)
+                autodetected_display["resolution"]["height"] = regex_result.group(2)
+                regex_result = re.search("device_name=(.*)", tvserviceresult_detail_display)
+                if regex_result is None:
+                    logger.error(f"Could not retrieve devicename for display {autodetected_display['display_number']}")
+                    use_fallback_config = True
+                    break
+                autodetected_display["device_name"] = regex_result.group(1)
 
     if use_fallback_config:
         fallback_displays = cfg['fallbacks']['displays']
@@ -99,6 +107,9 @@ def parse_tvservice():
 
         displays = fallback_displays
     else:
+        for display in autodetected_displays:
+            logger.info(f"Auto detected display {display['device_name']} at HDMI {display['hdmi']} with display number {display['display_number']} {display['resolution']['width']} x {display['resolution']['height']}")
+
         displays = autodetected_displays
 
     return displays
@@ -141,7 +152,7 @@ if __name__ == '__main__':
     #Setup logger
     logger = setup_logging()
 
-    fullversion_for_installer = "3.0.0-beta4"
+    fullversion_for_installer = "3.0.0-beta5"
 
     version = fullversion_for_installer
     logger.info("Starting rpisurv " + version)
