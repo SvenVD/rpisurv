@@ -50,7 +50,7 @@ read
 
 #Install needed packages
 sudo apt-get update
-sudo apt-get install vlc sed coreutils fbset openssl procps python3-pygame python3-yaml python3-openssl python3 libraspberrypi-bin -y
+sudo apt-get install vlc sed coreutils fbset ffmpeg openssl procps python3-pygame python3-yaml python3-openssl python3 libraspberrypi-bin -y
 
 if ! is_vlc_mmal_present;then
     echo "Your version of vlc does not have the needed mmal options. Rpisurv needs those"

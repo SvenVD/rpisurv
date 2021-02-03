@@ -6,6 +6,7 @@ import socket
 import os
 import sys
 import io
+import subprocess
 import urllib.request, urllib.error, urllib.parse
 from urllib.parse import urlparse
 
@@ -57,7 +58,7 @@ class CameraStream:
 
         self.obfuscated_credentials_url = self._manipulate_credentials_in_url("obfuscate")
 
-        if self.scheme not in ["rtsp", "http", "https", "file"]:
+        if self.scheme not in ["rtsp", "http", "https", "file", "rtmp"]:
             logger.error("CameraStream: " + self.name + " Scheme " + self.scheme + " in " + self.obfuscated_credentials_url + " is currently not supported, you can make a feature request on https://community.rpisurv.net")
             sys.exit()
 
@@ -97,6 +98,17 @@ class CameraStream:
             return urllib.request.urlopen(request, timeout=self.probe_timeout)
 
     def is_connectable(self):
+        if self.scheme == "rtmp":
+            try:
+                ffprobeoutput = subprocess.check_output(['/usr/bin/ffprobe', '-v', 'quiet', "-print_format", "flat", "-show_error", self.url], text=True, timeout=self.probe_timeout)
+                return True
+            except subprocess.TimeoutExpired as e:
+                logger.error(f"CameraStream: {self.name} {self.obfuscated_credentials_url} Not Connectable (ffprobe timed out, try increasing probe_timeout for this stream), configured timeout: {self.probe_timeout}")
+                return False
+            except Exception as e:
+                erroroutput_newlinesremoved=e.output.replace('\n', ' ')
+                logger.error(f"CameraStream: {self.name} {self.obfuscated_credentials_url} Not Connectable ({erroroutput_newlinesremoved}), configured timeout: {self.probe_timeout}")
+                return False
         if self.scheme == "rtsp":
             try:
                 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
