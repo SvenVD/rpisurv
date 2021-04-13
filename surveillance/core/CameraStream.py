@@ -90,7 +90,8 @@ class CameraStream:
             host_info = self.parsed.netloc.rpartition('@')[-1]
             strippedcreds_url = self.parsed._replace(netloc=host_info)
             request = urllib.request.Request(strippedcreds_url.geturl(), None, headers)
-            base64string = base64.encodestring('%s:%s' % (self.parsed.username, self.parsed.password)).replace('\n', '')
+            cred='%s:%s' % (self.parsed.username, self.parsed.password)
+            base64string = base64.b64encode(cred.encode()).decode()
             request.add_header("Authorization", "Basic %s" % base64string)
             return urllib.request.urlopen(request, timeout=self.probe_timeout)
         else:
