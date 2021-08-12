@@ -40,6 +40,7 @@ In short: The idea is to connect your Raspberry Pi to a monitor and tell Rpisurv
 - Get a monitor or a TV ( or 2 )
 - Get a Raspberry Pi dedicated for Rpisurv, and install Raspberry Pi OS on it.
 - If you are going to have multiple streams, add gpu_mem=512 to your /boot/config.txt
+- For Raspberry Pi 3 users (as far as we know) you will need to edit /boot/config.txt and uncomment `framebuffer_width=1280' and 'framebuffer_height=720` and make them 1920 and 1080 respectively or you will encounter the following error `pygame.error: No video mode large enough for 1920x1080`
 - git clone this repository: `git clone https://github.com/SvenVD/rpisurv`
 - move into folder `cd rpisurv`
 - OPTIONAL: checkout a specific branch, for example `git checkout v3_latest`, if you want to override the default version on master
