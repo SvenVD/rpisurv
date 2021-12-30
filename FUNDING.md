@@ -1,8 +1,8 @@
-#### You can help sustain our activities by donating:
-##### Paypal
+### You can help sustain our activities by donating:
+#### Paypal
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QPJU9K2KZ8D94" target="_blank" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/x-click-but21.gif" alt="" /></a>  
 
-##### Crypto
+#### Rpisurv crypto addresses:
 ###### Ethereum:
 `0x48216165073279889616989c35a6311BF7D8fE4a`  
 ![ethqr](https://gist.githubusercontent.com/SvenVD/84b230515e56bc7dca915731425ce437/raw/cf9bf3f17b37500a4508b26984d3b6313e1ea7e2/ethqr.png)
