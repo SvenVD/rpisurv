@@ -7,13 +7,15 @@ Have a chat on https://gitter.im/rpisurv/general.<br/>
  You can help sustain our activities by donating here:
  <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QPJU9K2KZ8D94" target="_blank" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/x-click-but21.gif" alt="" /></a>
 
+Or if you prefer crypto take a look at the funding page [here](FUNDING.md)
+
 ## What is Rpisurv?
 
 Rpisurv is a free application that transforms your Raspberry Pi into a dedicated device to display video streams or images.
 
 Take a look at some [showcases](https://www.tapatalk.com/groups/rpisurv/showcases-f8/)
 
-![Screenshot](https://gist.githubusercontent.com/SvenVD/12b24687f56dbba673a3938ef00cbf0a/raw/3b333e27f2e36e64d166b5c29e4ca5fcae9a9f56/demo2images_andautocalculation_small.png)
+![Screenshot](https://gist.githubusercontent.com/SvenVD/84b230515e56bc7dca915731425ce437/raw/df7691cca60850a5b3864ce17cd8c9a8a73861ac/demo2images_andautocalculation_small.png)
 
 ## Features
 ##### Self-healing and health monitoring including watchdogs
@@ -23,7 +25,7 @@ Take a look at some [showcases](https://www.tapatalk.com/groups/rpisurv/showcase
 
 ##### Automatically position streams (no manual coordinates calculation needed)
 - Autocalculcate coordinates for every stream displayed.
-- If you are not happy with the autocalculations you [can](https://gist.github.com/SvenVD/7b973cde2ce5dce6c8284606434e3a14) customize yourself. 
+- If you are not happy with the autocalculations you [can](https://gist.github.com/SvenVD/5c82acbb96dfb697e5e2d2420ab73ad9) customize yourself. 
 
 ##### Rotation of screens (autorotate or with keyboard control)
 - You can configure multiple screens and cycle between them in an automated way or via the keyboard. 

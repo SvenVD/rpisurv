@@ -114,7 +114,7 @@ essentials:
 #          #This can cause overlap with other streams but the user can correct this by manually calculating and setting the position of the other camera streams with force_coordinates
 #          #Note3: This works transparently with rotation of screens, every screen can have a different layout
 #          #force_coordinates: [upperleft corner x position, upperleft corner y position, downright corner x position, downright corner y position]
-#          #Example see here: https://gist.github.com/SvenVD/7b973cde2ce5dce6c8284606434e3a14
+#          #Example see here: https://gist.github.com/SvenVD/5c82acbb96dfb697e5e2d2420ab73ad9
 #          force_coordinates: [0, 800, 600, 1080]
 #          #You can use then showontop in combination with force_coordinates to create a picture in picture view (one video overlaying the other ) see demo config for example
 #          showontop: False
