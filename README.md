@@ -40,8 +40,9 @@ Take a look at some [showcases](https://www.tapatalk.com/groups/rpisurv/showcase
 ## How to get started
 In short: The idea is to connect your Raspberry Pi to a monitor and tell Rpisurv which stream(s) and screen(s) it should display or cycle between. Rpisurv will autocalculate all the rest.
 - Get a monitor or a TV ( or 2 )
-- Get a Raspberry Pi dedicated for Rpisurv, and install Raspberry Pi OS on it (Tested successfully with the full version, not lite)
-  - There are problems on RPi OS bullseye (https://github.com/SvenVD/rpisurv/issues/141) recommended is to use buster for the time being.
+- Get a Raspberry Pi dedicated for Rpisurv
+- Install Raspberry Pi OS **Full (Legacy)** on the Pi (Tested successfully with the full version, not lite)
+  - Make sure to select the **Legacy** version as there are [problems](https://github.com/SvenVD/rpisurv/issues/141) with VLC on latest RPi OS (which is based on Debian Bullseye).
 - If you are going to have multiple streams, add gpu_mem=512 to your /boot/config.txt
 - If you installed the "Lite" OS version you will need to edit /boot/config.txt and uncomment `framebuffer_width=1280' and 'framebuffer_height=720` and make them 1920 and 1080 respectively or you will encounter the following error `pygame.error: No video mode large enough for 1920x1080`
 - git clone this repository: `git clone https://github.com/SvenVD/rpisurv`
