@@ -82,6 +82,9 @@ class Draw:
                         if event.key == pygame.K_r or event.key == pygame.K_KP_PERIOD or event.key == pygame.K_COMMA:
                             logger.debug(f"{self.name} Keypress 'r' or ',' or 'keypad .' detected")
                             return "resume_rotation"
+                        if event.key == pygame.K_x:
+                            logger.debug(f"{self.name} Keypress 'x' detected")
+                            return "screen_on_off"                    
                         if event.key == pygame.K_p or event.key == pygame.K_KP_MULTIPLY:
                             logger.debug(f"{self.name} Keypress 'p' or 'keypad *' detected")
                             return "pause_rotation"
