@@ -4,6 +4,7 @@ import signal
 import subprocess
 import sys
 import time
+from vcgencmd import Vcgencmd
 
 #from core.util import draw
 
@@ -62,6 +63,16 @@ def handle_stats( stats_counter ):
     # Updating stats for rpisurv community every 1800 loops
     if stats_counter % stats_counter_thresh == 0:
         stats.update_stats(version, uniqid, str(stats.get_runtime(start_time)), update_stats_enabled)
+        
+def turn_screen_on_off():
+    hdmi_outs = [2, 7]
+    vcgm = Vcgencmd()
+    for i in hdmi_outs:
+        current_state = vcgm.display_power_state(i)
+        if current_state == 'on':
+            vcgm.display_power_off(i)
+        else:
+            vcgm.display_power_on(i)
 
 def parse_tvservice():
     autodetected_displays=[]
@@ -133,6 +144,9 @@ def handle_input(drawinstance):
         if event == "pause_rotation":
             logger.debug(f"MAIN: pause_rotation event detected")
             screenmanager.disable_autorotation = True
+        if event == "screen_on_off":
+            logger.debug(f"MAIN: Turn off screen  detected")
+            turn_screen_on_off()            
         if event in range(0, 11):
             logger.debug(f"MAIN: force screen:{event} request detected")
             screenmanager.force_show_screen(event)
