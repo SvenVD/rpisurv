@@ -134,7 +134,7 @@ def handle_input(drawinstance):
             logger.debug(f"MAIN: pause_rotation event detected")
             screenmanager.disable_autorotation = True
         if event == "screen_on_off":
-            logger.debug(f"MAIN: Turn off screen  detected")
+            logger.debug(f"MAIN: Turn off screen detected")
             screenmanager.turn_screen_on_off()            
         if event in range(0, 11):
             logger.debug(f"MAIN: force screen:{event} request detected")
