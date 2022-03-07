@@ -1,9 +1,9 @@
 import logging
 import yaml
-
+from vcgencmd import Vcgencmd
 from .Screen import Screen
 from core.util.draw import Draw
-from vcgencmd import Vcgencmd
+
 
 
 logger = logging.getLogger('l_default')
@@ -107,7 +107,7 @@ class ScreenManager:
     def get_active_screen_run_time(self):
         return self.all_screens[self.activeindex].get_active_run_time()
 
-    def turn_screen_on_off():
+    def turn_screen_on_off(self):
         vcgm = Vcgencmd()
         current_state = vcgm.display_power_state(2)
         if current_state == 'on':
