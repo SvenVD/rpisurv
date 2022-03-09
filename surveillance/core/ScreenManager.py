@@ -1,6 +1,6 @@
 import logging
 import yaml
-
+from vcgencmd import Vcgencmd
 from .Screen import Screen
 from core.util.draw import Draw
 
@@ -30,8 +30,8 @@ class ScreenManager:
         self.currentcacheindex = -1
 
 
-        self._init_screens()
-
+        self._init_screens()    
+    
 
     def _fetch_display_config(self):
         configpath=f"conf/display{int(self.display['hdmi']) + 1 }.yml"
@@ -107,6 +107,14 @@ class ScreenManager:
     def get_active_screen_run_time(self):
         return self.all_screens[self.activeindex].get_active_run_time()
 
+    def turn_screen_on_off(self):
+        vcgm = Vcgencmd()
+        current_state = vcgm.display_power_state(2)
+        if current_state == 'on':
+            vcgm.display_power_off(2)
+        else:
+            vcgm.display_power_on(2)   
+    
     def get_active_screen_duration(self):
         return self.all_screens[self.activeindex].duration
 
