@@ -48,26 +48,14 @@ read
 
 
 
-
 #Install needed packages
 sudo apt update
-sudo apt remove vlc -y
-sudo apt install xdg-utils rsync sed coreutils fbset ffmpeg openssl procps python3-pygame python3-yaml python3-openssl python3 libraspberrypi-bin -y
-
-#Download debs for vlc
-mkdir -p /tmp/rpisurv
-cd /tmp/rpisurv/
-echo -e "http://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-data_3.0.12-0%2Bdeb9u1_all.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/libvlc-bin_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-l10n_3.0.12-0%2Bdeb9u1_all.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-plugin-notify_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-plugin-samba_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-plugin-skins2_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-plugin-video-splitter_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-plugin-visualization_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-bin_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-plugin-base_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-plugin-qt_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-plugin-video-output_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc_3.0.12-0%2Bdeb9u1_armhf.deb" > /tmp/rpisurv/vlc.txt
-wget -i /tmp/rpisurv/vlc.txt
-sudo dpkg -i /tmp/rpisurv/*.deb
-#sudo apt-get install -f
-sudo apt-mark hold vlc vlc-bin vlc-plugin-base vlc-plugin-qt vlc-plugin-video-output vlc-l10n vlc-plugin-notify vlc-plugin-samba vlc-plugin-skins2 vlc-plugin-video-splitter vlc-plugin-visualization libvlc-bin vlc-data
-cd "$BASEPATH"
-rm -rdf /tmp/rpisurv/
+sudo apt install vlc rsync sed coreutils fbset ffmpeg openssl procps python3-pygame python3-yaml python3-openssl python3 libraspberrypi-bin -y
 
 if ! is_vlc_mmal_present;then
     echo "Your version of vlc does not have the needed mmal options. Rpisurv needs those"
-    echo "Minimum tested vlc version for Rpisurv is (VLC media player 3.0.12 Vetinari (revision 3.0.12-1-0-gd147bb5e7e)"
+    echo "Minimum tested vlc version for Rpisurv is (VLC media player 3.0.11 Vetinari (revision 3.0.11-0-gdc0c5ced72),"
+    echo "Maximum tested vlc version for Rpisurv is (VLC media player 3.0.17.4 Vetinari (3.0.13-8-g41878ff4f2)"
     echo "Aborting installation, upgrade to latest vlc player with mmal support"
     exit 2
 fi
