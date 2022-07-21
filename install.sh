@@ -48,12 +48,22 @@ read
 
 
 
+
 #Install needed packages
 sudo apt update
 sudo apt remove vlc -y
-sudo apt install xdg-utils vlc-data=3.0.12\* libvlc-bin=3.0.12\* vlc-l10n=3.0.12\* vlc-plugin-notify=3.0.12\* vlc-plugin-samba=3.0.12\* vlc-plugin-skins2=3.0.12\* vlc-plugin-video-splitter=3.0.12\* vlc-plugin-visualization=3.0.12\* vlc-bin=3.0.12\* vlc-plugin-base=3.0.12\* vlc-plugin-qt=3.0.12\* vlc-plugin-video-output=3.0.12\* vlc=3.0.12\* -y
-sudo apt-mark hold vlc vlc-bin vlc-plugin-base vlc-plugin-qt vlc-plugin-video-output vlc-l10n vlc-plugin-notify vlc-plugin-samba vlc-plugin-skins2 vlc-plugin-video-splitter vlc-plugin-visualization libvlc-bin vlc-data xdg-utils
-sudo apt install rsync sed coreutils fbset ffmpeg openssl procps python3-pygame python3-yaml python3-openssl python3 libraspberrypi-bin -y
+sudo apt install xdg-utils rsync sed coreutils fbset ffmpeg openssl procps python3-pygame python3-yaml python3-openssl python3 libraspberrypi-bin -y
+
+#Download debs for vlc
+mkdir -p /tmp/rpisurv
+cd /tmp/rpisurv/
+echo -e "http://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-data_3.0.12-0%2Bdeb9u1_all.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/libvlc-bin_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-l10n_3.0.12-0%2Bdeb9u1_all.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-plugin-notify_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-plugin-samba_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-plugin-skins2_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-plugin-video-splitter_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-plugin-visualization_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-bin_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-plugin-base_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-plugin-qt_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc-plugin-video-output_3.0.12-0%2Bdeb9u1_armhf.deb\nhttp://archive.raspbian.com/raspbian/pool/main/v/vlc/vlc_3.0.12-0%2Bdeb9u1_armhf.deb" > /tmp/rpisurv/vlc.txt
+wget -i /tmp/rpisurv/vlc.txt
+sudo dpkg -i /tmp/rpisurv/*.deb
+#sudo apt-get install -f
+sudo apt-mark hold vlc vlc-bin vlc-plugin-base vlc-plugin-qt vlc-plugin-video-output vlc-l10n vlc-plugin-notify vlc-plugin-samba vlc-plugin-skins2 vlc-plugin-video-splitter vlc-plugin-visualization libvlc-bin vlc-data
+cd "$BASEPATH"
+rm -rdf /tmp/rpisurv/
 
 if ! is_vlc_mmal_present;then
     echo "Your version of vlc does not have the needed mmal options. Rpisurv needs those"
