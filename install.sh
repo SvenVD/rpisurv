@@ -50,14 +50,12 @@ read
 
 #Install needed packages
 sudo apt update
-sudo apt remove vlc -y
-sudo apt install xdg-utils vlc-data=3.0.12\* libvlc-bin=3.0.12\* vlc-l10n=3.0.12\* vlc-plugin-notify=3.0.12\* vlc-plugin-samba=3.0.12\* vlc-plugin-skins2=3.0.12\* vlc-plugin-video-splitter=3.0.12\* vlc-plugin-visualization=3.0.12\* vlc-bin=3.0.12\* vlc-plugin-base=3.0.12\* vlc-plugin-qt=3.0.12\* vlc-plugin-video-output=3.0.12\* vlc=3.0.12\* -y
-sudo apt-mark hold vlc vlc-bin vlc-plugin-base vlc-plugin-qt vlc-plugin-video-output vlc-l10n vlc-plugin-notify vlc-plugin-samba vlc-plugin-skins2 vlc-plugin-video-splitter vlc-plugin-visualization libvlc-bin vlc-data xdg-utils
-sudo apt install rsync sed coreutils fbset ffmpeg openssl procps python3-pygame python3-yaml python3-openssl python3 libraspberrypi-bin -y
+sudo apt install vlc rsync sed coreutils fbset ffmpeg openssl procps python3-pygame python3-yaml python3-openssl python3 libraspberrypi-bin -y
 
 if ! is_vlc_mmal_present;then
     echo "Your version of vlc does not have the needed mmal options. Rpisurv needs those"
-    echo "Minimum tested vlc version for Rpisurv is (VLC media player 3.0.12 Vetinari (revision 3.0.12-1-0-gd147bb5e7e)"
+    echo "Minimum tested vlc version for Rpisurv is (VLC media player 3.0.11 Vetinari (revision 3.0.11-0-gdc0c5ced72),"
+    echo "Maximum tested vlc version for Rpisurv is (VLC media player 3.0.17.4 Vetinari (3.0.13-8-g41878ff4f2)"
     echo "Aborting installation, upgrade to latest vlc player with mmal support"
     exit 2
 fi
