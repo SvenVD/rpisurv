@@ -43,6 +43,7 @@ In short: The idea is to connect your Raspberry Pi to a monitor and tell Rpisurv
 - Get a Raspberry Pi dedicated for Rpisurv
 - Install Raspberry Pi OS **Full (Buster)** on the Pi (Tested successfully with the full version, not lite)
   - Make sure to select the **Buster** version as there are [problems](https://github.com/SvenVD/rpisurv/issues/141) with VLC on latest RPi OS (which is based on Debian Bullseye).
+  - After install you need to set following [config](https://forums.raspberrypi.com/viewtopic.php?t=343972#p2061074)
 - If you are going to have multiple streams, add gpu_mem=512 to your /boot/config.txt
 - If you installed the "Lite" OS version you will need to edit /boot/config.txt and uncomment `framebuffer_width=1280' and 'framebuffer_height=720` and make them 1920 and 1080 respectively or you will encounter the following error `pygame.error: No video mode large enough for 1920x1080`
 - git clone this repository: `git clone https://github.com/SvenVD/rpisurv`
