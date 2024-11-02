@@ -15,7 +15,7 @@ handlers:
         formatter: f_default
         level: INFO
         #Note this filename is only for the main process. Other dynamically created filenames will overwrites this one per camera stream
-        filename: logs/main.log
+        filename: ../logs/main.log
         maxBytes: 1000000
         backupCount: 10
 
