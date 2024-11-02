@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Rpisurv
+Comment=Start Rpisurv
+Exec=/home/rpisurv/bin/rpisurv
+Type=Application

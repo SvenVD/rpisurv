@@ -1,0 +1,10 @@
+#!!!Normal users do not need to edit this section!!!
+advanced:
+  #By default Rpisurv will cache the next screen in the rotation to speed up the future rotation event.
+  #You can disable this if you want to save resources versus slower rotation to next screen in case you have multiple screens
+  #enable_caching_next_screen: True
+
+  #By default rpisurv checks every 15 seconds if all cameras on the current active screen are still connectable or if unconnectable become connectable
+  #If there is a change in connectable/unconnectable screens rpisurv will update the screen with the new situation
+  #In the case of dual displays, it does check this independently every interval_check_status seconds for both active screens (2 screens are active on dual displays setup)
+  interval_check_status: 15

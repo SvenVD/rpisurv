@@ -13,14 +13,14 @@ essentials:
 #      # After installation you can start Rpisurv and the demo should be started
 #      #######################################################################################################
 
-    - camera_streams:
+    - streams:
         - url: "file:///usr/local/bin/rpisurv/demo/resources/Big_Buck_Bunny_Trailer_fast_480p30.m4v"
           force_coordinates: [0, 0, 1920, 1080]
         - url: "file:///usr/local/bin/rpisurv/demo/resources/Big_Buck_Bunny_Trailer_fast_480p30.m4v"
           force_coordinates: [100, 100, 700, 500]
           showontop: True
       duration: 20
-    - camera_streams:
+    - streams:
         - url: "file:///usr/local/bin/rpisurv/demo/resources/demo.png"
           force_coordinates: [600, 0, 1920, 800]
           imageurl: true
@@ -40,7 +40,7 @@ essentials:
         - url: "file:///usr/local/bin/rpisurv/demo/resources/Big_Buck_Bunny_Trailer_fast_480p30.m4v"
           force_coordinates: [1260, 800, 1920, 1080]
       duration: 20
-    - camera_streams:
+    - streams:
         - url: "file:///usr/local/bin/rpisurv/demo/resources/Big_Buck_Bunny_Trailer_fast_480p30.m4v"
         - url: "file:///usr/local/bin/rpisurv/demo/resources/demo.png"
           imageurl: true
@@ -49,7 +49,7 @@ essentials:
         - url: "file:///usr/local/bin/rpisurv/demo/resources/Big_Buck_Bunny_Trailer_fast_480p30.m4v"
       duration: 30
       nr_of_columns: 2
-    - camera_streams:
+    - streams:
         - url: "file:///usr/local/bin/rpisurv/demo/resources/demo.png"
           imageurl: true
         - url: "file:///usr/local/bin/rpisurv/demo/resources/Big_Buck_Bunny_Trailer_fast_480p30.m4v"
@@ -68,7 +68,7 @@ essentials:
 #      #Documentation example SCREEN 1
 #      #This will show a 2x2 if all streams are connectable,
 #      #Force this screen to be shown by pressing and holding F1 or keypad 0
-#    - camera_streams:
+#    - streams:
 #        - url: "https://images.rpisurv.net/example.png"
 #          #To specify this url is not a camera stream but an image stream please set imageurl to true for this url
 #          imageurl: true
@@ -80,7 +80,7 @@ essentials:
 #
 #      #Documentation example SCREEN 2
 #      #Force this screen to be shown by pressing and holding F2 or keypad 1
-#    - camera_streams:
+#    - streams:
 #          #Dlink dcs-5222l example
 #        - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/play1.sdp"
 #
@@ -90,17 +90,9 @@ essentials:
 #          #Default to 3 seconds
 #          probe_timeout: 3
 #
-#          #Enable this option if you want the rtsp stream to stream over tcp instead of udp, this may solve a "smearing" effect on some setups.
-#          #Defaults to false
-#          rtsp_over_tcp:  False
-#
-#          #Use the network_caching_ms option to finetune smooth playback versus stream delay
-#          network_caching_ms: 500
-#
-#
-#          #fOptional: reeform_advanced_vlc_options, most vlc options can be passed directly here.
+#          #Optional: freeform_advanced_mpv_options, most vlc options can be passed directly here.
 #          #This is for advanced usage only, not all combinations have been tested
-#          freeform_advanced_vlc_options: "--no-keyboard-events"
+#          freeform_advanced_mpv_options: "--rtsp-transport=tcp"
 #
 #          #Optional: enableaudio:
 #          #To enable audio for this stream try setting this to True, the default is False
@@ -116,6 +108,7 @@ essentials:
 #          #force_coordinates: [upperleft corner x position, upperleft corner y position, downright corner x position, downright corner y position]
 #          #Example see here: https://gist.github.com/SvenVD/5c82acbb96dfb697e5e2d2420ab73ad9
 #          force_coordinates: [0, 800, 600, 1080]
+#
 #          #You can use then showontop in combination with force_coordinates to create a picture in picture view (one video overlaying the other ) see demo config for example
 #          showontop: False
 #
@@ -126,7 +119,7 @@ essentials:
 #
 #      #OPTIONAL AND ADVANCED PER SCREEN OPTIONS, YOU CAN CONFIGURE THIS PER SCREEN, IF NOT CONFIGURED A DEFAULT VALUE WILL BE USED
 #
-#      #NOT recommendeded to enable disable_probing_for_all_streams, it disables the removal of dead feeds which also disables auto-rearranging the screen layout.
+#      #NOT recommended to enable disable_probing_for_all_streams, it disables the removal of dead feeds which also disables auto-rearranging the screen layout.
 #      #Also if using multiple screens, enabling this will slow down rotation of one screen to the next if there are unconnectable streams
 #      #Defaults to False
 #      disable_probing_for_all_streams: False
@@ -144,7 +137,7 @@ essentials:
 #      #Documentation example SCREEN 3
 #      #This will show a 1x3 on first row + 1 stream on second row if all streams are connectable
 #      #Force this screen to be shown by pressing and holding F3 or keypad 2
-#    - camera_streams:
+#    - streams:
 #        - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/cam/realmonitor?channel=1&subtype=1"
 #        - url: "rtsp://<user>:<password>@<ip or dnsname>:<port>/videoMain"
 #        - url: "http://<ip or dnsname>:<port>/suffix"
@@ -154,4 +147,4 @@ essentials:
 #
 #      #DEFINE AS MANY SCREENS AS YOU WANT
 #      #When reaching last defined screen, rotate will start at the beginning again
-#      #You can have as many screens as you want, this is not limited on hardware as only the next screen will be cached ( see enable_opportunistic_caching_next_screen option in general )
+#      #You can have as many screens as you want, this is not limited on hardware as only the next screen will be cached ( see enable_caching_next_screen option in general )
