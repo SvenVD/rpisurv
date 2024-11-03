@@ -1,5 +1,5 @@
 # Rpisurv 4 - Robust Platform for Integrated Streaming
-Join the community on https://community.rpisurv.net (Please use this place for support questions instead of GitHub issues).<br/>
+Join the community on https://community.rpisurv.net.<br/>
 Bug tracking https://github.com/SvenVD/rpisurv/issues.<br/>
 Follow us on Facebook https://www.facebook.com/rpisurv.<br/>
 Have a chat on https://gitter.im/rpisurv/general.<br/>
@@ -44,9 +44,9 @@ This list contains known working hardware/software combinations.
 Rpisurv 4 is NOT tested on a Raspberry Pi yet. Looking for testers..  
 If you successfully tested hardware not on the list yet, then please add it to the list or make a GitHub issue about it.
 
-| Hardware               | CPU/GPU    | Arch     | OS               | Notes |
-|------------------------|------------|----------|------------------|-------|
-| ASUS ExpertCenter PN42 | Intel N100 | x86_64   | Ubuntu 24.04 LTS | /     |
+| Hardware               | CPU/GPU    | Arch     | OS               | Notes            |
+|------------------------|------------|----------|------------------|------------------|
+| ASUS ExpertCenter PN42 | Intel N100 | x86_64   | Ubuntu 24.04 LTS | VESA mountable   |
 
 
 ## How to get started
