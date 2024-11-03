@@ -15,7 +15,7 @@ logger = logging.getLogger('l_default')
 
 
 class Stream:
-    """This class makes a camera stream an object"""
+    """This class makes a stream an object"""
     def __init__(self, name, stream, background_drawinstance, xdisplay_id,monitor_number,monitor_x_offset,monitor_y_offset):
         self.name = name
         self.worker = None

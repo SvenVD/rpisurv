@@ -136,6 +136,8 @@ In case of dual monitors, then the screens on both monitors will be controlled a
   - `sudo systemctl start lightdm.service` to start the screen.
   - `tail -F /home/rpisurv/logs/main.log` to see last logs.
 
-- If you want to stream RTSP over TCP, please add `freeform_advanced_mpv_options: "--rtsp-transport=tcp"` to the stream in /etc/rpisurv.
+- If you want to stream RTSP over TCP, please add `freeform_advanced_mpv_options: "--rtsp-transport=tcp"` to the stream configured in the config files in /etc/rpisurv.
   See in /etc/rpisurv for examples.
-  If you have a "smearing" effect, this option may resolve it.
+  If you have a "smearing" effect, this option may resolve it. 
+
+- Significantly reduce latency on a stream by adding `freeform_advanced_mpv_options:"--profile=low-latency --untimed"` to the stream configured in the config files in /etc/rpisurv.

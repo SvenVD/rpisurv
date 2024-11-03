@@ -92,7 +92,8 @@ essentials:
 #
 #          #Optional: freeform_advanced_mpv_options, most vlc options can be passed directly here.
 #          #This is for advanced usage only, not all combinations have been tested
-#          freeform_advanced_mpv_options: "--rtsp-transport=tcp"
+#          #For example
+#          freeform_advanced_mpv_options: "--rtsp-transport=tcp --profile=low-latency --untimed"
 #
 #          #Optional: enableaudio:
 #          #To enable audio for this stream try setting this to True, the default is False
