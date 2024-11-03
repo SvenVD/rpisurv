@@ -225,7 +225,6 @@ class ScreenManager:
         else:
             logger.debug(f"ScreenManager: {self.name}: update_active_screen: update_connectable_streams because disable_probing_for_all_streams is off for this screen, so using probes {self.all_screens[self.activeindex].name}")
             self.all_screens[self.activeindex].update_connectable_streams(skip=False)
-
         self.all_screens[self.activeindex].update_screen()
 
     def run_watchdogs_active_screen(self):

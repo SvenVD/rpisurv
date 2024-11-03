@@ -33,7 +33,7 @@ class Screen:
         self.first_run = True
         self.start_of_active_time = -1
         self.previous_connectable_streams = []
-
+        self.placeholders_metadata = []
 
         ## Init functions
         # Sets internal variable resolution
@@ -86,18 +86,24 @@ class Screen:
         self.streams_to_stop = self.previous_connectable_streams
 
     def run_screen_watchdogs(self):
+        logger.debug(f"Screen: {self.name}: run_screen_watchdogs")
         for stream in self.connectable_streams:
             stream.run_stream_watchdog()
 
     def hide_all_streams(self):
+        logger.debug(f"Screen: {self.name}: hide_all_streams")
         for stream in self.connectable_streams:
             stream.hide()
         self.hidden_state= True
 
     def unhide_all_streams(self):
+        logger.debug(f"Screen: {self.name}: unhide_all_streams")
         for stream in self.connectable_streams:
             stream.unhide()
         self.hidden_state = False
+        self.draw_all_placeholders()
+    def draw_all_placeholders(self):
+        logger.debug(f"Screen: {self.name}: draw_all_placeholders")
         for i in self.placeholders_metadata:
             self.background_drawinstance.placeholder(i['absposx'], i['absposy'], i['width'],i['height'],i['background_img_path'])
         self.background_drawinstance.refresh()
@@ -136,12 +142,17 @@ class Screen:
         # Other option to compare could be with to convert the list into a set: print set(connectable_streams) == set(previous_connectable_streams)
         # Only re-draw screen if something is changed or try redrawing if there is no camerastream that is connectable OR if we change the screen
         if self._is_connectable_streams_changed() or len(self.previous_connectable_streams) == 0:
-            self.placeholders_metadata = []
             logger.debug(f"Screen: {self.name}: needs update/redraw: changes in connectable camera streams detected.( previous: {len(self.previous_connectable_streams)} / now: {len(self.connectable_streams)} or different connectable streams then before )")
+            #Resetting all placeholders since they can be different after calculation
+            self.placeholders_metadata = []
+
             #Stop all running streams before redrawing
             for stream_to_stop in self.streams_to_stop:
                 stream_to_stop.stop_stream()
 
+            #Remove all that was drawn on background screen as we need to update it
+            if not self.hidden_state:
+                self.background_drawinstance.blank()
 
             nr_of_columns=int(self.nr_of_columns)
 
@@ -232,6 +243,8 @@ class Screen:
                 stream.stop_stream()
                 logger.debug(f"Screen: {self.name} Starting {stream.name}" )
                 stream.start_stream([x1,y1,x2,y2], self.hidden_state)
+                if not self.hidden_state:
+                    self.draw_all_placeholders()
                 currentwindow = currentwindow + 1
         else:
             logger.debug("Screen:" + self.name + ": Connectable camera streams stayed the same, from " + str(
