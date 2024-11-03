@@ -57,6 +57,7 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = f"{x1 + x_offset},{y1 + y_offset}"
 
 # Create a borderless window with specified dimensions
 screen = pygame.display.set_mode((window_width, window_height), pygame.NOFRAME)
+pygame.mouse.set_visible(False)
 
 # Set the window title
 pygame.display.set_caption(window_title)

@@ -11,6 +11,8 @@ show_version() {
 
 configure_lightdm() {
   echo '[Seat:*]
+#Hide mouse cursor
+greeter-setup-script=/usr/bin/unclutter -idle 2 -root
 autologin-user=rpisurv
 #autologin-session=xfce
 autologin-session=rpisurv
@@ -33,7 +35,7 @@ read
 
 #Install needed packages
 apt update
-apt install xdotool mpv xfce4 python3-pygame python3-xlib ffmpeg wmctrl -y
+apt install xdotool mpv xfce4 python3-pygame python3-xlib ffmpeg wmctrl unclutter -y
 
 #Configure user and autologin
 useradd -m rpisurv -s /bin/bash
