@@ -30,6 +30,7 @@ class Stream:
         #This option overrides any other coordinates passed to this stream
         self.force_coordinates=stream.setdefault("force_coordinates", False)
         self.freeform_advanced_mpv_options = stream.setdefault("freeform_advanced_mpv_options","")
+        self.timeout_waiting_for_init_stream = stream.setdefault("timeout_waiting_for_init_stream", 7)
         self.probe_timeout = stream.setdefault("probe_timeout",3)
         self.imageurl = stream.setdefault("imageurl", False)
         self.url = stream["url"]
@@ -221,16 +222,17 @@ class Stream:
       logger.debug(f"Stream: {self.name}: _wait_for_window_to_be_initialized")
       window_found = False
       attempts = 0
-      max_attempts = 7
+      #This is the timeout in seconds
+      max_attempts = self.timeout_waiting_for_init_stream * 2
       time.sleep(0.5)
       while not window_found and attempts < max_attempts:
         result = subprocess.run(["wmctrl", "-l"], capture_output=True, text=True)
         if self.name in result.stdout:
           window_found = True
-          logger.debug(f"Stream: {self.name}: _wait_for_window_to_be_initialized, window found ({attempts}/{max_attempts}")
+          logger.debug(f"Stream: {self.name}: _wait_for_window_to_be_initialized, window found ({attempts}/{max_attempts})")
         else:
-          logger.debug(f"Stream: {self.name}: _wait_for_window_to_be_initialized, window not present ({attempts}/{max_attempts}")
-          time.sleep(0.4)  # Wait for 500ms before checking again
+          logger.debug(f"Stream: {self.name}: _wait_for_window_to_be_initialized, window not present ({attempts}/{max_attempts})")
+          time.sleep(0.5)  # Wait for 500ms before checking again
           attempts += 1
 
       if not window_found:
@@ -284,6 +286,7 @@ class Stream:
                         --window-minimized=yes \
                         --no-input-default-bindings \
                         --no-input-builtin-bindings \
+                        --cursor-autohide=always \
                         --screen=\'{self.monitor_number}\' \
                         --geometry=\'{self._convert_to_mpv_coordinates()}\' \
                         {self.mpv_extra_options} \

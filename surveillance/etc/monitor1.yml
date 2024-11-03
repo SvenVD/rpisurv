@@ -98,6 +98,13 @@ essentials:
 #          #Optional: enableaudio:
 #          #To enable audio for this stream try setting this to True, the default is False
 #          enableaudio: False
+
+           #Optional: timeout_waiting_for_init_stream:
+           #How long Rpisurv should wait before considering the a connectable stream as lost on initialization
+           #Increase this number on slow connections or slow streams, increasing this will also slow down some cycle operations
+           #Increase if getting errors in the log:  _wait_for_window_to_be_initialized, window not found (7/7). Stopping attempt
+           #In seconds, defaults to 7
+           #timeout_waiting_for_init_stream: 7
 #
 #          #Optional and advanced option: force_coordinates:
 #          #If you are not happy with the pre-calculated position on the screen of a particular stream then you can override it with this option
