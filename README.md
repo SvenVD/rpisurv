@@ -42,10 +42,13 @@ Rpisurv is now NOT limited to Raspberry Pi hardware anymore. For example, x86_64
 ## Verified hardware list
 This list contains known working hardware/software combinations.  
 If you successfully tested hardware not on the list yet, then please add it to the list or make a GitHub issue about it.
-
+### Fully functional:
 | Hardware               | CPU/GPU                   | Arch    | OS               | Notes                                                                                                                                                                                                                                   |
 |------------------------|---------------------------|---------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ASUS ExpertCenter PN42 | Intel N100                | x86_64  | Ubuntu 24.04 LTS | - VESA mountable in the box <br /> - Passive cooling <br /> - Low power (~10Watt) <br /> - Powerful, can render more streams at the same time than a Rpi5                                                                               |
+### Testing in progress:
+| Hardware               | CPU/GPU                   | Arch    | OS               | Notes                                                                                                                                                                                                                                   |
+|------------------------|---------------------------|---------|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Raspberry Pi 5 2GB     | Cortex A76/Video Core VII | arm64   | Ubuntu 24.04 LTS | - VESA mountable with extra accessoires <br /> - Passive cooling <br /> - Low power (~10Watt) <br /> - Use `freeform_advanced_mpv_options: "--vo=gpu-next"` <br /> - More details [here](https://github.com/SvenVD/rpisurv/issues/194) |  
 
 ## How to get started
