@@ -1,13 +1,13 @@
 # Rpisurv 3 - Raspberry Pi surveillance
+
+Rpisurv 3 will be the last version of Rpisurv. It's spiritual successor is [OpenSurv](https://opensurv.net).
+
+OpenSurv is no longer limited to Raspberry Pi, allowing for more powerful and versatile hardware options while keeping the features from Rpisurv. This enables potential sub-second latency and support for more simultaneous streams, all while maintaining a low power profile, as tested with hardware like the Intel N100 chipset.
+
 Join the community on https://community.rpisurv.net (Please use this place for support questions instead of github issues).<br/>
 Bug tracking https://github.com/SvenVD/rpisurv/issues.<br/>
-Follow us on facebook https://www.facebook.com/rpisurv.<br/>
+Follow on facebook https://www.facebook.com/rpisurv.<br/>
 Have a chat on https://gitter.im/rpisurv/general.<br/>
-
- You can help sustain our activities by donating here:
- <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QPJU9K2KZ8D94" target="_blank" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/x-click-but21.gif" alt="" /></a>
-
-Or if you prefer crypto take a look at the funding page [here](FUNDING.md)
 
 ## What is Rpisurv?
 
