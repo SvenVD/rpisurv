@@ -1,7 +1,0 @@
-#!/bin/bash
-##This script is called by lightm to start rpisurv
-export DISPLAY=:0
-# Start the XFCE window manager
-xfwm4 &
-#Xlib.display in surveillance.py requires DISPLAY var
-cd /home/rpisurv/lib; python3 surveillance.py
