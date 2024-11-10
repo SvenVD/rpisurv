@@ -1,6 +1,6 @@
 # Rpisurv 3 - Raspberry Pi surveillance
 
-Rpisurv 3 will be the last version of Rpisurv. It's spiritual successor is [OpenSurv](https://opensurv.net).
+<mark>***Rpisurv 3 will be the last version of Rpisurv. It's spiritual successor is [OpenSurv](https://opensurv.net).***</mark>
 
 OpenSurv is no longer limited to Raspberry Pi, allowing for more powerful and versatile hardware options while keeping the features from Rpisurv. This enables potential sub-second latency and support for more simultaneous streams, all while maintaining a low power profile, as tested with hardware like the Intel N100 chipset.
 
