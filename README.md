@@ -4,11 +4,6 @@ Bug tracking https://github.com/SvenVD/rpisurv/issues.<br/>
 Follow us on facebook https://www.facebook.com/rpisurv.<br/>
 Have a chat on https://gitter.im/rpisurv/general.<br/>
 
- You can help sustain our activities by donating here:
- <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QPJU9K2KZ8D94" target="_blank" rel="nofollow"><img src="https://www.paypal.com/en_US/i/btn/x-click-but21.gif" alt="" /></a>
-
-Or if you prefer crypto take a look at the funding page [here](FUNDING.md)
-
 ## What is Rpisurv?
 
 Rpisurv is a free application that transforms your Raspberry Pi into a dedicated device to display video streams or images.
